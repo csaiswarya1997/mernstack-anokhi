@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .reveal-up {
+    @apply opacity-0 translate-y-10 transition-all duration-1000 ease-out;
+  }
+  
+  .reveal-up.active {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .reveal-left {
+    @apply opacity-0 -translate-x-10 transition-all duration-1000 ease-out;
+  }
+
+  .reveal-left.active {
+    @apply opacity-100 translate-x-0;
+  }
+
+  .reveal-right {
+    @apply opacity-0 translate-x-10 transition-all duration-1000 ease-out;
+  }
+
+  .reveal-right.active {
+    @apply opacity-100 translate-x-0;
+  }
+
+  .reveal-scale {
+    @apply opacity-0 scale-95 transition-all duration-1000 ease-out;
+  }
+
+  .reveal-scale.active {
+    @apply opacity-100 scale-100;
+  }
+
+  .parallax-bg {
+    @apply bg-fixed bg-center bg-no-repeat bg-cover;
+  }
+
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+/* Cinematic Immersive Scrolling (Hide default scrollbar) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera (when needed, e.g. .no-scrollbar) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox (when needed, e.g. .no-scrollbar) */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
