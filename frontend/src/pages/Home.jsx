@@ -128,7 +128,7 @@ const Home = () => {
       </section>
 
       {/* New Arrivals with Slider feel */}
-      <section className="pb-24 bg-secondaryContainer/30">
+      <section className="pb-22 bg-secondaryContainer/30">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="flex flex-col md:flex-row justify-between items-center mb-20 gap-8 reveal-up">
             <div className="text-center md:text-left">
