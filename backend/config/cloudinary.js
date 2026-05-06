@@ -11,14 +11,19 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Check if keys are loaded
+if (!process.env.CLOUDINARY_CLOUD_NAME) {
+  console.error('CRITICAL ERROR: Cloudinary environment variables are missing!');
+}
+
 const storage = new CloudinaryStorage({
-  cloudinary,
+  cloudinary: cloudinary,
   params: {
-    folder: "anokhi-products",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    folder: 'anokhi-products',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 export default upload;
