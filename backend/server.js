@@ -64,6 +64,16 @@ app.use('/api/settings', settingsRoutes);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  console.error('Error Stack:', err.stack);
+  res.status(statusCode).json({
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

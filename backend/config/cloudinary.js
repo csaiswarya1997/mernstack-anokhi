@@ -5,16 +5,25 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Detailed Logging for Debugging (Masked for safety)
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-// Check if keys are loaded
-if (!process.env.CLOUDINARY_CLOUD_NAME) {
-  console.error('CRITICAL ERROR: Cloudinary environment variables are missing!');
+console.log('--- Cloudinary Config Initialization ---');
+console.log('Cloud Name:', cloudName ? 'Present' : 'MISSING');
+console.log('API Key:', apiKey ? 'Present' : 'MISSING');
+console.log('API Secret:', apiSecret ? 'Present' : 'MISSING');
+
+if (!cloudName || !apiKey || !apiSecret) {
+  console.error('CRITICAL ERROR: Cloudinary environment variables are missing! Please check your Render/env settings.');
 }
+
+cloudinary.config({
+  cloud_name: cloudName,
+  api_key: apiKey,
+  api_secret: apiSecret,
+});
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
