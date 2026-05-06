@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Truck, RotateCcw, ShieldCheck, Globe } from 'lucide-react';
 
 import { motion } from 'framer-motion';
+import API_URL from '../config';
 
 const Shipping = () => {
   const [settings, setSettings] = useState(null);
@@ -9,7 +10,7 @@ const Shipping = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings');
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setSettings(data);

@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
+import API_URL from '../config';
 
 const ProductCard = ({ product }) => {
   const { showAlert, showConfirm } = useCart();
@@ -16,7 +17,7 @@ const ProductCard = ({ product }) => {
     const checkWishlist = async () => {
       if (userInfo) {
         try {
-          const res = await fetch('http://localhost:5000/api/users/wishlist', {
+          const res = await fetch(`${API_URL}/api/users/wishlist`, {
             headers: { 'Authorization': `Bearer ${userInfo.token}` }
           });
           if (res.ok) {
@@ -51,7 +52,7 @@ const ProductCard = ({ product }) => {
 
     try {
       if (isWishlisted) {
-        const res = await fetch(`http://localhost:5000/api/users/wishlist/${productId}`, {
+        const res = await fetch(`${API_URL}/api/users/wishlist/${productId}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${userInfo.token}` }
         });
@@ -60,7 +61,7 @@ const ProductCard = ({ product }) => {
           showAlert('Removed', `${product.name} removed from your collection.`);
         }
       } else {
-        const res = await fetch('http://localhost:5000/api/users/wishlist', {
+        const res = await fetch(`${API_URL}/api/users/wishlist`, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ const ProductCard = ({ product }) => {
           <motion.img 
             whileHover={{ scale: 1.08 }}
             transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
-            src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`} 
+            src={product.image.startsWith('http') ? product.image : `${API_URL}${product.image}`} 
             alt={product.name} 
             className="w-full h-full object-cover" 
           />

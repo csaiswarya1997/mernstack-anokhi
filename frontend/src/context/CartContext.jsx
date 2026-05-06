@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import API_URL from '../config';
 
 const CartContext = createContext();
 
@@ -104,7 +105,7 @@ export const CartProvider = ({ children }) => {
   const placeOrder = async (shippingInfo) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      const res = await fetch('http://localhost:5000/api/orders', {
+      const res = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

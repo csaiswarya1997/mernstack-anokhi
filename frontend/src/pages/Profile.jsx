@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { Package, Settings, LogOut, ChevronRight, MapPin, CreditCard, Clock, Truck, CheckCircle2, ShoppingBag, ChevronDown, Hash, XCircle, AlertCircle, Heart, Star, Trash2, MessageSquare, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Profile = () => {
     const fetchLiveOrders = async () => {
       if (!userInfo?.token) return;
       try {
-        const res = await fetch('http://localhost:5000/api/orders/myorders', {
+        const res = await fetch(`${API_URL}/api/orders/myorders`, {
           headers: {
             'Authorization': `Bearer ${userInfo.token}`
           }
@@ -107,7 +108,7 @@ const Profile = () => {
     if (!userInfo?.token) return;
     setBespokeLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/bespoke/myrequests', {
+      const res = await fetch(`${API_URL}/api/bespoke/myrequests`, {
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
       if (res.ok) {
@@ -126,7 +127,7 @@ const Profile = () => {
 
     setWishlistLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/users/wishlist', {
+      const res = await fetch(`${API_URL}/api/users/wishlist`, {
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
       if (res.ok) {
@@ -143,7 +144,7 @@ const Profile = () => {
   const removeFromWishlist = async (productId) => {
     if (!userInfo?.token) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/users/wishlist/${productId}`, {
+      const res = await fetch(`${API_URL}/api/users/wishlist/${productId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
@@ -444,7 +445,7 @@ const Profile = () => {
                                     <div className="xl:col-span-7 space-y-4">
                                       {order.orderItems.map((item, idx) => (
                                         <div key={idx} className="flex items-center gap-4">
-                                          <img src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`} className="w-12 h-16 object-cover rounded-lg border border-gray-100" alt="" />
+                                          <img src={item.image.startsWith('http') ? item.image : `${API_URL}${item.image}`} className="w-12 h-16 object-cover rounded-lg border border-gray-100" alt="" />
                                           <div className="flex-grow">
                                             <h5 className="font-serif text-sm text-primary">{item.name}</h5>
                                             <p className="text-[8px] uppercase tracking-widest font-bold text-gray-400 mt-1">Size {item.size} • Qty {item.quantity}</p>
@@ -510,7 +511,7 @@ const Profile = () => {
                           <motion.img
                             whileHover={{ scale: 1.1 }}
                             transition={{ duration: 0.8 }}
-                            src={p.image.startsWith('http') ? p.image : `http://localhost:5000${p.image}`}
+                            src={p.image.startsWith('http') ? p.image : `${API_URL}${p.image}`}
                             className="w-full h-full object-cover"
                             alt={p.name}
                           />
@@ -577,7 +578,7 @@ const Profile = () => {
                             {req.images?.length > 0 && (
                               <div className="flex gap-2 overflow-x-auto no-scrollbar pt-2">
                                 {req.images.map((img, i) => (
-                                  <img key={i} src={`http://localhost:5000${img}`} className="w-16 h-16 object-cover rounded-lg border border-gray-100" alt="" />
+                                  <img key={i} src={`${API_URL}${img}`} className="w-16 h-16 object-cover rounded-lg border border-gray-100" alt="" />
                                 ))}
                               </div>
                             )}

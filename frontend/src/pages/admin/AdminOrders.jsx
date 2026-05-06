@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import API_URL from '../../config';
 
 const AdminOrders = ({ filter }) => {
   const [orders, setOrders] = useState([]);
@@ -11,14 +12,14 @@ const AdminOrders = ({ filter }) => {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
     if (imagePath.startsWith('http')) return imagePath;
-    const baseUrl = 'http://localhost:5000';
+    const baseUrl = API_URL;
     const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
     return `${baseUrl}${normalizedPath}`;
   };
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products');
+      const res = await fetch(`${API_URL}/api/products`);
       const data = await res.json();
       const map = {};
       const codeMap = {};
@@ -35,7 +36,7 @@ const AdminOrders = ({ filter }) => {
   const fetchOrders = async () => {
     if (!userInfo?.token) return;
     try {
-      const res = await fetch('http://localhost:5000/api/orders', {
+      const res = await fetch(`${API_URL}/api/orders`, {
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
       const data = await res.json();
@@ -56,7 +57,7 @@ const AdminOrders = ({ filter }) => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
@@ -90,7 +91,7 @@ const Cart = () => {
                           className="w-32 h-40 bg-gray-50 rounded-2xl flex-shrink-0 overflow-hidden border border-gray-100 shadow-sm group-hover:shadow-md transition-all"
                         >
                           {item.image ? (
-                            <img src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={item.image.startsWith('http') ? item.image : `${API_URL}${item.image}`} alt={item.name} className="w-full h-full object-cover" />
                           ) : null}
                         </motion.div>
 

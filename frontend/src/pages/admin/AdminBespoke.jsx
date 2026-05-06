@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Clock, MessageSquare, Phone, MessageCircle, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import API_URL from '../../config';
 
 const AdminBespoke = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const AdminBespoke = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/bespoke', {
+      const res = await fetch(`${API_URL}/api/bespoke`, {
         headers: { 'Authorization': `Bearer ${userInfo?.token}` }
       });
       const data = await res.json();
@@ -33,7 +34,7 @@ const AdminBespoke = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/bespoke/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/bespoke/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ const AdminBespoke = () => {
     }
     
     try {
-      const res = await fetch(`http://localhost:5000/api/bespoke/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/bespoke/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

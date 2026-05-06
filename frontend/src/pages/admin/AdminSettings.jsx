@@ -14,6 +14,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import API_URL from '../../config';
 import toast from 'react-hot-toast';
 
 const AdminSettings = () => {
@@ -36,7 +37,7 @@ const AdminSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings');
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setFormData({
@@ -65,7 +66,7 @@ const AdminSettings = () => {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch('http://localhost:5000/api/settings', {
+      const res = await fetch(`${API_URL}/api/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

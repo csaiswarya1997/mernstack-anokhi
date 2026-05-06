@@ -3,6 +3,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { Search, X, SlidersHorizontal, ChevronDown, LayoutGrid, List, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config';
 
 const Shop = () => {
   const { category } = useParams();
@@ -65,7 +66,7 @@ const Shop = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch(`${API_URL}/api/products`);
         const data = await res.json();
 
         let filtered = [...data];

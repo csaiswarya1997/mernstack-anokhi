@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Star, MessageCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import API_URL from '../../config';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -42,7 +43,7 @@ const AdminProducts = () => {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
     if (imagePath.startsWith('http')) return imagePath;
-    const baseUrl = 'http://localhost:5000';
+    const baseUrl = API_URL;
     const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
     return `${baseUrl}${normalizedPath}`;
   };
@@ -94,7 +95,7 @@ const AdminProducts = () => {
       'confirm',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/products/${id}`, { 
+          const res = await fetch(`${API_URL}/api/products/${id}`, { 
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${userInfo?.token}` }
           });
@@ -119,7 +120,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products', {
+      const res = await fetch(`${API_URL}/api/products`, {
         headers: { 'Authorization': `Bearer ${userInfo?.token}` }
       });
       const data = await res.json();
@@ -155,7 +156,7 @@ const AdminProducts = () => {
       'confirm',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/products/${productId}/reviews/${reviewId}`, {
+          const res = await fetch(`${API_URL}/api/products/${productId}/reviews/${reviewId}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${userInfo?.token}` }
           });
@@ -187,7 +188,7 @@ const AdminProducts = () => {
           uploadData.append('images', file);
         });
 
-        const uploadRes = await fetch('http://localhost:5000/api/upload', {
+        const uploadRes = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
           body: uploadData,
         });
@@ -222,8 +223,8 @@ const AdminProducts = () => {
       }
 
       const url = editingProductId 
-        ? `http://localhost:5000/api/products/${editingProductId}`
-        : 'http://localhost:5000/api/products';
+        ? `${API_URL}/api/products/${editingProductId}`
+        : `${API_URL}/api/products`;
         
       const method = editingProductId ? 'PUT' : 'POST';
 

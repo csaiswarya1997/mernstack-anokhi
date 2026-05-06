@@ -19,6 +19,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config';
 
 const BespokeDetails = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const BespokeDetails = () => {
   useEffect(() => {
     const fetchBespokeDetails = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/bespoke/${id}`, {
+        const res = await fetch(`${API_URL}/api/bespoke/${id}`, {
           headers: { Authorization: `Bearer ${userInfo?.token}` }
         });
         if (res.ok) {
@@ -186,7 +187,7 @@ const BespokeDetails = () => {
                       className="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 group relative"
                     >
                       <img
-                        src={`http://localhost:5000${img}`}
+                        src={`${API_URL}${img}`}
                         alt={`Reference ${i + 1}`}
                         className="w-full h-full object-cover"
                       />

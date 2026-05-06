@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, ShoppingCart, Star, MessageSquare, ChevronLeft, ChevronRight, Truck, ShieldCheck, RefreshCw, Clock, ChevronDown, Info, Ruler, Heart, Share2, AlignLeft, X, Maximize2, Sparkles } from 'lucide-react';
+import API_URL from '../config';
 import ProductCard from '../components/ProductCard';
 
 const ProductDetails = () => {
@@ -32,13 +33,13 @@ const ProductDetails = () => {
     const fetchProductAndRelated = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${id}`);
+        const res = await fetch(`${API_URL}/api/products/${id}`);
         const data = await res.json();
         setProduct(data);
         setMainImage(data.image);
         
         if (userInfo) {
-          const wishRes = await fetch('http://localhost:5000/api/users/wishlist', {
+          const wishRes = await fetch(`${API_URL}/api/users/wishlist`, {
             headers: { 'Authorization': `Bearer ${userInfo.token}` }
           });
           if (wishRes.ok) {
@@ -55,7 +56,7 @@ const ProductDetails = () => {
           if (firstAvailable) setSelectedSize(firstAvailable.size);
         }
 
-        const allRes = await fetch('http://localhost:5000/api/products');
+        const allRes = await fetch(`${API_URL}/api/products`);
         const allData = await allRes.json();
         if (Array.isArray(allData)) {
           const related = allData
@@ -87,7 +88,7 @@ const ProductDetails = () => {
 
     try {
       if (isWishlisted) {
-        const res = await fetch(`http://localhost:5000/api/users/wishlist/${id}`, {
+        const res = await fetch(`${API_URL}/api/users/wishlist/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${userInfo.token}` }
         });
@@ -96,7 +97,7 @@ const ProductDetails = () => {
           showAlert('Removed', 'Removed from your collection.');
         }
       } else {
-        const res = await fetch('http://localhost:5000/api/users/wishlist', {
+        const res = await fetch(`${API_URL}/api/users/wishlist`, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ const ProductDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}/reviews`, {
+      const res = await fetch(`${API_URL}/api/products/${id}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: reviewName, rating: reviewRating, comment: reviewComment })
@@ -241,7 +242,7 @@ const ProductDetails = () => {
               className="relative w-full max-w-5xl md:h-[85vh] flex items-center justify-center p-4"
             >
               <img 
-                src={mainImage?.startsWith('http') ? mainImage : `http://localhost:5000${mainImage}`} 
+                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`} 
                 alt="Preview" 
                 className="max-w-full max-h-full object-contain shadow-2xl border border-white/10"
               />
@@ -356,7 +357,7 @@ const ProductDetails = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                src={mainImage?.startsWith('http') ? mainImage : `http://localhost:5000${mainImage}`} 
+                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`} 
                 className="w-full h-full object-cover" 
               />
             </AnimatePresence>
@@ -382,7 +383,7 @@ const ProductDetails = () => {
                   className={`w-20 sm:w-24 aspect-[3/4] overflow-hidden border-4 transition-all duration-300
                     ${mainImage === img ? 'border-black' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 >
-                  <img src={img?.startsWith('http') ? img : `http://localhost:5000${img}`} className="w-full h-full object-cover" />
+                  <img src={img?.startsWith('http') ? img : `${API_URL}${img}`} className="w-full h-full object-cover" />
                 </motion.button>
               ))}
             </motion.div>

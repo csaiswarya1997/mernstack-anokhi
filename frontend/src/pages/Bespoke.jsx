@@ -4,6 +4,7 @@ import { CheckCircle2, MessageSquare, ArrowLeft, Send, Edit3, X } from 'lucide-r
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import API_URL from '../config';
 
 const Bespoke = () => {
   const { id } = useParams();
@@ -54,7 +55,7 @@ const Bespoke = () => {
       setIsEditMode(true);
       const fetchBespoke = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/bespoke/${id}`, {
+          const res = await fetch(`${API_URL}/api/bespoke/${id}`, {
             headers: { Authorization: `Bearer ${userInfo?.token}` }
           });
           if (res.ok) {
@@ -109,8 +110,8 @@ const Bespoke = () => {
       }
       
       const url = isEditMode 
-        ? `http://localhost:5000/api/bespoke/${id}` 
-        : 'http://localhost:5000/api/bespoke';
+        ? `${API_URL}/api/bespoke/${id}` 
+        : `${API_URL}/api/bespoke`;
         
       const res = await fetch(url, {
         method: isEditMode ? 'PUT' : 'POST',
@@ -151,7 +152,7 @@ const Bespoke = () => {
     setUploading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formDataUpload,
       });
@@ -254,7 +255,7 @@ const Bespoke = () => {
                   <p className="text-[9px] uppercase font-bold text-gray-400 mb-3">Reference Images ({images.length})</p>
                   <div className="flex gap-3 overflow-x-auto pb-2">
                     {images.map((img, i) => (
-                      <img key={i} src={`http://localhost:5000${img}`} className="w-20 h-20 object-cover rounded-xl border border-gray-100" alt="" />
+                      <img key={i} src={`${API_URL}${img}`} className="w-20 h-20 object-cover rounded-xl border border-gray-100" alt="" />
                     ))}
                   </div>
                 </div>
@@ -362,7 +363,7 @@ const Bespoke = () => {
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="relative aspect-square rounded-xl overflow-hidden group border border-gray-100"
                   >
-                    <img src={`http://localhost:5000${img}`} alt="Preview" className="w-full h-full object-cover" />
+                    <img src={`${API_URL}${img}`} alt="Preview" className="w-full h-full object-cover" />
                     <button 
                       type="button"
                       onClick={() => removeImage(index)}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { ArrowRight, Star, Quote, ChevronRight } from 'lucide-react';
+import API_URL from '../config';
 
 // Import images
 import heroImg from '../assets/hero-main.png';
@@ -17,7 +18,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLatestProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch(`${API_URL}/api/products`);
         const data = await res.json();
         const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 4);
         setLatestProducts(sorted);

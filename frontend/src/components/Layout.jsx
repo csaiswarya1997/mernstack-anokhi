@@ -16,6 +16,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import API_URL from '../config';
 
 const Layout = () => {
   const { scrollYProgress } = useScroll();
@@ -35,7 +36,7 @@ const Layout = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings');
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setSettings(data);

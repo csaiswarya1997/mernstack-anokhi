@@ -10,6 +10,7 @@ import bespokeRoutes from './routes/bespokeRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
+import User from './models/User.js';
 
 dotenv.config();
 
@@ -26,6 +27,31 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Anokhi API is running...');
+});
+
+// Temporary Admin Setup Route
+app.get('/api/setup-admin-anokhi', async (req, res) => {
+  try {
+    const email = 'aiswaryadas@yopmail.com';
+    const user = await User.findOne({ email });
+    
+    if (user) {
+      user.password = 'admin123';
+      user.isAdmin = true;
+      await user.save();
+      res.send('Admin account updated successfully! Use: aiswaryadas@yopmail.com / admin123');
+    } else {
+      await User.create({
+        name: 'Admin User',
+        email: email,
+        password: 'admin123',
+        isAdmin: true
+      });
+      res.send('Admin account created successfully! Use: aiswaryadas@yopmail.com / admin123');
+    }
+  } catch (error) {
+    res.status(500).send('Error: ' + error.message);
+  }
 });
 
 app.use('/api/products', productRoutes);

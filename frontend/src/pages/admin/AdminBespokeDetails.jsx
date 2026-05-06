@@ -5,6 +5,7 @@ import {
   MessageCircle, ArrowLeft, Save, ExternalLink 
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import API_URL from '../../config';
 
 const AdminBespokeDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const AdminBespokeDetails = () => {
   useEffect(() => {
     const fetchRequestDetails = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/bespoke/${id}`, {
+        const res = await fetch(`${API_URL}/api/bespoke/${id}`, {
           headers: { 'Authorization': `Bearer ${userInfo?.token}` }
         });
         if (res.ok) {
@@ -38,7 +39,7 @@ const AdminBespokeDetails = () => {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/bespoke/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/bespoke/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ const AdminBespokeDetails = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/bespoke/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/bespoke/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const AdminBespokeDetails = () => {
   const handleSaveNotes = async () => {
     setSaving(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/bespoke/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/bespoke/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -206,12 +207,12 @@ const AdminBespokeDetails = () => {
                   {request.images.map((img, idx) => (
                     <a 
                       key={idx} 
-                      href={`http://localhost:5000${img}`} 
+                      href={`${API_URL}${img}`} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="aspect-square rounded-xl overflow-hidden border border-champagne/30 group relative"
                     >
-                      <img src={`http://localhost:5000${img}`} alt="Reference" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                      <img src={`${API_URL}${img}`} alt="Reference" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <ExternalLink size={20} className="text-white" />
                       </div>

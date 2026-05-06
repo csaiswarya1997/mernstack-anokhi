@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { ChevronRight, CreditCard, Truck, CheckCircle2, ShieldCheck, MapPin, Phone, Lock } from 'lucide-react';
+import API_URL from '../config';
 
 const Checkout = () => {
   const { cartItems, cartTotal, placeOrder, showAlert } = useCart();
@@ -307,7 +308,7 @@ const Checkout = () => {
               {cartItems.map(item => (
                 <div key={item.cartItemId} className="flex gap-4">
                   <div className="w-16 h-20 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
-                    <img src={item.image.startsWith('http') ? item.image : `http://localhost:5000${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={item.image.startsWith('http') ? item.image : `${API_URL}${item.image}`} alt={item.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0 flex flex-col justify-center">
                     <div className="flex flex-wrap items-center gap-2 mb-1">

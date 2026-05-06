@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import API_URL from '../../config';
 
 const AdminEnquiries = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -22,7 +23,7 @@ const AdminEnquiries = () => {
 
   const fetchEnquiries = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch(`${API_URL}/api/contact`, {
         headers: { 'Authorization': `Bearer ${userInfo?.token}` }
       });
       if (res.ok) {
@@ -43,7 +44,7 @@ const AdminEnquiries = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/contact/${id}`, {
+      const res = await fetch(`${API_URL}/api/contact/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
