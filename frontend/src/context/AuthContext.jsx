@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUserInfo(null);
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('anokhi_admin_auth');
   };
 
   const updateProfile = async (userData) => {

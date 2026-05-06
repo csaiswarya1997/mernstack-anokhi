@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Package, ShoppingBag, LayoutDashboard, LogOut, Clock, Truck, CreditCard, Mail, Settings } from 'lucide-react';
 import AdminLogin from './AdminLogin';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('anokhi_admin_auth') === 'true'
   );
@@ -13,6 +15,7 @@ const AdminLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('anokhi_admin_auth');
+    logout();
     setIsAuthenticated(false);
     navigate('/admin');
   };
