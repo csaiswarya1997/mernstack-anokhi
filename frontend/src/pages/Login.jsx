@@ -52,14 +52,14 @@ const Login = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 overflow-hidden bg-white">
-      <motion.div 
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={staggerChildren}
         className="max-w-md w-full space-y-10"
       >
         <div className="text-center space-y-4">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, letterSpacing: "0.2em" }}
             animate={{ opacity: 1, letterSpacing: "0.4em" }}
             transition={{ duration: 1 }}
@@ -71,12 +71,23 @@ const Login = () => {
           <motion.p variants={fadeInUp} className="text-secondary/60 font-serif italic text-lg leading-relaxed">Sign in to your patron account</motion.p>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={fadeInUp}
           className="bg-white border border-gray-100 rounded-[3rem] p-10 shadow-sm relative overflow-hidden"
         >
+          {/* Highlighted Top Access Link */}
+          <div className="mb-10 pb-8 border-b border-gray-100 text-center">
+            <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-4">New to the Maison?</p>
+            <Link 
+              to="/register" 
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary/5 text-primary border border-primary/10 hover:bg-primary hover:text-white transition-all text-sm font-serif italic w-full justify-center"
+            >
+              Request Access & Join the Circle
+            </Link>
+          </div>
+
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               className="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 text-xs font-bold uppercase tracking-wider"
@@ -139,15 +150,6 @@ const Login = () => {
             </motion.button>
           </form>
 
-          <div className="mt-12 pt-10 border-t border-gray-100 text-center">
-            <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-4">New to the Maison?</p>
-            <Link 
-              to="/register" 
-              className="inline-block text-[11px] font-serif italic text-primary hover:text-primaryContainer transition-colors"
-            >
-              Request Access & Join the Circle
-            </Link>
-          </div>
         </motion.div>
       </motion.div>
     </div>

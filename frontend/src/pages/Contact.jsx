@@ -86,31 +86,31 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: <MapPin className="text-primary" size={24} />,
+      icon: <MapPin size={24} />,
       label: 'Zaloura Address',
       value: settings?.address || '123, Heritage Lane, Boutique District, Jaipur, Rajasthan 302001',
       link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || '')}`
     },
     {
-      icon: <Phone className="text-primary" size={24} />,
+      icon: <Phone size={24} />,
       label: 'Contact Number',
-      value: settings?.phone || '+91 98765 43210',
+      value: settings?.phone || '+91 8921273858',
       link: `tel:${settings?.phone}`
     },
     {
-      icon: <Mail className="text-primary" size={24} />,
+      icon: <Mail size={24} />,
       label: 'Email Support',
-      value: settings?.email || 'concierge@zaloura.com',
+      value: settings?.email || 'ZALOURA.IN@GMAIL.COM',
       link: `mailto:${settings?.email}`
     },
     {
-      icon: <MessageCircle className="text-primary" size={24} />,
+      icon: <MessageCircle size={24} />,
       label: 'WhatsApp Contact',
-      value: settings?.whatsapp || '+91 98765 43210',
+      value: settings?.whatsapp || '+91 8921273858',
       link: `https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`
     },
     {
-      icon: <Instagram className="text-primary" size={24} />,
+      icon: <Instagram size={24} />,
       label: 'Instagram ID',
       value: settings?.instagram || '@maison_zaloura',
       link: `https://instagram.com/${settings?.instagram?.replace('@', '')}`
@@ -167,7 +167,7 @@ const Contact = () => {
                   >
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center transition-all group-hover:bg-primary group-hover:text-white group-hover:-translate-y-1"
+                      className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center transition-all text-primary group-hover:bg-primary group-hover:text-white group-hover:-translate-y-1"
                     >
                       {info.icon}
                     </motion.div>
