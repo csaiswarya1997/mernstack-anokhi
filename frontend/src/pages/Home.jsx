@@ -60,15 +60,15 @@ const Home = () => {
             alt="Zaloura Hero"
             className="w-full h-full object-cover scale-105 animate-[ken-burns_20s_infinite_alternate]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/40 to-transparent"></div>
         </div>
 
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16 w-full">
           <div className="max-w-2xl reveal-left">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/60 block mb-6">Maison Zaloura — Est. 2024</span>
+            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/60 block mb-6 italic">ZALOURA ATELIER — Est. 2024</span>
             <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.1] italic">
-              L'Art de <br />
-              <span className="text-champagne not-italic">Vivre Tradition</span>
+              Wear <br />
+              <span className="text-primary not-italic">Elegance</span>
             </h1>
             <p className="text-xl text-white/70 font-sans mb-12 max-w-lg leading-relaxed italic">
               Discover a curated collection where heritage craftsmanship meets contemporary elegance.
@@ -213,9 +213,9 @@ const Home = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-32 bg-primary">
+      <section className="py-32 bg-secondary border-t border-white/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center reveal-scale">
-          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-champagne/60 block mb-8">Le Journal de Zaloura</span>
+          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-primary block mb-8">Le Journal de Zaloura</span>
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 italic">Join the Inner Circle</h2>
           <p className="text-white/60 font-serif italic text-lg mb-16 max-w-xl mx-auto">
             Receive exclusive updates on new collections, private sales, and the stories behind our craft.
@@ -226,7 +226,7 @@ const Home = () => {
               placeholder="Your email address"
               className="flex-1 bg-white/5 border border-white/20 rounded-full px-8 py-4 text-white outline-none focus:border-champagne transition-colors font-sans text-sm"
             />
-            <button className="bg-champagne text-primary px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white transition-all shadow-xl">
+            <button className="bg-primary text-secondary px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white transition-all shadow-xl">
               Subscribe
             </button>
           </form>

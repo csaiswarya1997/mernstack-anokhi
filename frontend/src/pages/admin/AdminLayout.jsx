@@ -38,18 +38,21 @@ const AdminLayout = () => {
       <aside className={`
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
         md:translate-x-0 fixed md:sticky top-0 left-0 z-50
-        w-64 bg-primaryContainer text-white flex flex-col h-screen transition-transform duration-300 ease-in-out
+        w-64 bg-secondary text-white flex flex-col h-screen transition-transform duration-300 ease-in-out
       `}>
-        <div className="p-6 border-b border-primary/30">
-          <h1 className="text-2xl font-serif tracking-tight font-medium text-champagne mb-1">Zaloura Admin</h1>
-          <p className="text-xs text-champagne/80 font-sans tracking-widest uppercase">Portal</p>
+        <div className="p-8 border-b border-primary/20 bg-secondary/50">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-secondary font-serif font-bold">Z</div>
+            <h1 className="text-xl font-serif tracking-tight font-bold text-white">Zaloura <span className="text-primary">Admin</span></h1>
+          </div>
+          <p className="text-[8px] text-primary font-sans tracking-[0.4em] uppercase font-bold">Management Portal</p>
         </div>
 
         <nav className="flex-1 px-4 py-1 space-y-1 overflow-y-auto">
           <Link
             to="/admin/products"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/products') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/products') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <Package size={18} />
             <span className="font-sans text-sm font-semibold">Products</span>
@@ -57,7 +60,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/orders"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname === '/admin/orders' ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname === '/admin/orders' ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <ShoppingBag size={18} />
             <span className="font-sans text-sm font-semibold">All Orders</span>
@@ -65,7 +68,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/orders-processing"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/orders-processing') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/orders-processing') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <Clock size={18} />
             <span className="font-sans text-sm font-semibold">Processing</span>
@@ -73,7 +76,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/orders-fulfillment"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/orders-fulfillment') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/orders-fulfillment') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <Truck size={18} />
             <span className="font-sans text-sm font-semibold">Fulfillment</span>
@@ -81,7 +84,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/payments"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/payments') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/payments') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <CreditCard size={18} />
             <span className="font-sans text-sm font-semibold">Payments</span>
@@ -89,7 +92,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/bespoke"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/bespoke') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/bespoke') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <LayoutDashboard size={18} />
             <span className="font-sans text-sm font-semibold">Bespoke</span>
@@ -97,7 +100,7 @@ const AdminLayout = () => {
           <Link
             to="/admin/enquiries"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/enquiries') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/enquiries') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <Mail size={18} />
             <span className="font-sans text-sm font-semibold">Enquiries</span>
@@ -105,15 +108,15 @@ const AdminLayout = () => {
           <Link
             to="/admin/settings"
             onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/settings') ? 'bg-primary text-white shadow-md' : 'text-champagne hover:bg-primary/50'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/settings') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
           >
             <Settings size={18} />
             <span className="font-sans text-sm font-semibold">Settings</span>
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-primary/50 bg-primaryContainer">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-champagne hover:bg-primary/50 transition-colors">
+        <div className="p-4 border-t border-white/5 bg-black/20">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-white/40 hover:text-red-400 hover:bg-red-400/5 transition-all">
             <LogOut size={18} />
             <span className="font-sans text-sm font-semibold">Sign Out</span>
           </button>

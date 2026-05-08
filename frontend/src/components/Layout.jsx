@@ -18,6 +18,33 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import API_URL from '../config';
 
+const Logo = ({ className = "h-8" }) => (
+  <div className={`flex items-center gap-3 ${className}`}>
+    <div className="relative w-10 h-10 flex items-center justify-center">
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
+        <path 
+          d="M20 20 C20 10 80 10 80 20 L80 50 C80 80 50 90 50 90 C50 90 20 80 20 50 Z" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="3"
+        />
+        <path 
+          d="M25 25 C25 18 75 18 75 25 L75 50 C75 75 50 83 50 83 C50 83 25 75 25 50 Z" 
+          fill="currentColor" 
+          fillOpacity="0.1" 
+          stroke="currentColor" 
+          strokeWidth="1"
+        />
+      </svg>
+      <span className="text-xl font-serif font-bold text-primary relative top-[-2px]">Z</span>
+    </div>
+    <div className="flex flex-col leading-none">
+      <span className="text-xl font-serif font-bold tracking-tight text-primary">ZALOURA</span>
+      <span className="text-[7px] font-sans font-bold tracking-[0.3em] text-secondary mt-0.5">WEAR ELEGANCE</span>
+    </div>
+  </div>
+);
+
 const Layout = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -58,32 +85,29 @@ const Layout = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-sans text-primary">
+    <div className="min-h-screen flex flex-col bg-white font-sans text-secondary">
       {/* Global Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primaryContainer origin-left z-[100]"
+        className="fixed top-0 left-0 right-0 h-1 bg-primary origin-left z-[100]"
         style={{ scaleX }}
       />
       {/* Top Info Bar */}
-      <div className="hidden lg:block bg-primary text-white py-2.5 border-b border-white/5">
+      <div className="hidden lg:block bg-secondary py-2.5 border-b border-white/5">
         <div className="max-w-[1280px] mx-auto px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
           <div className="flex items-center gap-8">
-            {/* <span className="flex items-center gap-2 text-white/50">
-              <MapPin size={10} className="text-white/40" /> {settings?.address?.split(',')[0] || '123, Heritage Lane'}, {settings?.address?.split(',')?.slice(-1)[0]?.split(' ')?.slice(-2, -1)[0] || 'Jaipur'}
-            </span> */}
-            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone size={10} className="text-white/40" /> {settings?.phone || '+91 98765 43210'}
+            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white hover:text-primary transition-colors">
+              <Phone size={10} className="text-primary" /> {settings?.phone || '+91 98765 43210'}
             </a>
-            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={10} className="text-white/40" /> {settings?.email || 'concierge@zaloura.com'}
+            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white hover:text-primary transition-colors">
+              <Mail size={10} className="text-primary" /> {settings?.email || 'concierge@zaloura.com'}
             </a>
           </div>
           <div className="flex items-center gap-8">
-            <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-green-400 transition-colors">
-              <MessageCircle size={10} className="text-white/40" /> WhatsApp
+            <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-green-400 transition-colors">
+              <MessageCircle size={10} /> WhatsApp
             </a>
-            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-pink-400 transition-colors">
-              <Instagram size={10} className="text-white/40" /> Instagram
+            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-primary transition-colors">
+              <Instagram size={10} /> Instagram
             </a>
           </div>
         </div>
@@ -91,15 +115,17 @@ const Layout = () => {
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 h-16 flex items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors text-secondary"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <Link to="/" className="text-2xl font-serif text-primary font-bold">Zaloura</Link>
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -202,41 +228,49 @@ const Layout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-white py-16">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h3 className="text-2xl font-serif mb-6">Zaloura</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Timeless elegance and sustainable craft. Discover our collection of handcrafted traditional wear.
+      <footer className="bg-secondary text-white py-20 border-t border-primary/10">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-16">
+          <div className="space-y-8">
+            <Logo className="h-10 text-white" />
+            <p className="text-white/50 text-sm leading-relaxed font-serif italic">
+              Crafting timeless elegance and sustainable luxury for the modern woman. Discover our artisanal collection.
             </p>
           </div>
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-gray-500">Quick Links</h4>
-            <ul className="space-y-4 text-sm text-gray-300">
-              <li><Link to="/shop" className="hover:text-white transition-colors">Shop All</Link></li>
-              <li><Link to="/bespoke" className="hover:text-white transition-colors">Bespoke Service</Link></li>
-              <li><Link to="/sustainability" className="hover:text-white transition-colors">Sustainability</Link></li>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Atelier</h4>
+            <ul className="space-y-5 text-sm text-white/60">
+              <li><Link to="/shop" className="hover:text-primary transition-colors">Shop All</Link></li>
+              <li><Link to="/category/Kurti" className="hover:text-primary transition-colors">Kurtis</Link></li>
+              <li><Link to="/category/Salwar" className="hover:text-primary transition-colors">Salwars</Link></li>
+              <li><Link to="/bespoke" className="hover:text-primary transition-colors">Bespoke Service</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-gray-500">Support</h4>
-            <ul className="space-y-4 text-sm text-gray-300">
-              <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-              <li><Link to="/shipping" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
-              {/* <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li> */}
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Maison</h4>
+            <ul className="space-y-5 text-sm text-white/60">
+              <li><Link to="/sustainability" className="hover:text-primary transition-colors">Sustainability</Link></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
+              <li><Link to="/shipping" className="hover:text-primary transition-colors">Shipping & Returns</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 text-gray-500">Connect</h4>
-            <div className="flex gap-4 text-gray-300">
-              <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
-              <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp</a>
-              <a href={`mailto:${settings?.email}`} className="hover:text-white transition-colors">Email</a>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Connect</h4>
+            <div className="flex flex-col gap-5 text-sm text-white/60">
+              <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-3">
+                <Instagram size={16} /> Instagram
+              </a>
+              <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-3">
+                <MessageCircle size={16} /> WhatsApp
+              </a>
+              <a href={`mailto:${settings?.email}`} className="hover:text-primary transition-colors flex items-center gap-3">
+                <Mail size={16} /> Email Concierge
+              </a>
             </div>
           </div>
         </div>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 mt-16 pt-8 border-t border-white/10 text-center">
-          <p className="text-[10px] uppercase tracking-widest text-gray-500">© 2024 Zaloura Studio. All Rights Reserved.</p>
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16 mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[9px] uppercase tracking-[0.4em] text-white/30">© 2024 Zaloura Studio. All Rights Reserved.</p>
+          <p className="text-[9px] uppercase tracking-[0.4em] text-white/30">Handcrafted in Jaipur</p>
         </div>
       </footer>
     </div>
