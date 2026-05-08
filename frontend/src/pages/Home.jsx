@@ -91,7 +91,7 @@ const Home = () => {
       </section>
 
       {/* Featured Collections / Categories */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-accent/20">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="text-center mb-12 reveal-up">
             <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6 italic">Les Catégories</h2>
@@ -100,9 +100,9 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Kurtis */}
-            <Link to="/category/Kurti" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-left">
+            <Link to="/category/Kurti" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-left shadow-2xl">
               <img src={kurtiImg} alt="Kurtis" className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
               <div className="absolute bottom-12 left-12 right-12">
                 <span className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold block mb-2">Collection</span>
                 <h3 className="text-4xl font-serif text-white mb-6 italic">Les Kurtis</h3>
@@ -113,9 +113,9 @@ const Home = () => {
             </Link>
 
             {/* Salwars */}
-            <Link to="/category/Salwar" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-right">
+            <Link to="/category/Salwar" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-right shadow-2xl">
               <img src={salwarImg} alt="Salwars" className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
               <div className="absolute bottom-12 left-12 right-12">
                 <span className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold block mb-2">Collection</span>
                 <h3 className="text-4xl font-serif text-white mb-6 italic">Les Salwars</h3>
@@ -129,21 +129,21 @@ const Home = () => {
       </section>
 
       {/* New Arrivals with Slider feel */}
-      <section className="py-12 bg-secondaryContainer/30">
+      <section className="py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 reveal-up">
             <div className="text-center md:text-left">
               <h2 className="text-4xl font-serif text-primary mb-4 italic">Nouvelles Arrivées</h2>
               <p className="text-secondary/60 font-sans italic">The latest treasures from our India atelier.</p>
             </div>
-            <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primaryContainer transition-colors">
+            <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primary transition-colors">
               Discover All <div className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><ArrowRight size={14} /></div>
             </Link>
           </div>
 
           {loading ? (
             <div className="flex justify-center items-center h-96">
-              <div className="w-12 h-12 border-2 border-primaryContainer border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -164,19 +164,19 @@ const Home = () => {
       {/* Philosophy / Story Section */}
       <section className="relative py-48 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={artisanImg} alt="Philosophy" className="w-full h-full object-cover parallax-bg brightness-[0.3]" />
+          <img src={artisanImg} alt="Philosophy" className="w-full h-full object-cover parallax-bg brightness-[0.5]" />
         </div>
 
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="max-w-3xl mx-auto text-center reveal-scale">
-            <Quote className="text-champagne/40 w-16 h-16 mx-auto mb-12" />
+            <Quote className="text-accent/40 w-16 h-16 mx-auto mb-12" />
             <h2 className="text-4xl md:text-6xl font-serif text-white mb-12 leading-tight italic">
-              "Every thread tells a story of <span className="text-champagne">dedication</span>, every pattern a piece of <span className="text-champagne">history</span>."
+              "Every thread tells a story of <span className="text-accent">dedication</span>, every pattern a piece of <span className="text-accent">history</span>."
             </h2>
-            <p className="text-white/60 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic">
+            <p className="text-white/80 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic">
               We bridge the gap between ancient textile arts and the modern woman's lifestyle. Our pieces are not just garments; they are wearable art.
             </p>
-            <Link to="/sustainability" className="inline-block border-b border-champagne text-champagne px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all">
+            <Link to="/sustainability" className="inline-block border-b border-accent text-accent px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all">
               Discover Our Philosophy
             </Link>
           </div>
@@ -184,26 +184,26 @@ const Home = () => {
       </section>
 
       {/* Trust Badges / Values */}
-      <section className="py-12 bg-white border-b border-gray-100">
+      <section className="py-12 bg-accent/20 border-b border-primary/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <div className="text-center reveal-up">
-              <div className="w-16 h-16 bg-secondaryContainer/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Star className="text-primaryContainer" size={24} />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Star className="text-primary" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Artisanal Quality</h4>
               <p className="text-xs text-secondary/50 font-sans leading-relaxed">Each piece is handcrafted by master artisans in India using traditional techniques.</p>
             </div>
             <div className="text-center reveal-up transition-delay-200">
-              <div className="w-16 h-16 bg-secondaryContainer/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Star className="text-primaryContainer" size={24} />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Star className="text-primary" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Ethical Sourcing</h4>
               <p className="text-xs text-secondary/50 font-sans leading-relaxed">We ensure fair wages and sustainable working conditions for all our partners.</p>
             </div>
             <div className="text-center reveal-up transition-delay-400">
-              <div className="w-16 h-16 bg-secondaryContainer/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Star className="text-primaryContainer" size={24} />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Star className="text-primary" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Timeless Design</h4>
               <p className="text-xs text-secondary/50 font-sans leading-relaxed">Collections designed to transcend seasons and remain relevant for years to come.</p>
@@ -215,7 +215,7 @@ const Home = () => {
       {/* Newsletter Section */}
       <section className="py-12 bg-secondary border-t border-white/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center reveal-scale">
-          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-primary block mb-8">Le Journal de Zaloura</span>
+          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-accent/60 block mb-8">Le Journal de Zaloura</span>
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 italic">Join the Inner Circle</h2>
           <p className="text-white/60 font-serif italic text-lg mb-12 max-w-xl mx-auto">
             Receive exclusive updates on new collections, private sales, and the stories behind our craft.
@@ -224,9 +224,9 @@ const Home = () => {
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 bg-white/5 border border-white/20 rounded-full px-8 py-4 text-white outline-none focus:border-champagne transition-colors font-sans text-sm"
+              className="flex-1 bg-white/5 border border-white/20 rounded-full px-8 py-4 text-white outline-none focus:border-accent transition-colors font-sans text-sm"
             />
-            <button className="bg-primary text-secondary px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white transition-all shadow-xl">
+            <button className="bg-primary text-white px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-accent hover:text-secondary transition-all shadow-xl">
               Subscribe
             </button>
           </form>

@@ -19,38 +19,29 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import API_URL from '../config';
 
 const Logo = ({ className = "h-8", textColor = "text-primary" }) => (
-  <div className={`flex items-center gap-2 ${className}`}>
-    <div className="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
-      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-sm">
-        {/* Main Shield Shape */}
-        <path
-          d="M20 15 H80 V55 C80 80 50 90 50 90 C50 90 20 80 20 55 Z"
-          fill="#B68D40"
-        />
-        {/* Inner Border */}
-        <path
-          d="M25 20 H75 V55 C75 75 50 83 50 83 C50 83 25 75 25 55 Z"
-          fill="none"
-          stroke="white"
-          strokeWidth="1.5"
-          opacity="0.8"
-        />
-        {/* The Z */}
-        <text
-          x="50"
-          y="62"
-          textAnchor="middle"
-          fill="white"
-          fontFamily="serif"
-          fontSize="42"
-          fontWeight="bold"
-        >Z</text>
-      </svg>
+  <div className={`flex flex-col items-center gap-1 -mt-5 ${className}`}>
+    <div className="relative flex items-center justify-center">
+      <span className={`text-3xl md:text-4xl font-serif font-bold tracking-tighter ${textColor} flex items-center`}>
+        Z
+        <span className="relative">
+          A
+          <div className="absolute top-[30%] -left-1">
+            <div className="w-1.5 h-1.5 bg-current opacity-90" style={{ clipPath: 'polygon(50% 0%, 53% 47%, 100% 50%, 53% 53%, 50% 100%, 47% 53%, 0% 50%, 47% 47%)' }}></div>
+          </div>
+        </span>
+        L
+        <span className="relative flex items-center justify-center mx-[-0.02em]">
+          O
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 bg-current" style={{ clipPath: 'polygon(50% 0%, 53% 47%, 100% 50%, 53% 53%, 50% 100%, 47% 53%, 0% 50%, 47% 47%)' }}></div>
+          </div>
+        </span>
+        URA
+      </span>
     </div>
-    <div className="flex flex-col leading-none">
-      <span className={`text-2xl font-serif font-bold tracking-tight ${textColor}`}>ZALOURA</span>
-      <span className={`text-[8px] font-sans font-bold tracking-[0.4em] mt-1.5 ${textColor} opacity-80`}>WEAR ELEGANCE</span>
-    </div>
+    <span className={`text-[7px] md:text-[8px] font-sans font-normal tracking-[0.8em] ${textColor} opacity-80 mt-[-0.4rem]`}>
+      OWN THE ELEGANCE
+    </span>
   </div>
 );
 
@@ -104,18 +95,18 @@ const Layout = () => {
       <div className="hidden lg:block bg-secondary py-2.5 border-b border-white/5">
         <div className="max-w-[1280px] mx-auto px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
           <div className="flex items-center gap-8">
-            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white hover:text-primary transition-colors">
-              <Phone size={10} className="text-primary" /> {settings?.phone || '+91 98765 43210'}
+            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors">
+              <Phone size={10} className="text-accent" /> {settings?.phone || '+91 98765 43210'}
             </a>
-            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white hover:text-primary transition-colors">
-              <Mail size={10} className="text-primary" /> {settings?.email || 'concierge@zaloura.com'}
+            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors">
+              <Mail size={10} className="text-accent" /> {settings?.email || 'concierge@zaloura.com'}
             </a>
           </div>
           <div className="flex items-center gap-8">
             <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-green-400 transition-colors">
               <MessageCircle size={10} /> WhatsApp
             </a>
-            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-primary transition-colors">
+            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-accent transition-colors">
               <Instagram size={10} /> Instagram
             </a>
           </div>
@@ -128,7 +119,7 @@ const Layout = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors text-secondary"
+              className="md:hidden p-2 hover:bg-accent/10 rounded-full transition-colors text-primary"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -138,35 +129,34 @@ const Layout = () => {
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
-            <NavLink to="/shop" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Shop All</NavLink>
-            <NavLink to="/category/Kurti" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Kurtis</NavLink>
-            <NavLink to="/category/Salwar" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Salwars</NavLink>
-            <NavLink to="/bespoke" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Bespoke</NavLink>
-            <NavLink to="/sustainability" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Sustainability</NavLink>
-            <NavLink to="/contact" className={({ isActive }) => `text-sm font-medium transition-colors border-b-2 pb-1 ${isActive ? 'text-primaryContainer border-primaryContainer font-bold' : 'text-primary border-transparent hover:text-primaryContainer hover:border-champagne'}`}>Contact Us</NavLink>
+            <NavLink to="/shop" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Atelier</NavLink>
+            <NavLink to="/category/Kurti" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Kurtis</NavLink>
+            <NavLink to="/category/Salwar" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Salwars</NavLink>
+            <NavLink to="/bespoke" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Bespoke</NavLink>
+            <NavLink to="/contact" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
           </nav>
 
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary">
               <Search size={20} />
             </button>
-            <Link to={userInfo ? "/profile" : "/login"} className="p-2 hover:bg-gray-100 rounded-full transition-colors flex items-center gap-2 group">
-              <User size={20} className={userInfo ? "text-primaryContainer" : "text-primary"} />
+            <Link to={userInfo ? "/profile" : "/login"} className="p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group">
+              <User size={20} className="text-primary" />
               {userInfo && (
                 <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
                   {userInfo.name?.split(' ')[0] || 'Profile'}
                 </span>
               )}
               {!userInfo && (
-                <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary group-hover:text-primaryContainer transition-colors">
-                  Login
+                <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
+                  Patron
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
+            <Link to="/cart" className="p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary">
               <ShoppingCart size={20} />
               {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-primaryContainer text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                <span className="absolute top-0 right-0 bg-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
                   {cartCount}
                 </span>
               )}
