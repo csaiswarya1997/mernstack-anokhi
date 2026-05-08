@@ -11,7 +11,7 @@ const Bespoke = () => {
   const navigate = useNavigate();
   const { showAlert } = useCart();
   const { userInfo } = useAuth();
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -20,7 +20,7 @@ const Bespoke = () => {
     whatsapp: '',
     requirement: ''
   });
-  
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -69,7 +69,7 @@ const Bespoke = () => {
               requirement: data.requirement
             });
             setImages(data.images);
-            
+
             // Check if status is not 'New'
             if (data.status !== 'New') {
               showAlert('Cannot Edit', 'This request has already been processed and cannot be modified.');
@@ -108,20 +108,20 @@ const Bespoke = () => {
       if (userInfo && userInfo._id) {
         body.user = userInfo._id;
       }
-      
-      const url = isEditMode 
-        ? `${API_URL}/api/bespoke/${id}` 
+
+      const url = isEditMode
+        ? `${API_URL}/api/bespoke/${id}`
         : `${API_URL}/api/bespoke`;
-        
+
       const res = await fetch(url, {
         method: isEditMode ? 'PUT' : 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo?.token}`
         },
         body: JSON.stringify(body)
       });
-      
+
       if (res.ok) {
         if (isEditMode) {
           showAlert('Updated', 'Your project inquiry has been updated successfully.');
@@ -174,13 +174,13 @@ const Bespoke = () => {
 
   if (isSubmitted) {
     return (
-      <motion.div 
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="max-w-[1280px] mx-auto px-4 py-24 text-center"
+        className="max-w-[1280px] mx-auto px-4 py-16 text-center"
       >
-        <motion.div 
+        <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
@@ -192,10 +192,10 @@ const Bespoke = () => {
         <p className="text-secondary/60 font-sans mb-12 max-w-sm mx-auto leading-relaxed">
           Our master artisans have received your requirements. We will contact you at <strong>{formData.email}</strong> shortly to discuss your custom piece.
         </p>
-        <motion.button 
+        <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/profile')} 
+          onClick={() => navigate('/profile')}
           className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all"
         >
           Go to Dashboard
@@ -207,12 +207,12 @@ const Bespoke = () => {
   if (showConfirmation) {
     return (
       <div className="max-w-[1280px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           className="max-w-3xl mx-auto"
         >
-          <button 
+          <button
             onClick={() => setShowConfirmation(false)}
             className="flex items-center gap-2 text-gray-400 hover:text-primary transition-colors mb-12 group"
           >
@@ -262,7 +262,7 @@ const Bespoke = () => {
               )}
 
               <div className="pt-4 space-y-4">
-                <button 
+                <button
                   onClick={handleFinalSubmit}
                   disabled={isSubmitting}
                   className="w-full bg-primary text-white py-5 rounded-xl font-bold uppercase tracking-[0.2em] text-xs shadow-xl flex items-center justify-center gap-3 hover:bg-primaryContainer hover:-translate-y-1 transition-all"
@@ -276,7 +276,7 @@ const Bespoke = () => {
                     </>
                   )}
                 </button>
-                <button 
+                <button
                   onClick={() => setShowConfirmation(false)}
                   className="w-full bg-gray-50 text-gray-400 py-4 rounded-xl font-bold uppercase tracking-widest text-[9px] hover:text-gray-600 transition-colors"
                 >
@@ -293,30 +293,35 @@ const Bespoke = () => {
   return (
     <div className="max-w-[1280px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24">
       <div className="max-w-3xl mx-auto">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="text-center mb-16"
-        >
-          <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 block mb-2">
-            {isEditMode ? 'Refine Your Vision' : 'Tailored Elegance'}
-          </span>
-          <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tight">
-            {isEditMode ? 'Edit Inquiry' : 'Bespoke Service'}
-          </h1>
-          <p className="mt-6 text-secondary/60 font-sans max-w-lg mx-auto leading-relaxed">
-            {isEditMode 
-              ? 'Make adjustments to your existing project requirements below.' 
-              : 'Collaborate with our designers to create a one-of-a-kind garment that fits your unique measurements.'}
-          </p>
-        </motion.div>
-
-        <motion.form 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          onSubmit={handleSubmit} 
+          className="text-center mb-16"
+        >
+          <motion.span
+            initial={{ opacity: 0, letterSpacing: "0.2em" }}
+            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ duration: 1 }}
+            className="text-[10px] uppercase font-bold text-gray-400 block mb-4"
+          >
+            {isEditMode ? 'Refine Your Vision' : 'Tailored Elegance'}
+          </motion.span>
+          <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-serif text-primary tracking-tight italic">
+            {isEditMode ? 'Edit Inquiry' : 'Bespoke Service'}
+          </motion.h1>
+          <motion.p variants={fadeInUp} className="mt-8 text-secondary/60 font-serif italic text-lg max-w-xl mx-auto leading-relaxed">
+            {isEditMode
+              ? 'Make adjustments to your existing project requirements below.'
+              : 'Collaborate with our designers to create a one-of-a-kind garment that fits your unique measurements.'}
+          </motion.p>
+        </motion.div>
+
+        <motion.form
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          onSubmit={handleSubmit}
           className="space-y-8 bg-white border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm"
         >
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -329,7 +334,7 @@ const Bespoke = () => {
               <input required type="text" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans" />
             </div>
           </motion.div>
-          
+
           <motion.div variants={itemVariants} className="space-y-2">
             <label className="text-[10px] uppercase font-bold text-gray-400">Email Address</label>
             <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans" />
@@ -356,15 +361,15 @@ const Bespoke = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <AnimatePresence>
                 {images.map((img, index) => (
-                  <motion.div 
-                    key={index} 
+                  <motion.div
+                    key={index}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="relative aspect-square rounded-xl overflow-hidden group border border-gray-100"
                   >
                     <img src={`${API_URL}${img}`} alt="Preview" className="w-full h-full object-cover" />
-                    <button 
+                    <button
                       type="button"
                       onClick={() => removeImage(index)}
                       className="absolute top-1 right-1 bg-white/90 text-red-500 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
@@ -379,22 +384,22 @@ const Bespoke = () => {
                   <span className="text-xl mb-1">+</span>
                   <span className="text-[8px] uppercase tracking-widest font-bold">{uploading ? 'Uploading...' : 'Add Image'}</span>
                 </div>
-                <input 
-                  type="file" 
-                  multiple 
-                  accept="image/*" 
-                  onChange={uploadFileHandler} 
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={uploadFileHandler}
                   disabled={uploading}
-                  className="hidden" 
+                  className="hidden"
                 />
               </label>
             </div>
           </motion.div>
 
-          <motion.button 
+          <motion.button
             variants={itemVariants}
-            type="submit" 
-            disabled={isSubmitting} 
+            type="submit"
+            disabled={isSubmitting}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             className="w-full bg-primary text-white py-5 rounded-xl font-bold uppercase tracking-[0.2em] text-xs shadow-xl flex items-center justify-center gap-3 hover:bg-primaryContainer transition-all disabled:opacity-50"
@@ -405,7 +410,7 @@ const Bespoke = () => {
         </motion.form>
 
         {!isEditMode && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

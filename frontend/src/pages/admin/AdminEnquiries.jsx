@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  Phone, 
-  Clock, 
-  Search, 
-  Filter, 
-  MessageSquare, 
-  CheckCircle2, 
+import {
+  Mail,
+  Phone,
+  Clock,
+  Search,
+  Filter,
+  MessageSquare,
+  CheckCircle2,
   Circle,
   Trash2,
   ExternalLink
@@ -46,7 +46,7 @@ const AdminEnquiries = () => {
     try {
       const res = await fetch(`${API_URL}/api/contact/${id}`, {
         method: 'PUT',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userInfo?.token}`
         },
@@ -85,7 +85,7 @@ const AdminEnquiries = () => {
         <div className="flex items-center gap-3">
           <div className="bg-white border border-gray-100 rounded-xl px-4 py-2 flex items-center gap-3 shadow-sm">
             <Filter size={14} className="text-gray-400" />
-            <select 
+            <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               className="bg-transparent text-xs font-bold uppercase tracking-widest outline-none text-primary"
@@ -104,7 +104,7 @@ const AdminEnquiries = () => {
 
       <div className="grid grid-cols-1 gap-6">
         {filteredEnquiries.length === 0 ? (
-          <div className="bg-white border border-dashed border-gray-200 rounded-[2rem] py-24 text-center">
+          <div className="bg-white border border-dashed border-gray-200 rounded-[2rem] py-16 text-center">
             <MessageSquare size={40} className="text-gray-100 mx-auto mb-4" />
             <p className="text-secondary/40 font-serif italic text-lg">No inquiries found in this collection.</p>
           </div>
@@ -112,20 +112,18 @@ const AdminEnquiries = () => {
           filteredEnquiries.map((enquiry) => (
             <div key={enquiry._id} className="bg-white border border-gray-100 rounded-[2rem] p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden">
               {/* Status Indicator Bar */}
-              <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${
-                enquiry.status === 'New' ? 'bg-blue-400' : 
-                enquiry.status === 'Read' ? 'bg-amber-400' : 'bg-green-400'
-              }`} />
+              <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${enquiry.status === 'New' ? 'bg-blue-400' :
+                  enquiry.status === 'Read' ? 'bg-amber-400' : 'bg-green-400'
+                }`} />
 
               <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
                 {/* Contact Info */}
                 <div className="lg:w-1/3 space-y-6">
                   <div>
-                    <span className={`text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-1 rounded-full border ${
-                      enquiry.status === 'New' ? 'bg-blue-50 border-blue-100 text-blue-600' :
-                      enquiry.status === 'Read' ? 'bg-amber-50 border-amber-100 text-amber-600' :
-                      'bg-green-50 border-green-100 text-green-600'
-                    }`}>
+                    <span className={`text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-1 rounded-full border ${enquiry.status === 'New' ? 'bg-blue-50 border-blue-100 text-blue-600' :
+                        enquiry.status === 'Read' ? 'bg-amber-50 border-amber-100 text-amber-600' :
+                          'bg-green-50 border-green-100 text-green-600'
+                      }`}>
                       {enquiry.status}
                     </span>
                     <h3 className="text-2xl font-serif text-primary mt-4 mb-1">{enquiry.name}</h3>
@@ -145,7 +143,7 @@ const AdminEnquiries = () => {
 
                   <div className="pt-6 border-t border-gray-0 flex gap-2">
                     {enquiry.status !== 'Read' && (
-                      <button 
+                      <button
                         onClick={() => handleStatusChange(enquiry._id, 'Read')}
                         className="text-[9px] font-bold uppercase tracking-widest text-amber-600 hover:bg-amber-50 px-3 py-2 rounded-lg transition-colors"
                       >
@@ -153,7 +151,7 @@ const AdminEnquiries = () => {
                       </button>
                     )}
                     {enquiry.status !== 'Replied' && (
-                      <button 
+                      <button
                         onClick={() => handleStatusChange(enquiry._id, 'Replied')}
                         className="text-[9px] font-bold uppercase tracking-widest text-green-600 hover:bg-green-50 px-3 py-2 rounded-lg transition-colors"
                       >
@@ -178,9 +176,9 @@ const AdminEnquiries = () => {
 
               {/* Quick Actions overlay */}
               <div className="absolute top-8 right-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <a 
-                  href={`https://wa.me/${enquiry.phone.replace(/\D/g, '')}`} 
-                  target="_blank" 
+                <a
+                  href={`https://wa.me/${enquiry.phone.replace(/\D/g, '')}`}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-all shadow-sm"
                 >

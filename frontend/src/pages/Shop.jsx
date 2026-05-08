@@ -53,6 +53,11 @@ const Shop = () => {
     }
   };
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
   // React to URL category changes
   useEffect(() => {
     if (category) {
@@ -137,23 +142,21 @@ const Shop = () => {
         className="mb-12"
       >
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-          <div className="max-w-2xl space-y-3">
+          <div className="max-w-2xl space-y-4">
             <motion.span 
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block"
+              initial={{ opacity: 0, letterSpacing: "0.2em" }}
+              animate={{ opacity: 1, letterSpacing: "0.4em" }}
+              transition={{ duration: 1 }}
+              className="text-[10px] uppercase font-bold text-gray-400 block"
             >
               {category || 'Curated Collections'}
             </motion.span>
-            <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">
               {searchQuery ? `Exploring "${searchQuery}"` : category ? `${category}s` : 'The Collection'}
-            </h1>
+            </motion.h1>
             <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-base font-sans text-secondary/60 leading-relaxed max-w-xl"
+              variants={fadeInUp}
+              className="text-lg font-serif italic text-secondary/60 leading-relaxed max-w-xl mt-6"
             >
               Discover artisanal pieces that blend traditional heritage with modern silhouettes, each crafted with conscious intent.
             </motion.p>

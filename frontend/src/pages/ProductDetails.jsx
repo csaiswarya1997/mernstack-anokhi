@@ -17,13 +17,13 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState(null);
   const [mainImage, setMainImage] = useState('');
-  
+
   // Interactive States
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  
+
   // Review form states
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewName, setReviewName] = useState('');
@@ -37,7 +37,7 @@ const ProductDetails = () => {
         const data = await res.json();
         setProduct(data);
         setMainImage(data.image);
-        
+
         if (userInfo) {
           const wishRes = await fetch(`${API_URL}/api/users/wishlist`, {
             headers: { 'Authorization': `Bearer ${userInfo.token}` }
@@ -77,8 +77,8 @@ const ProductDetails = () => {
   const toggleWishlist = async () => {
     if (!userInfo) {
       showConfirm(
-        'Patron Account Required', 
-        'Please sign in to your patron account to save pieces to your curated collection.', 
+        'Patron Account Required',
+        'Please sign in to your patron account to save pieces to your curated collection.',
         () => navigate('/login', { state: { from: { pathname: window.location.pathname } } }),
         'Login',
         'Not Now'
@@ -99,7 +99,7 @@ const ProductDetails = () => {
       } else {
         const res = await fetch(`${API_URL}/api/users/wishlist`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${userInfo.token}`
           },
@@ -157,18 +157,18 @@ const ProductDetails = () => {
   );
 
   if (!product) return (
-    <div className="text-center py-24">
+    <div className="text-center py-16">
       <h2 className="text-3xl font-serif text-primary mb-6">Masterpiece not found</h2>
       <button onClick={() => navigate('/shop')} className="text-primaryContainer font-bold hover:underline">Return to Collection</button>
     </div>
   );
 
   const allImages = [
-    product.image, 
-    ...(Array.isArray(product.images) ? product.images : []), 
+    product.image,
+    ...(Array.isArray(product.images) ? product.images : []),
     ...(Array.isArray(product.gallery) ? product.gallery : [])
   ].filter(Boolean);
-  
+
   const uniqueImages = [...new Set(allImages)];
   const sizes = ['S', 'M', 'L', 'XL'];
 
@@ -186,8 +186,8 @@ const ProductDetails = () => {
 
   const fadeInUp = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
     }
@@ -212,7 +212,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
@@ -221,13 +221,13 @@ const ProductDetails = () => {
       {/* LIGHTBOX OVERLAY */}
       <AnimatePresence>
         {isLightboxOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center"
           >
-            <motion.button 
+            <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               onClick={() => setIsLightboxOpen(false)}
@@ -235,15 +235,15 @@ const ProductDetails = () => {
             >
               <X size={32} />
             </motion.button>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="relative w-full max-w-5xl md:h-[85vh] flex items-center justify-center p-4"
             >
-              <img 
-                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`} 
-                alt="Preview" 
+              <img
+                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`}
+                alt="Preview"
                 className="max-w-full max-h-full object-contain shadow-2xl border border-white/10"
               />
               {uniqueImages.length > 1 && (
@@ -264,26 +264,26 @@ const ProductDetails = () => {
       {/* SIZE CHART MODAL */}
       <AnimatePresence>
         {isSizeChartOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ y: 50, opacity: 0, scale: 0.95 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 50, opacity: 0, scale: 0.95 }}
               className="bg-white max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border border-gray-100 no-scrollbar"
             >
               <div className="relative p-6 md:p-12">
-                <button 
+                <button
                   onClick={() => setIsSizeChartOpen(false)}
                   className="absolute top-6 right-6 md:top-8 md:right-8 text-gray-400 hover:text-primary transition-colors p-2"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
                 </button>
-                
+
                 <div className="space-y-6 md:space-y-8">
                   <div className="text-center space-y-2 pt-4 md:pt-0">
                     <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-primaryContainer">Maison Zaloura</span>
@@ -306,9 +306,9 @@ const ProductDetails = () => {
                         {['S', 'M', 'L', 'XL'].map((s, idx) => (
                           <tr key={s} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group">
                             <td className="py-4 md:py-6 font-bold group-hover:text-primary transition-colors">{s}</td>
-                            <td className="py-4 md:py-6">{34 + idx*2} - {36 + idx*2}</td>
-                            <td className="py-4 md:py-6">{28 + idx*2} - {30 + idx*2}</td>
-                            <td className="py-4 md:py-6">{36 + idx*2} - {38 + idx*2}</td>
+                            <td className="py-4 md:py-6">{34 + idx * 2} - {36 + idx * 2}</td>
+                            <td className="py-4 md:py-6">{28 + idx * 2} - {30 + idx * 2}</td>
+                            <td className="py-4 md:py-6">{36 + idx * 2} - {38 + idx * 2}</td>
                             <td className="py-4 md:py-6">{44 + idx}</td>
                           </tr>
                         ))}
@@ -325,7 +325,7 @@ const ProductDetails = () => {
                     </div>
                   </div>
 
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setIsSizeChartOpen(false)}
@@ -342,23 +342,23 @@ const ProductDetails = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-16 relative items-start">
         {/* GALLERY SYSTEM */}
-        <motion.div 
+        <motion.div
           variants={fadeInUp}
           className="lg:sticky lg:top-32 lg:h-fit space-y-8 flex flex-col items-center lg:items-start"
         >
-          <div 
+          <div
             onClick={() => setIsLightboxOpen(true)}
             className="w-full max-w-[500px] border-4 border-black aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group"
           >
             <AnimatePresence mode="wait">
-              <motion.img 
+              <motion.img
                 key={mainImage}
                 variants={imageVariants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`} 
-                className="w-full h-full object-cover" 
+                src={mainImage?.startsWith('http') ? mainImage : `${API_URL}${mainImage}`}
+                className="w-full h-full object-cover"
               />
             </AnimatePresence>
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
@@ -369,12 +369,12 @@ const ProductDetails = () => {
           </div>
 
           {uniqueImages.length > 1 && (
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               className="flex flex-wrap gap-4 w-full max-w-[500px]"
             >
               {uniqueImages.map((img, index) => (
-                <motion.button 
+                <motion.button
                   variants={fadeInUp}
                   key={index}
                   whileHover={{ y: -4 }}
@@ -398,18 +398,18 @@ const ProductDetails = () => {
                 REF: #{product.productCode || 'REF-ZALOURA'}
               </span>
               <div className="flex gap-4">
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.8 }}
-                  onClick={toggleWishlist} 
+                  onClick={toggleWishlist}
                   className={`transition-all ${isWishlisted ? 'text-primary' : 'text-gray-400'}`}
                 >
                   <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
                 </motion.button>
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.8 }}
-                  onClick={handleShare} 
+                  onClick={handleShare}
                   className="text-gray-400 hover:text-primary"
                 >
                   <Share2 size={20} />
@@ -429,7 +429,7 @@ const ProductDetails = () => {
           <div className="space-y-6 pt-4 border-t border-gray-100">
             <div className="flex justify-between items-center">
               <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400">Select Size</h3>
-              <button 
+              <button
                 onClick={() => setIsSizeChartOpen(true)}
                 className="text-[10px] uppercase tracking-widest font-bold text-primaryContainer border-b border-primaryContainer/20 pb-0.5 hover:text-primary hover:border-primary transition-all"
               >
@@ -476,20 +476,20 @@ const ProductDetails = () => {
               <AlignLeft size={14} /> The Piece
             </div>
             <div className="bg-gray-50/50 p-8 border border-gray-100 relative overflow-hidden group">
-               <motion.div 
-                 initial={{ height: 0 }}
-                 whileInView={{ height: "100%" }}
-                 className="absolute top-0 left-0 w-1 bg-primaryContainer"
-               ></motion.div>
-               <p className="text-secondary font-sans leading-relaxed text-sm opacity-90 whitespace-pre-line italic">
+              <motion.div
+                initial={{ height: 0 }}
+                whileInView={{ height: "100%" }}
+                className="absolute top-0 left-0 w-1 bg-primaryContainer"
+              ></motion.div>
+              <p className="text-secondary font-sans leading-relaxed text-sm opacity-90 whitespace-pre-line italic">
                 {product.description}
-               </p>
+              </p>
             </div>
           </div>
 
           {/* Trust Info */}
           <div className="space-y-6 pt-10 border-t border-gray-100">
-            <motion.div 
+            <motion.div
               whileHover={{ x: 10 }}
               className="bg-primary/5 p-5 rounded-2xl flex items-center gap-5 border border-primaryContainer/5 transition-colors hover:bg-primary/10"
             >
@@ -506,7 +506,7 @@ const ProductDetails = () => {
       </div>
 
       {/* Reviews */}
-      <motion.section 
+      <motion.section
         variants={fadeInUp}
         whileInView="visible"
         initial="hidden"
@@ -517,19 +517,19 @@ const ProductDetails = () => {
           <div>
             <h2 className="text-4xl font-serif text-primary mb-8 italic">Client Experience</h2>
             {!showReviewForm ? (
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setShowReviewForm(true)} 
+                onClick={() => setShowReviewForm(true)}
                 className="w-full py-5 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3"
               >
                 <MessageSquare size={16} /> Write a Review
               </motion.button>
             ) : (
-              <motion.form 
+              <motion.form
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                onSubmit={handleReviewSubmit} 
+                onSubmit={handleReviewSubmit}
                 className="space-y-5 bg-white p-8 rounded-3xl border border-gray-100 shadow-2xl"
               >
                 <div className="flex gap-3">
@@ -556,7 +556,7 @@ const ProductDetails = () => {
             ) : (
               <div className="space-y-8">
                 {product.reviews.map((review, i) => (
-                  <motion.div 
+                  <motion.div
                     key={i}
                     variants={fadeInUp}
                     whileHover={{ y: -5 }}
@@ -579,7 +579,7 @@ const ProductDetails = () => {
 
       {/* RELATED PRODUCTS SECTION */}
       {relatedProducts.length > 0 && (
-        <motion.section 
+        <motion.section
           variants={fadeInUp}
           whileInView="visible"
           initial="hidden"
@@ -598,7 +598,7 @@ const ProductDetails = () => {
             </button>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8"
           >

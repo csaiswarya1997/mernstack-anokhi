@@ -22,7 +22,13 @@ const Shipping = () => {
     fetchSettings();
   }, []);
 
-  const containerVariants = {
+  // Animation Variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -33,13 +39,9 @@ const Shipping = () => {
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-    }
+  const itemSlideIn = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const iconVariants = {
@@ -54,48 +56,43 @@ const Shipping = () => {
     <motion.div
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
       className="min-h-screen bg-white"
     >
       {/* Hero Section */}
       <motion.div
-        variants={itemVariants}
-        className="pt-8 md:pt-12 pb-16 bg-gray-50/50 border-b border-gray-100"
+        variants={fadeInUp}
+        className="pt-8 md:pt-12 pb-12 bg-gray-50/50 border-b border-gray-100"
       >
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block mb-4"
+            initial={{ opacity: 0, letterSpacing: "0.2em" }}
+            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ duration: 1 }}
+            className="text-[10px] uppercase font-bold text-gray-400 block mb-4"
           >
             Concierge Services
           </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-5xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic"
-          >
+          <h1 className="text-5xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">
             L'Expédition
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mt-8 text-secondary/60 font-serif italic text-xl max-w-2xl mx-auto leading-relaxed"
-          >
+          </h1>
+          <p className="mt-8 text-secondary/60 font-serif italic text-xl max-w-2xl mx-auto leading-relaxed">
             Everything you need to know about receiving your handcrafted Zaloura pieces.
-          </motion.p>
+          </p>
         </div>
       </motion.div>
 
       <div className="max-w-[1280px] mx-auto px-4 md:px-16 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-24"
+        >
 
           {/* Shipping Section */}
           <div className="space-y-12">
-            <motion.div variants={itemVariants} className="flex items-start gap-8">
+            <motion.div variants={itemSlideIn} className="flex items-start gap-8">
               <motion.div
                 whileHover="hover"
                 variants={iconVariants}
@@ -122,7 +119,7 @@ const Shipping = () => {
               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex items-start gap-8">
+            <motion.div variants={itemSlideIn} className="flex items-start gap-8">
               <motion.div
                 whileHover="hover"
                 variants={iconVariants}
@@ -141,7 +138,7 @@ const Shipping = () => {
 
           {/* Returns Section */}
           <div className="space-y-12">
-            <motion.div variants={itemVariants} className="flex items-start gap-8">
+            <motion.div variants={itemSlideIn} className="flex items-start gap-8">
               <motion.div
                 whileHover="hover"
                 variants={iconVariants}
@@ -168,7 +165,7 @@ const Shipping = () => {
               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex items-start gap-8">
+            <motion.div variants={itemSlideIn} className="flex items-start gap-8">
               <motion.div
                 whileHover="hover"
                 variants={iconVariants}
@@ -185,7 +182,7 @@ const Shipping = () => {
             </motion.div>
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

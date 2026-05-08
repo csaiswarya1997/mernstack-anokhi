@@ -18,29 +18,38 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import API_URL from '../config';
 
-const Logo = ({ className = "h-8" }) => (
-  <div className={`flex items-center gap-3 ${className}`}>
-    <div className="relative w-10 h-10 flex items-center justify-center">
-      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
-        <path 
-          d="M20 20 C20 10 80 10 80 20 L80 50 C80 80 50 90 50 90 C50 90 20 80 20 50 Z" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="3"
+const Logo = ({ className = "h-8", textColor = "text-primary" }) => (
+  <div className={`flex items-center gap-2 ${className}`}>
+    <div className="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full drop-shadow-sm">
+        {/* Main Shield Shape */}
+        <path
+          d="M20 15 H80 V55 C80 80 50 90 50 90 C50 90 20 80 20 55 Z"
+          fill="#B68D40"
         />
-        <path 
-          d="M25 25 C25 18 75 18 75 25 L75 50 C75 75 50 83 50 83 C50 83 25 75 25 50 Z" 
-          fill="currentColor" 
-          fillOpacity="0.1" 
-          stroke="currentColor" 
-          strokeWidth="1"
+        {/* Inner Border */}
+        <path
+          d="M25 20 H75 V55 C75 75 50 83 50 83 C50 83 25 75 25 55 Z"
+          fill="none"
+          stroke="white"
+          strokeWidth="1.5"
+          opacity="0.8"
         />
+        {/* The Z */}
+        <text
+          x="50"
+          y="62"
+          textAnchor="middle"
+          fill="white"
+          fontFamily="serif"
+          fontSize="42"
+          fontWeight="bold"
+        >Z</text>
       </svg>
-      <span className="text-xl font-serif font-bold text-primary relative top-[-2px]">Z</span>
     </div>
     <div className="flex flex-col leading-none">
-      <span className="text-xl font-serif font-bold tracking-tight text-primary">ZALOURA</span>
-      <span className="text-[7px] font-sans font-bold tracking-[0.3em] text-secondary mt-0.5">WEAR ELEGANCE</span>
+      <span className={`text-2xl font-serif font-bold tracking-tight ${textColor}`}>ZALOURA</span>
+      <span className={`text-[8px] font-sans font-bold tracking-[0.4em] mt-1.5 ${textColor} opacity-80`}>WEAR ELEGANCE</span>
     </div>
   </div>
 );
@@ -228,49 +237,84 @@ const Layout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-secondary text-white py-20 border-t border-primary/10">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-16">
-          <div className="space-y-8">
-            <Logo className="h-10 text-white" />
-            <p className="text-white/50 text-sm leading-relaxed font-serif italic">
-              Crafting timeless elegance and sustainable luxury for the modern woman. Discover our artisanal collection.
-            </p>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Atelier</h4>
-            <ul className="space-y-5 text-sm text-white/60">
-              <li><Link to="/shop" className="hover:text-primary transition-colors">Shop All</Link></li>
-              <li><Link to="/category/Kurti" className="hover:text-primary transition-colors">Kurtis</Link></li>
-              <li><Link to="/category/Salwar" className="hover:text-primary transition-colors">Salwars</Link></li>
-              <li><Link to="/bespoke" className="hover:text-primary transition-colors">Bespoke Service</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Maison</h4>
-            <ul className="space-y-5 text-sm text-white/60">
-              <li><Link to="/sustainability" className="hover:text-primary transition-colors">Sustainability</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link to="/shipping" className="hover:text-primary transition-colors">Shipping & Returns</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-primary">Connect</h4>
-            <div className="flex flex-col gap-5 text-sm text-white/60">
-              <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-3">
-                <Instagram size={16} /> Instagram
-              </a>
-              <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-3">
-                <MessageCircle size={16} /> WhatsApp
-              </a>
-              <a href={`mailto:${settings?.email}`} className="hover:text-primary transition-colors flex items-center gap-3">
-                <Mail size={16} /> Email Concierge
-              </a>
+      {/* Compact Premium Footer */}
+      <footer className="bg-secondary text-white py-12 border-t border-white/10">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/5 pb-12">
+
+            {/* Logo & Identity */}
+            <div className="space-y-6">
+              <Logo className="h-8" textColor="text-white" />
+              <p className="text-[11px] text-white/40 font-serif italic leading-relaxed max-w-xs">
+                Handcrafted elegance for the modern woman. Bridging heritage textile arts with contemporary luxury.
+              </p>
+              <div className="flex items-center gap-4">
+                <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-primary transition-colors">
+                  <Instagram size={16} />
+                </a>
+                <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-green-400 transition-colors">
+                  <MessageCircle size={16} />
+                </a>
+                <a href={`mailto:${settings?.email}`} className="text-white/30 hover:text-primary transition-colors">
+                  <Mail size={16} />
+                </a>
+              </div>
             </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Atelier</h4>
+              <nav className="flex flex-col gap-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+                <Link to="/shop" className="hover:text-white transition-colors w-fit">The Collection</Link>
+                <Link to="/category/Kurti" className="hover:text-white transition-colors w-fit">Kurtis</Link>
+                <Link to="/category/Salwar" className="hover:text-white transition-colors w-fit">Salwars</Link>
+                <Link to="/bespoke" className="hover:text-white transition-colors w-fit">Bespoke</Link>
+              </nav>
+            </div>
+
+            {/* Support Links */}
+            <div>
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Maison</h4>
+              <nav className="flex flex-col gap-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+                <Link to="/sustainability" className="hover:text-white transition-colors w-fit">Sustainability</Link>
+                <Link to="/contact" className="hover:text-white transition-colors w-fit">Contact Us</Link>
+                <Link to="/shipping" className="hover:text-white transition-colors w-fit">Shipping & Returns</Link>
+                {/* <Link to="/faq" className="hover:text-white transition-colors w-fit">FAQ</Link> */}
+              </nav>
+            </div>
+
+            {/* Contact Details */}
+            <div>
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Concierge</h4>
+              <div className="space-y-4 text-[11px] font-bold tracking-widest text-white/40">
+                <div className="group">
+                  <p className="text-[8px] text-white/20 mb-1">PHONE</p>
+                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.phone || '+91 98765 43210'}</p>
+                </div>
+                <div className="group">
+                  <p className="text-[8px] text-white/20 mb-1">EMAIL</p>
+                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.email || 'concierge@zaloura.com'}</p>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[9px] uppercase tracking-[0.4em] text-white/30">© 2024 Zaloura Studio. All Rights Reserved.</p>
-          <p className="text-[9px] uppercase tracking-[0.4em] text-white/30">Handcrafted in Jaipur</p>
+
+          {/* Bottom strip */}
+          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-8 text-[9px] uppercase tracking-[0.3em] font-bold text-white/20">
+              <p>© 2024 Zaloura Studio</p>
+              <span className="hidden md:block w-1 h-1 rounded-full bg-white/10" />
+              <p>Handcrafted in India</p>
+            </div>
+
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-[9px] uppercase tracking-[0.4em] font-bold text-primary hover:text-white transition-colors"
+            >
+              Back to Top ↑
+            </button>
+          </div>
         </div>
       </footer>
     </div>

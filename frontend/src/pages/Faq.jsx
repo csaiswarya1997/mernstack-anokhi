@@ -44,14 +44,14 @@ const Faq = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-24">
+      <div className="max-w-3xl mx-auto px-4 py-16">
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="border border-gray-100 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-gray-100/50"
             >
-              <button 
+              <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full flex items-center justify-between p-8 text-left bg-white transition-colors hover:bg-gray-50/50"
               >
@@ -60,11 +60,10 @@ const Faq = () => {
                   {openIndex === index ? <Minus size={16} /> : <Plus size={16} />}
                 </div>
               </button>
-              
-              <div 
-                className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                  openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                }`}
+
+              <div
+                className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
               >
                 <div className="p-8 pt-0 text-secondary/70 font-sans leading-relaxed border-t border-gray-50">
                   {faq.answer}
@@ -80,8 +79,8 @@ const Faq = () => {
           <p className="text-white/60 text-sm mb-10 max-w-md mx-auto">
             Our concierge team is available to assist you with any specific inquiries you may have.
           </p>
-          <a 
-            href="/contact" 
+          <a
+            href="/contact"
             className="inline-block bg-white text-primary px-10 py-4 rounded-2xl font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-champagne transition-colors"
           >
             Contact Concierge

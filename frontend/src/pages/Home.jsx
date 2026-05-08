@@ -91,9 +91,9 @@ const Home = () => {
       </section>
 
       {/* Featured Collections / Categories */}
-      <section className="py-24 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="text-center mb-20 reveal-up">
+          <div className="text-center mb-12 reveal-up">
             <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6 italic">Les Catégories</h2>
             <div className="w-24 h-[1px] bg-primary/20 mx-auto"></div>
           </div>
@@ -129,12 +129,12 @@ const Home = () => {
       </section>
 
       {/* New Arrivals with Slider feel */}
-      <section className="pb-22 bg-secondaryContainer/30">
+      <section className="py-12 bg-secondaryContainer/30">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-20 gap-8 reveal-up">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 reveal-up">
             <div className="text-center md:text-left">
               <h2 className="text-4xl font-serif text-primary mb-4 italic">Nouvelles Arrivées</h2>
-              <p className="text-secondary/60 font-sans italic">The latest treasures from our Jaipur atelier.</p>
+              <p className="text-secondary/60 font-sans italic">The latest treasures from our India atelier.</p>
             </div>
             <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primaryContainer transition-colors">
               Discover All <div className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><ArrowRight size={14} /></div>
@@ -173,7 +173,7 @@ const Home = () => {
             <h2 className="text-4xl md:text-6xl font-serif text-white mb-12 leading-tight italic">
               "Every thread tells a story of <span className="text-champagne">dedication</span>, every pattern a piece of <span className="text-champagne">history</span>."
             </h2>
-            <p className="text-white/60 font-sans text-lg mb-16 leading-relaxed max-w-2xl mx-auto italic">
+            <p className="text-white/60 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic">
               We bridge the gap between ancient textile arts and the modern woman's lifestyle. Our pieces are not just garments; they are wearable art.
             </p>
             <Link to="/sustainability" className="inline-block border-b border-champagne text-champagne px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all">
@@ -184,7 +184,7 @@ const Home = () => {
       </section>
 
       {/* Trust Badges / Values */}
-      <section className="py-24 bg-white border-b border-gray-100">
+      <section className="py-12 bg-white border-b border-gray-100">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <div className="text-center reveal-up">
@@ -192,7 +192,7 @@ const Home = () => {
                 <Star className="text-primaryContainer" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Artisanal Quality</h4>
-              <p className="text-xs text-secondary/50 font-sans leading-relaxed">Each piece is handcrafted by master artisans in Jaipur using traditional techniques.</p>
+              <p className="text-xs text-secondary/50 font-sans leading-relaxed">Each piece is handcrafted by master artisans in India using traditional techniques.</p>
             </div>
             <div className="text-center reveal-up transition-delay-200">
               <div className="w-16 h-16 bg-secondaryContainer/50 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -213,11 +213,11 @@ const Home = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-32 bg-secondary border-t border-white/5">
+      <section className="py-12 bg-secondary border-t border-white/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center reveal-scale">
           <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-primary block mb-8">Le Journal de Zaloura</span>
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 italic">Join the Inner Circle</h2>
-          <p className="text-white/60 font-serif italic text-lg mb-16 max-w-xl mx-auto">
+          <p className="text-white/60 font-serif italic text-lg mb-12 max-w-xl mx-auto">
             Receive exclusive updates on new collections, private sales, and the stories behind our craft.
           </p>
           <form className="max-w-md mx-auto flex gap-4">

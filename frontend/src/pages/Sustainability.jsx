@@ -27,13 +27,13 @@ const Sustainability = () => {
   return (
     <div className="max-w-[1280px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24">
       {/* Header */}
-      <motion.div 
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="max-w-3xl mx-auto text-center mb-20"
+        className="max-w-3xl mx-auto text-center mb-16"
       >
-        <motion.span 
+        <motion.span
           initial={{ opacity: 0, letterSpacing: "0.2em" }}
           animate={{ opacity: 1, letterSpacing: "0.4em" }}
           transition={{ duration: 1 }}
@@ -42,7 +42,7 @@ const Sustainability = () => {
           Our Commitment
         </motion.span>
         <h1 className="text-5xl md:text-6xl font-serif text-primary mb-6 italic">Sustainability &amp; Ethics</h1>
-        <motion.div 
+        <motion.div
           initial={{ width: 0 }}
           animate={{ width: 64 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -54,7 +54,7 @@ const Sustainability = () => {
       </motion.div>
 
       {/* Artisan Image + Ethical Sourcing Content */}
-      <motion.div 
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -71,7 +71,7 @@ const Sustainability = () => {
           />
           <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-700" />
         </motion.div>
-        
+
         <motion.div variants={fadeInUp} className="space-y-6">
           <h2 className="text-3xl font-serif text-primary mb-6 italic">Ethical Sourcing</h2>
           <p className="text-secondary/70 font-sans leading-relaxed">
@@ -80,7 +80,7 @@ const Sustainability = () => {
           <p className="text-secondary/70 font-sans leading-relaxed">
             By supporting traditional craft techniques, we help preserve cultural heritage while empowering local communities.
           </p>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}

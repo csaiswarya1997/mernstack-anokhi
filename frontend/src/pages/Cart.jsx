@@ -44,8 +44,15 @@ const Cart = () => {
       className="max-w-[1440px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24 min-h-[70vh]"
     >
       <motion.div variants={fadeInUp} className="mb-8">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 block mb-2">Review Your Selection</span>
-        <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tight">Shopping Bag</h1>
+        <motion.span 
+          initial={{ opacity: 0, letterSpacing: "0.1em" }}
+          animate={{ opacity: 1, letterSpacing: "0.3em" }}
+          transition={{ duration: 1 }}
+          className="text-[10px] uppercase font-bold text-gray-400 block mb-2"
+        >
+          Review Your Selection
+        </motion.span>
+        <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tight italic">Shopping Bag</h1>
       </motion.div>
 
       <AnimatePresence mode="wait">

@@ -11,7 +11,7 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [showAddressConfirm, setShowAddressConfirm] = useState(false);
-  
+
   const [shippingInfo, setShippingInfo] = useState({
     firstName: '',
     lastName: '',
@@ -118,7 +118,7 @@ const Checkout = () => {
 
   if (orderPlaced) {
     return (
-      <div className="max-w-[1280px] mx-auto px-4 py-24 text-center animate-fade-in">
+      <div className="max-w-[1280px] mx-auto px-4 py-16 text-center animate-fade-in">
         <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
           <CheckCircle2 size={48} />
         </div>
@@ -126,8 +126,8 @@ const Checkout = () => {
         <p className="text-secondary/60 font-sans mb-12 max-w-sm mx-auto leading-relaxed">
           Your order has been placed successfully. A confirmation email has been sent to <strong>{shippingInfo.email}</strong>.
         </p>
-        <button 
-          onClick={() => navigate('/')} 
+        <button
+          onClick={() => navigate('/')}
           className="bg-primary text-white px-12 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-2xl hover:bg-primaryContainer hover:-translate-y-1 transition-all"
         >
           Explore More Pieces
@@ -158,7 +158,7 @@ const Checkout = () => {
             <form onSubmit={handleNextStep} className="space-y-12 animate-fade-in">
               <div className="space-y-8">
                 <h2 className="text-3xl font-serif text-primary tracking-tight">Shipping Information</h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase font-bold text-gray-400">First Name *</label>
@@ -276,7 +276,7 @@ const Checkout = () => {
               </div>
 
               <div className="flex flex-col gap-4 pt-8">
-                <button 
+                <button
                   onClick={handlePlaceOrder}
                   disabled={isSubmitting}
                   className="w-full bg-primaryContainer text-white py-6 rounded-xl font-bold uppercase tracking-[0.3em] text-xs shadow-2xl hover:bg-primary hover:-translate-y-1 active:translate-y-0 transition-all disabled:opacity-50 flex items-center justify-center gap-3"
@@ -303,7 +303,7 @@ const Checkout = () => {
         <div className="lg:col-span-4">
           <div className="bg-white border border-gray-100 rounded-3xl p-8 sticky top-32 space-y-8 shadow-sm">
             <h2 className="text-2xl font-serif text-primary border-b border-gray-50 pb-4">Order Summary</h2>
-            
+
             <div className="space-y-6 max-h-[35vh] overflow-y-auto pr-4 scrollbar-hide">
               {cartItems.map(item => (
                 <div key={item.cartItemId} className="flex gap-4">
@@ -352,48 +352,48 @@ const Checkout = () => {
           </div>
         </div>
         {/* Address Confirmation Modal */}
-      {showAddressConfirm && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/20 backdrop-blur-md animate-fade-in">
-          <div className="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden border border-champagne/30">
-            <div className="p-8 space-y-6">
-              <div className="flex items-center gap-4 text-primaryContainer">
-                <div className="w-12 h-12 bg-primaryContainer/10 rounded-2xl flex items-center justify-center">
-                  <MapPin size={24} />
+        {showAddressConfirm && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/20 backdrop-blur-md animate-fade-in">
+            <div className="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden border border-champagne/30">
+              <div className="p-8 space-y-6">
+                <div className="flex items-center gap-4 text-primaryContainer">
+                  <div className="w-12 h-12 bg-primaryContainer/10 rounded-2xl flex items-center justify-center">
+                    <MapPin size={24} />
+                  </div>
+                  <h3 className="text-2xl font-serif">Confirm Delivery Address</h3>
                 </div>
-                <h3 className="text-2xl font-serif">Confirm Delivery Address</h3>
-              </div>
-              
-              <div className="bg-surface/50 p-6 rounded-2xl border border-champagne/20 space-y-3">
-                <p className="text-primary font-bold text-lg">{shippingInfo.firstName} {shippingInfo.lastName}</p>
-                <div className="space-y-1 text-secondary text-sm font-sans leading-relaxed">
-                  <p>{shippingInfo.address}</p>
-                  <p>{shippingInfo.city}, {shippingInfo.state} - {shippingInfo.postalCode}</p>
-                  <p className="font-bold text-[10px] uppercase tracking-widest text-secondary/40 pt-2">Contact: {shippingInfo.phone}</p>
-                </div>
-              </div>
 
-              <div className="flex flex-col gap-3">
-                <button 
-                  onClick={confirmAddressAndProceed}
-                  className="w-full bg-primaryContainer text-white py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-primary transition-colors"
-                >
-                  Confirm & Proceed to Payment
-                </button>
-                <button 
-                  onClick={() => setShowAddressConfirm(false)}
-                  className="w-full bg-white text-secondary py-4 rounded-xl font-bold uppercase tracking-widest text-xs border border-gray-100 hover:bg-gray-50 transition-colors"
-                >
-                  Edit Address
-                </button>
+                <div className="bg-surface/50 p-6 rounded-2xl border border-champagne/20 space-y-3">
+                  <p className="text-primary font-bold text-lg">{shippingInfo.firstName} {shippingInfo.lastName}</p>
+                  <div className="space-y-1 text-secondary text-sm font-sans leading-relaxed">
+                    <p>{shippingInfo.address}</p>
+                    <p>{shippingInfo.city}, {shippingInfo.state} - {shippingInfo.postalCode}</p>
+                    <p className="font-bold text-[10px] uppercase tracking-widest text-secondary/40 pt-2">Contact: {shippingInfo.phone}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={confirmAddressAndProceed}
+                    className="w-full bg-primaryContainer text-white py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-primary transition-colors"
+                  >
+                    Confirm & Proceed to Payment
+                  </button>
+                  <button
+                    onClick={() => setShowAddressConfirm(false)}
+                    className="w-full bg-white text-secondary py-4 rounded-xl font-bold uppercase tracking-widest text-xs border border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
+                    Edit Address
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="bg-surface py-3 px-8 text-center border-t border-champagne/10">
-              <p className="text-[9px] uppercase tracking-tighter text-secondary/40 font-bold">Please ensure all details are correct for priority shipping</p>
+              <div className="bg-surface py-3 px-8 text-center border-t border-champagne/10">
+                <p className="text-[9px] uppercase tracking-tighter text-secondary/40 font-bold">Please ensure all details are correct for priority shipping</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </div>
   );
 };
