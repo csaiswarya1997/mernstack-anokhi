@@ -75,7 +75,7 @@ const Sustainability = () => {
         <motion.div variants={fadeInUp} className="space-y-6">
           <h2 className="text-3xl font-serif text-primary mb-6 italic">Ethical Sourcing</h2>
           <p className="text-secondary/70 font-sans leading-relaxed">
-            At Anokhi, we believe true luxury means knowing exactly where and how your garments are made. We partner exclusively with artisans and small-scale manufacturers who provide fair wages and safe working conditions.
+            At Zaloura, we believe true luxury means knowing exactly where and how your garments are made. We partner exclusively with artisans and small-scale manufacturers who provide fair wages and safe working conditions.
           </p>
           <p className="text-secondary/70 font-sans leading-relaxed">
             By supporting traditional craft techniques, we help preserve cultural heritage while empowering local communities.

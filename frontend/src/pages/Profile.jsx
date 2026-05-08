@@ -203,7 +203,7 @@ const Profile = () => {
             transition={{ delay: 0.3 }}
             className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block"
           >
-            The Maison Anokhi Member Experience
+            The Maison Zaloura Member Experience
           </motion.span>
           <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">Bienvenue</h1>
         </div>

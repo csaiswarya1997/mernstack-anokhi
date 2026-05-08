@@ -75,7 +75,7 @@ const Layout = () => {
               <Phone size={10} className="text-white/40" /> {settings?.phone || '+91 98765 43210'}
             </a>
             <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={10} className="text-white/40" /> {settings?.email || 'concierge@anokhi.com'}
+              <Mail size={10} className="text-white/40" /> {settings?.email || 'concierge@zaloura.com'}
             </a>
           </div>
           <div className="flex items-center gap-8">
@@ -99,7 +99,7 @@ const Layout = () => {
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <Link to="/" className="text-2xl font-serif text-primary font-bold">Anokhi</Link>
+            <Link to="/" className="text-2xl font-serif text-primary font-bold">Zaloura</Link>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -205,7 +205,7 @@ const Layout = () => {
       <footer className="bg-primary text-white py-16">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
-            <h3 className="text-2xl font-serif mb-6">Anokhi</h3>
+            <h3 className="text-2xl font-serif mb-6">Zaloura</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Timeless elegance and sustainable craft. Discover our collection of handcrafted traditional wear.
             </p>
@@ -236,7 +236,7 @@ const Layout = () => {
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 mt-16 pt-8 border-t border-white/10 text-center">
-          <p className="text-[10px] uppercase tracking-widest text-gray-500">© 2024 Anokhi Studio. All Rights Reserved.</p>
+          <p className="text-[10px] uppercase tracking-widest text-gray-500">© 2024 Zaloura Studio. All Rights Reserved.</p>
         </div>
       </footer>
     </div>

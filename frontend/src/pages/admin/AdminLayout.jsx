@@ -41,7 +41,7 @@ const AdminLayout = () => {
         w-64 bg-primaryContainer text-white flex flex-col h-screen transition-transform duration-300 ease-in-out
       `}>
         <div className="p-6 border-b border-primary/30">
-          <h1 className="text-2xl font-serif tracking-tight font-medium text-champagne mb-1">Anokhi Admin</h1>
+          <h1 className="text-2xl font-serif tracking-tight font-medium text-champagne mb-1">Zaloura Admin</h1>
           <p className="text-xs text-champagne/80 font-sans tracking-widest uppercase">Portal</p>
         </div>
 

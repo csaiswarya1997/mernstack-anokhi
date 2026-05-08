@@ -286,7 +286,7 @@ const ProductDetails = () => {
                 
                 <div className="space-y-6 md:space-y-8">
                   <div className="text-center space-y-2 pt-4 md:pt-0">
-                    <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-primaryContainer">Maison Anokhi</span>
+                    <span className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-primaryContainer">Maison Zaloura</span>
                     <h2 className="text-2xl md:text-4xl font-serif text-primary italic">Sizing Master Chart</h2>
                     <p className="text-[8px] md:text-[10px] uppercase tracking-widest font-bold text-gray-400">All measurements are in inches</p>
                   </div>
@@ -395,7 +395,7 @@ const ProductDetails = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primaryContainer bg-primaryContainer/5 px-3 py-1 rounded-full border border-primaryContainer/10">
-                REF: #{product.productCode || 'REF-ANOKHI'}
+                REF: #{product.productCode || 'REF-ZALOURA'}
               </span>
               <div className="flex gap-4">
                 <motion.button 

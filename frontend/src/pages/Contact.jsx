@@ -87,7 +87,7 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: <MapPin className="text-primary" size={24} />,
-      label: 'Anokhi Address',
+      label: 'Zaloura Address',
       value: settings?.address || '123, Heritage Lane, Boutique District, Jaipur, Rajasthan 302001',
       link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.address || '')}`
     },
@@ -100,7 +100,7 @@ const Contact = () => {
     {
       icon: <Mail className="text-primary" size={24} />,
       label: 'Email Support',
-      value: settings?.email || 'concierge@anokhi.com',
+      value: settings?.email || 'concierge@zaloura.com',
       link: `mailto:${settings?.email}`
     },
     {
@@ -112,7 +112,7 @@ const Contact = () => {
     {
       icon: <Instagram className="text-primary" size={24} />,
       label: 'Instagram ID',
-      value: settings?.instagram || '@maison_anokhi',
+      value: settings?.instagram || '@maison_zaloura',
       link: `https://instagram.com/${settings?.instagram?.replace('@', '')}`
     }
   ];

@@ -18,7 +18,7 @@ const Faq = () => {
       answer: "We primarily work with high-quality natural fibers including handloom cotton, Chanderi silk, and organic linens. Our fabrics are sourced ethically from artisan clusters across India."
     },
     {
-      question: "How should I care for my Anokhi garments?",
+      question: "How should I care for my Zaloura garments?",
       answer: "Most of our handcrafted pieces require delicate care. We recommend dry cleaning for silks and hand-washing in cold water for cottons. Always air dry in shade to preserve the colors."
     },
     {

@@ -85,7 +85,7 @@ const Shipping = () => {
             transition={{ delay: 0.6 }}
             className="mt-8 text-secondary/60 font-serif italic text-xl max-w-2xl mx-auto leading-relaxed"
           >
-            Everything you need to know about receiving your handcrafted Anokhi pieces.
+            Everything you need to know about receiving your handcrafted Zaloura pieces.
           </motion.p>
         </div>
       </motion.div>
@@ -133,7 +133,7 @@ const Shipping = () => {
               <div>
                 <h2 className="text-2xl font-serif text-primary mb-4 italic">International Delivery</h2>
                 <div className="text-secondary/70 font-sans leading-relaxed whitespace-pre-wrap">
-                  {settings?.internationalPolicy || "Anokhi ships worldwide. Please note that international orders may be subject to customs duties and taxes upon arrival in the destination country, which are the responsibility of the recipient."}
+                  {settings?.internationalPolicy || "Zaloura ships worldwide. Please note that international orders may be subject to customs duties and taxes upon arrival in the destination country, which are the responsibility of the recipient."}
                 </div>
               </div>
             </motion.div>

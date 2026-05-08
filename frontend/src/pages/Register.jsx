@@ -46,7 +46,7 @@ const Register = () => {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full space-y-10">
         <div className="text-center space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block">The Maison Anokhi Member Experience</span>
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block">The Maison Zaloura Member Experience</span>
           <h1 className="text-5xl font-serif text-primary tracking-tighter italic">Join the Circle</h1>
           <p className="text-secondary/60 font-serif italic text-lg">Create your patron account</p>
         </div>
