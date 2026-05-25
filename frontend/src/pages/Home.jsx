@@ -90,6 +90,20 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Brand Introduction Banner for Google SEO */}
+      <section className="py-20 bg-accent/5 border-b border-primary/5 text-center reveal-up">
+        <div className="max-w-4xl mx-auto px-6">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary/60 block mb-4">Welcome to Zaloura</span>
+          <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6 italic">
+            Your Premium Fashion & Lifestyle Destination
+          </h2>
+          <p className="text-secondary/70 font-sans leading-relaxed text-sm md:text-base max-w-2xl mx-auto">
+            Zaloura is your online shopping destination for fashion, lifestyle, clothing, accessories, and more. 
+            We bridge the gap between ancient textile arts, handcrafted heritage craftsmanship, and modern contemporary elegance to deliver wearable art customized to your perfect fit.
+          </p>
+        </div>
+      </section>
+
       {/* Featured Collections / Categories */}
       <section className="py-12 bg-accent/20">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
