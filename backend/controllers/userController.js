@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Order from '../models/Order.js';
 import generateToken from '../utils/generateToken.js';
 
 // @desc    Auth user & get token
@@ -190,4 +191,76 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-export { authUser, registerUser, getUserProfile, updateUserProfile, addToWishlist, removeFromWishlist, getWishlist };
+// @desc    Get users who have purchased
+// @route   GET /api/users/purchased
+// @access  Private (Admin)
+const getPurchasedUsers = async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate('user', 'name email');
+    const usersMap = {};
+
+    orders.forEach(order => {
+      const email = order.shippingInfo?.email || order.user?.email || 'unknown@example.com';
+      const name = order.shippingInfo ? `${order.shippingInfo.firstName} ${order.shippingInfo.lastName}` : (order.user?.name || 'Guest');
+      const phone = order.shippingInfo?.phone || 'N/A';
+      const userId = order.user?._id || null;
+
+      if (!usersMap[email]) {
+        usersMap[email] = {
+          _id: userId,
+          name,
+          email,
+          phone,
+          totalOrders: 0,
+          totalSpent: 0,
+          lastOrderDate: order.createdAt,
+          orders: []
+        };
+      }
+
+      usersMap[email].totalOrders += 1;
+      usersMap[email].totalSpent += order.totalPrice;
+      if (new Date(order.createdAt) > new Date(usersMap[email].lastOrderDate)) {
+        usersMap[email].lastOrderDate = order.createdAt;
+      }
+      usersMap[email].orders.push({
+        orderId: order._id,
+        totalPrice: order.totalPrice,
+        status: order.status,
+        createdAt: order.createdAt
+      });
+    });
+
+    const purchasedUsers = Object.values(usersMap).sort((a, b) => new Date(b.lastOrderDate) - new Date(a.lastOrderDate));
+    res.json(purchasedUsers);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+// @desc    Reset a user's password (by admin)
+// @route   PUT /api/users/:id/reset-password
+// @access  Private (Admin)
+const resetUserPassword = async (req, res) => {
+  const { password } = req.body;
+
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (user) {
+      if (!password || password.trim() === '') {
+        return res.status(400).json({ message: 'Password is required' });
+      }
+      user.password = password;
+      await user.save();
+      res.json({ message: `Password reset successfully for ${user.name}` });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+export { authUser, registerUser, getUserProfile, updateUserProfile, addToWishlist, removeFromWishlist, getWishlist, getPurchasedUsers, resetUserPassword };
+

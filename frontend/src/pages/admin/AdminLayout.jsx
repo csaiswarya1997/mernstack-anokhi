@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Package, ShoppingBag, LayoutDashboard, LogOut, Clock, Truck, CreditCard, Mail, Settings } from 'lucide-react';
+import { Package, ShoppingBag, LayoutDashboard, LogOut, Clock, Truck, CreditCard, Mail, Settings, Users } from 'lucide-react';
 import AdminLogin from './AdminLogin';
 import { useAuth } from '../../context/AuthContext';
 
@@ -106,6 +106,14 @@ const AdminLayout = () => {
             <span className="font-sans text-sm font-semibold">Enquiries</span>
           </Link>
           <Link
+            to="/admin/users"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/users') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
+          >
+            <Users size={18} />
+            <span className="font-sans text-sm font-semibold">Customers</span>
+          </Link>
+          <Link
             to="/admin/settings"
             onClick={() => setIsMobileMenuOpen(false)}
             className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.pathname.includes('/admin/settings') ? 'bg-primary text-secondary shadow-md' : 'text-white/60 hover:text-primary hover:bg-white/5'}`}
@@ -142,7 +150,8 @@ const AdminLayout = () => {
                     location.pathname.includes('orders') ? 'All Orders' :
                       location.pathname.includes('bespoke') ? 'Bespoke Requests' :
                         location.pathname.includes('enquiries') ? 'Customer Enquiries' :
-                          location.pathname.includes('settings') ? 'Portal Settings' : 'Dashboard'}
+                          location.pathname.includes('users') ? 'Customer Ledger' :
+                            location.pathname.includes('settings') ? 'Portal Settings' : 'Dashboard'}
           </h2>
           <div className="hidden sm:flex items-center gap-4">
             <div className="w-8 h-8 rounded-full bg-champagne/30 flex items-center justify-center text-primary font-bold text-xs">A</div>

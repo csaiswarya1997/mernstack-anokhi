@@ -29,6 +29,7 @@ import AdminBespoke from './pages/admin/AdminBespoke';
 import AdminBespokeDetails from './pages/admin/AdminBespokeDetails';
 import AdminEnquiries from './pages/admin/AdminEnquiries';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminUsers from './pages/admin/AdminUsers';
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
               <Route path="bespoke" element={<AdminBespoke />} />
               <Route path="bespoke/:id" element={<AdminBespokeDetails />} />
               <Route path="enquiries" element={<AdminEnquiries />} />
+              <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Routes>

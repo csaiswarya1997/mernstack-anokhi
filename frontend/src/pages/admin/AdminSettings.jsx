@@ -11,7 +11,11 @@ import {
   Truck,
   RotateCcw,
   Globe,
-  ShieldCheck
+  ShieldCheck,
+  Key,
+  Eye,
+  EyeOff,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import API_URL from '../../config';
@@ -21,6 +25,13 @@ const AdminSettings = () => {
   const { userInfo } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  
+  // Security Form States
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminConfirmPassword, setAdminConfirmPassword] = useState('');
+  const [updatingPassword, setUpdatingPassword] = useState(false);
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     address: '',
     phone: '',
@@ -61,6 +72,47 @@ const AdminSettings = () => {
     };
     fetchSettings();
   }, []);
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (adminPassword !== adminConfirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+    if (adminPassword.length < 6) {
+      toast.error('Password must be at least 6 characters long');
+      return;
+    }
+
+    setUpdatingPassword(true);
+    try {
+      const res = await fetch(`${API_URL}/api/users/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userInfo?.token}`
+        },
+        body: JSON.stringify({ password: adminPassword })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        toast.success('Admin password updated successfully');
+        setAdminPassword('');
+        setAdminConfirmPassword('');
+        if (data.token) {
+          const updatedUserInfo = { ...userInfo, ...data };
+          localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+        }
+      } else {
+        toast.error(data.message || 'Failed to update password');
+      }
+    } catch (error) {
+      toast.error('An error occurred');
+    } finally {
+      setUpdatingPassword(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -314,6 +366,64 @@ const AdminSettings = () => {
           >
             {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
             Save Configurations
+          </button>
+        </div>
+      </form>
+
+      {/* Security and Password Management Card */}
+      <form onSubmit={handlePasswordSubmit} className="space-y-8 mt-12">
+        <div className="bg-white border border-gray-100 rounded-[2.5rem] p-8 md:p-12 shadow-sm space-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div className="md:col-span-4">
+              <h3 className="font-serif text-xl text-primary flex items-center gap-3">
+                <Lock size={20} className="text-primary/40" /> Portal Security
+              </h3>
+              <p className="text-xs text-secondary/40 mt-2">Change your administrative login credentials.</p>
+            </div>
+            <div className="md:col-span-8 space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2 block">New Password</label>
+                <div className="relative">
+                  <input 
+                    required
+                    type={showAdminPassword ? "text" : "password"}
+                    value={adminPassword}
+                    onChange={e => setAdminPassword(e.target.value)}
+                    className="w-full border-b border-gray-200 py-3 pr-10 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm text-primary"
+                    placeholder="Enter new password (min. 6 chars)"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAdminPassword(!showAdminPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+                  >
+                    {showAdminPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2 block">Confirm New Password</label>
+                <input 
+                  required
+                  type={showAdminPassword ? "text" : "password"}
+                  value={adminConfirmPassword}
+                  onChange={e => setAdminConfirmPassword(e.target.value)}
+                  className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm text-primary"
+                  placeholder="Re-enter new password"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <button 
+            type="submit"
+            disabled={updatingPassword}
+            className="bg-secondary text-white px-12 py-5 rounded-2xl font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl hover:bg-primary transition-all flex items-center gap-3 disabled:opacity-50"
+          >
+            {updatingPassword ? <Loader2 size={16} className="animate-spin" /> : <Key size={16} />}
+            Update Password
           </button>
         </div>
       </form>
