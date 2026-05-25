@@ -35,6 +35,8 @@ const createOrder = async (req, res) => {
         
         // Recalculate total countInStock
         product.countInStock = Object.values(product.stockBySize).reduce((sum, val) => sum + val, 0);
+        
+        await product.save();
       }
     }
 
