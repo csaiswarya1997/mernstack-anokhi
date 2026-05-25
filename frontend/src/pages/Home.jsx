@@ -92,14 +92,16 @@ const Home = () => {
 
       {/* Brand Introduction Banner for Google SEO */}
       <section className="py-20 bg-accent/5 border-b border-primary/5 text-center reveal-up">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-6 font-sans">
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary/60 block mb-4">Welcome to Zaloura</span>
           <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6 italic">
-            Your Premium Fashion & Lifestyle Destination
+            Ethnic Fashion, Kurtis, Salwars & Bespoke Atelier
           </h2>
-          <p className="text-secondary/70 font-sans leading-relaxed text-sm md:text-base max-w-2xl mx-auto">
-            Zaloura is your online shopping destination for fashion, lifestyle, clothing, accessories, and more. 
-            We bridge the gap between ancient textile arts, handcrafted heritage craftsmanship, and modern contemporary elegance to deliver wearable art customized to your perfect fit.
+          <p className="text-secondary/70 leading-relaxed text-sm md:text-base max-w-2xl mx-auto mb-4">
+            Zaloura is a Kerala-based ethnic fashion brand offering kurtis, salwars, bespoke outfits, and sustainable atelier collections.
+          </p>
+          <p className="text-secondary/60 leading-relaxed text-xs md:text-sm max-w-2xl mx-auto">
+            Shop elegant women’s wear from Zaloura, including handcrafted ethnic wear, custom tailoring, and occasion-ready styles.
           </p>
         </div>
       </section>

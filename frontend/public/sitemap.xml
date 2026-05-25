@@ -4,4 +4,24 @@
     <loc>https://zaloura.in/</loc>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://zaloura.in/kurtis</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/salwars</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/bespoke</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/sustainability</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/contact</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
