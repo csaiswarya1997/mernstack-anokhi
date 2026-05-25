@@ -2,7 +2,7 @@ import Product from '../models/Product.js';
 
 const generateProductCode = () => {
   const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let code = 'ANK-';
+  let code = 'ZAL-';
   for (let i = 0; i < 6; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
   }

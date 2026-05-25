@@ -11,9 +11,9 @@ const getSettings = asyncHandler(async (req, res) => {
     settings = await Settings.create({
       address: '123, Heritage Lane, Boutique District, Jaipur, Rajasthan 302001',
       phone: '+91 98765 43210',
-      email: 'concierge@anokhi.com',
+      email: 'concierge@zaloura.com',
       whatsapp: '+91 98765 43210',
-      instagram: '@maison_anokhi',
+      instagram: '@maison_zaloura',
       workingHours: '10 AM — 7 PM'
     });
   }

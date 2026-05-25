@@ -10,6 +10,7 @@ import bespokeRoutes from './routes/bespokeRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import User from './models/User.js';
 
 dotenv.config();
@@ -26,11 +27,11 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Anokhi API is running...');
+  res.send('Zaloura API is running...');
 });
 
 // Temporary Admin Setup Route
-app.get('/api/setup-admin-anokhi', async (req, res) => {
+app.get('/api/setup-admin-zaloura', async (req, res) => {
   try {
     const email = 'aiswaryadas@yopmail.com';
     const user = await User.findOne({ email });
@@ -61,6 +62,7 @@ app.use('/api/bespoke', bespokeRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

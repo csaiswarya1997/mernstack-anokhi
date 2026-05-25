@@ -102,7 +102,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => setCartItems([]);
 
-  const placeOrder = async (shippingInfo) => {
+  const placeOrder = async (shippingInfo, paymentResult = null) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -122,7 +122,9 @@ export const CartProvider = ({ children }) => {
             product: item._id || item.id
           })),
           shippingInfo,
-          totalPrice: cartTotal
+          totalPrice: cartTotal,
+          paymentResult,
+          isPaid: !!paymentResult
         })
       });
       
@@ -136,13 +138,59 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const createPaymentOrder = async (amount) => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (!userInfo || !userInfo.token) {
+        throw new Error('Please log in to complete your purchase.');
+      }
+
+      const res = await fetch(`${API_URL}/api/payment/order`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userInfo?.token}`
+        },
+        body: JSON.stringify({ amount })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Server failed to initiate payment order.');
+      }
+      return data;
+    } catch (err) {
+      console.error('Error creating payment order:', err);
+      showAlert('Payment Initialization Failed', err.message || 'Unable to initiate payment. Please try again.');
+      throw err; // Re-throw to be caught by Checkout.jsx
+    }
+  };
+
+  const verifyPayment = async (paymentData) => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const res = await fetch(`${API_URL}/api/payment/verify`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userInfo?.token}`
+        },
+        body: JSON.stringify(paymentData)
+      });
+      return res.ok;
+    } catch (err) {
+      console.error('Error verifying payment:', err);
+      return false;
+    }
+  };
+
   const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   return (
     <CartContext.Provider value={{ 
       cartItems, orders, addToCart, removeFromCart, updateQuantity, 
-      clearCart, placeOrder, cartTotal, cartCount,
+      clearCart, placeOrder, createPaymentOrder, verifyPayment, cartTotal, cartCount,
       showAlert, showConfirm
     }}>
       {children}

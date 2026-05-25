@@ -5,7 +5,7 @@ import { ChevronRight, CreditCard, Truck, CheckCircle2, ShieldCheck, MapPin, Pho
 import API_URL from '../config';
 
 const Checkout = () => {
-  const { cartItems, cartTotal, placeOrder, showAlert } = useCart();
+  const { cartItems, cartTotal, placeOrder, createPaymentOrder, verifyPayment, showAlert } = useCart();
   const navigate = useNavigate();
   const [step, setStep] = useState(1); // 1: Shipping, 2: Review & Payment
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,11 +108,69 @@ const Checkout = () => {
       showAlert('Empty Cart', 'Your bag is empty.');
       return;
     }
+
     setIsSubmitting(true);
-    const success = await placeOrder(shippingInfo);
-    setIsSubmitting(false);
-    if (success) {
-      setOrderPlaced(true);
+
+    try {
+      // 1. Create Razorpay Order
+      const { id: razorpayOrderId, amount, currency } = await createPaymentOrder(cartTotal);
+      
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: 'rzp_test_SoK0TG3aXCMfRT', // Should use env variable in production
+        amount: amount,
+        currency: currency,
+        name: 'Zaloura Studio',
+        description: 'Artisanal Luxury Purchase',
+        order_id: razorpayOrderId,
+        handler: async (response) => {
+          // 3. Verify Payment
+          const isVerified = await verifyPayment({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+          });
+
+          if (isVerified) {
+            // 4. Create Order in Database
+            const paymentResult = {
+              id: response.razorpay_payment_id,
+              status: 'COMPLETED',
+              update_time: new Date().toISOString(),
+              email_address: shippingInfo.email
+            };
+            
+            const success = await placeOrder(shippingInfo, paymentResult);
+            if (success) {
+              setOrderPlaced(true);
+            }
+          } else {
+            showAlert('Payment Verification Failed', 'We could not verify your payment. Please contact support.');
+          }
+        },
+        prefill: {
+          name: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
+          email: shippingInfo.email,
+          contact: shippingInfo.phone
+        },
+        theme: {
+          color: '#84624D'
+        },
+        modal: {
+          ondismiss: () => {
+            setIsSubmitting(false);
+          }
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error('Payment flow error:', error);
+      showAlert('Payment Error', error.message || 'There was a problem initiating your payment.');
+      setIsSubmitting(false);
     }
   };
 

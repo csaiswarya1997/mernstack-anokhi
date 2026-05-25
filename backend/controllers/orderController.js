@@ -1,6 +1,6 @@
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
-import { sendOrderEmail, sendOrderSMS } from '../utils/notificationService.js';
+import { sendOrderEmail, sendOrderSMS, sendOrderWhatsApp } from '../utils/notificationService.js';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -19,6 +19,8 @@ const createOrder = async (req, res) => {
       orderItems,
       shippingInfo,
       totalPrice,
+      paymentResult: req.body.paymentResult,
+      isPaid: req.body.isPaid || false,
       status: 'Processing',
     });
 
@@ -36,10 +38,11 @@ const createOrder = async (req, res) => {
       }
     }
 
-    // Trigger Notifications (Email & SMS)
+    // Trigger Notifications (Email, SMS & WhatsApp)
     // We don't await these so they don't block the response, but they will fire immediately
     sendOrderEmail(createdOrder);
     sendOrderSMS(createdOrder);
+    sendOrderWhatsApp(createdOrder);
 
     res.status(201).json(createdOrder);
   } catch (error) {
