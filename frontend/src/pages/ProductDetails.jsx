@@ -10,7 +10,7 @@ import ProductCard from '../components/ProductCard';
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, showAlert, showConfirm } = useCart();
+  const { addToCart, showAlert, showConfirm, cartItems } = useCart();
   const { userInfo } = useAuth();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -210,6 +210,15 @@ const ProductDetails = () => {
     exit: { opacity: 0, scale: 1.05 },
     transition: { duration: 0.4, ease: "easeInOut" }
   };
+
+  const productCartItems = cartItems ? cartItems.filter(item => (item.id === product?._id || item._id === product?._id)) : [];
+  const totalCartQty = productCartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const displayedCountInStock = product ? Math.max(0, product.countInStock - totalCartQty) : 0;
+
+  const selectedSizeCartItem = selectedSize && product ? cartItems.find(item => (item.id === product._id || item._id === product._id) && item.size === selectedSize) : null;
+  const selectedSizeCartQty = selectedSizeCartItem ? selectedSizeCartItem.quantity : 0;
+  const selectedSizeStock = selectedSize && product ? Number(product.stockBySize?.[selectedSize] || 0) : 0;
+  const selectedSizeDisplayedStock = Math.max(0, selectedSizeStock - selectedSizeCartQty);
 
   return (
     <motion.div
@@ -439,18 +448,21 @@ const ProductDetails = () => {
             <div className="grid grid-cols-4 gap-3">
               {Object.entries(product.stockBySize || { S: 0, M: 0, L: 0, XL: 0 }).map(([size, stock]) => {
                 const stockNum = Number(stock || 0);
+                const cartItem = cartItems ? cartItems.find(item => (item.id === product._id || item._id === product._id) && item.size === size) : null;
+                const cartQty = cartItem ? cartItem.quantity : 0;
+                const displayedStock = Math.max(0, stockNum - cartQty);
                 return (
                   <motion.button
-                    whileHover={stockNum > 0 ? { y: -2, shadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" } : {}}
-                    whileTap={stockNum > 0 ? { scale: 0.95 } : {}}
+                    whileHover={displayedStock > 0 ? { y: -2, shadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" } : {}}
+                    whileTap={displayedStock > 0 ? { scale: 0.95 } : {}}
                     key={size}
-                    disabled={stockNum === 0}
+                    disabled={displayedStock === 0}
                     onClick={() => setSelectedSize(size)}
                     className={`min-w-[56px] h-14 rounded-lg border flex flex-col items-center justify-center font-sans transition-all
-                      ${selectedSize === size ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : stockNum === 0 ? 'bg-gray-50 text-gray-300 border-gray-100' : 'bg-white text-primary border-gray-100 hover:border-primary'}`}
+                      ${selectedSize === size ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : displayedStock === 0 ? 'bg-gray-50 text-gray-300 border-gray-100' : 'bg-white text-primary border-gray-100 hover:border-primary'}`}
                   >
                     <span className="text-sm font-bold">{size}</span>
-                    <span className="text-[8px] uppercase mt-1 font-bold opacity-60">{stockNum === 0 ? 'Sold' : `${stockNum} Left`}</span>
+                    <span className="text-[8px] uppercase mt-1 font-bold opacity-60">{displayedStock === 0 ? 'Sold' : `${displayedStock} Left`}</span>
                   </motion.button>
                 );
               })}
@@ -459,14 +471,20 @@ const ProductDetails = () => {
 
           <div className="space-y-4 pt-2">
             <motion.button
-              whileHover={selectedSize ? { scale: 1.02, backgroundColor: "#2d3436" } : {}}
-              whileTap={selectedSize ? { scale: 0.98 } : {}}
-              disabled={product.countInStock === 0 || !selectedSize}
+              whileHover={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 1.02, backgroundColor: "#2d3436" } : {}}
+              whileTap={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 0.98 } : {}}
+              disabled={displayedCountInStock === 0 || !selectedSize || selectedSizeDisplayedStock === 0}
               onClick={() => selectedSize && addToCart({ ...product, size: selectedSize })}
               className={`w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl
-                ${!selectedSize ? 'bg-gray-100 text-gray-400' : 'bg-primaryContainer text-white shadow-primaryContainer/20'}`}
+                ${(!selectedSize || selectedSizeDisplayedStock === 0) ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-primaryContainer text-white shadow-primaryContainer/20'}`}
             >
-              {product.countInStock === 0 ? 'Out of Stock' : !selectedSize ? 'Select a Size' : `Add to Bag — ₹${(product.price || 0).toLocaleString('en-IN')}`}
+              {product.countInStock === 0 || displayedCountInStock === 0 
+                ? 'Out of Stock' 
+                : !selectedSize 
+                  ? 'Select a Size' 
+                  : selectedSizeDisplayedStock === 0 
+                    ? 'Limit Reached (All in Bag)' 
+                    : `Add to Bag — ₹${(product.price || 0).toLocaleString('en-IN')}`}
             </motion.button>
           </div>
 

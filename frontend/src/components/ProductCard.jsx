@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import API_URL from '../config';
 
 const ProductCard = ({ product }) => {
-  const { showAlert, showConfirm } = useCart();
+  const { cartItems, showAlert, showConfirm } = useCart();
   const navigate = useNavigate();
   const { userInfo } = useAuth();
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -83,6 +83,10 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const productCartItems = cartItems ? cartItems.filter(item => (item.id === productId || item._id === productId)) : [];
+  const productCartQty = productCartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const isSoldOut = product.countInStock - productCartQty <= 0;
+
   return (
     <motion.div 
       whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
@@ -122,7 +126,7 @@ const ProductCard = ({ product }) => {
           </motion.div>
         )}
         
-        {product.countInStock === 0 && (
+        {isSoldOut && (
           <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
             <span className="bg-white text-primary px-4 py-2 text-[10px] uppercase font-bold tracking-[0.2em] rounded shadow-xl">
               Sold Out
