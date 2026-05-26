@@ -91,6 +91,13 @@ const Bespoke = () => {
     }
   }, [id, userInfo, navigate]);
 
+  // Scroll to top when bespoke request is submitted successfully
+  useEffect(() => {
+    if (isSubmitted) {
+      window.scrollTo(0, 0);
+    }
+  }, [isSubmitted]);
+
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -86,6 +86,13 @@ const Checkout = () => {
     fetchCities();
   }, [shippingInfo.state, shippingInfo.country]);
 
+  // Scroll to top when order is placed successfully
+  useEffect(() => {
+    if (orderPlaced) {
+      window.scrollTo(0, 0);
+    }
+  }, [orderPlaced]);
+
   const handleNextStep = (e) => {
     e.preventDefault();
     if (step === 1) {

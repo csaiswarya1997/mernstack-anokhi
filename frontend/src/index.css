@@ -87,3 +87,101 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* ==========================================================================
+   PREMIUM MOBILE & TABLET RESPONSIVE OPTIMIZATIONS
+   ========================================================================== */
+
+/* Tablet & Mobile Screens (Below md breakpoint - 768px) */
+@media (max-width: 767px) {
+  html {
+    /* Scale down the base size from 16px to 14.5px (decreases everything rem-based by ~9.4%) */
+    font-size: 14.5px !important;
+  }
+
+  /* Cap large vertical padding classes */
+  .py-12 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+  .py-16 { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
+  .py-20 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+  .py-24 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+  .py-32 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+  .py-40 { padding-top: 4rem !important; padding-bottom: 4rem !important; }
+  .py-48 { padding-top: 4.5rem !important; padding-bottom: 4.5rem !important; }
+
+  /* Cap large single-direction padding classes */
+  .pt-24 { padding-top: 3rem !important; }
+  .pb-24 { padding-bottom: 3rem !important; }
+  .pt-32 { padding-top: 3.5rem !important; }
+  .pb-32 { padding-bottom: 3.5rem !important; }
+  .pt-40 { padding-top: 4rem !important; }
+  .pb-40 { padding-bottom: 4rem !important; }
+  .pt-48 { padding-top: 4.5rem !important; }
+  .pb-48 { padding-bottom: 4.5rem !important; }
+
+  /* Cap large all-around padding classes */
+  .p-16 { padding: 1.75rem !important; }
+  .p-20 { padding: 2rem !important; }
+  .p-24 { padding: 2.25rem !important; }
+  .p-32 { padding: 2.5rem !important; }
+
+  /* Cap large vertical margin classes */
+  .my-12 { margin-top: 2rem !important; margin-bottom: 2rem !important; }
+  .my-16 { margin-top: 2.25rem !important; margin-bottom: 2.25rem !important; }
+  .my-20 { margin-top: 2.5rem !important; margin-bottom: 2.5rem !important; }
+  .my-24 { margin-top: 3rem !important; margin-bottom: 3rem !important; }
+  .my-32 { margin-top: 3.5rem !important; margin-bottom: 3.5rem !important; }
+
+  /* Cap gaps that are too large on smaller screens */
+  .gap-8 { gap: 1.25rem !important; }
+  .gap-10 { gap: 1.5rem !important; }
+  .gap-12 { gap: 1.75rem !important; }
+  .gap-16 { gap: 2rem !important; }
+  .gap-24 { gap: 2.5rem !important; }
+}
+
+/* Phone Screens (Below sm breakpoint - 640px) */
+@media (max-width: 639px) {
+  html {
+    /* Scale down the base size from 16px to 13.5px (decreases everything rem-based by ~15.6%) */
+    font-size: 13.5px !important;
+  }
+
+  /* Even tighter vertical padding on mobile phones to maximize readable space */
+  .py-12 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+  .py-16 { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
+  .py-20 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+  .py-24 { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
+  .py-32 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+  .py-40 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+  .py-48 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+
+  /* Tighter single-direction padding classes */
+  .pt-24 { padding-top: 2.25rem !important; }
+  .pb-24 { padding-bottom: 2.25rem !important; }
+  .pt-32 { padding-top: 2.5rem !important; }
+  .pb-32 { padding-bottom: 2.5rem !important; }
+  .pt-40 { padding-top: 3rem !important; }
+  .pb-40 { padding-bottom: 3rem !important; }
+  .pt-48 { padding-top: 3.5rem !important; }
+  .pb-48 { padding-bottom: 3.5rem !important; }
+
+  /* Tighter all-around padding classes */
+  .p-16 { padding: 1.25rem !important; }
+  .p-20 { padding: 1.5rem !important; }
+  .p-24 { padding: 1.75rem !important; }
+  .p-32 { padding: 2rem !important; }
+
+  /* Tighter vertical margin classes */
+  .my-12 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
+  .my-16 { margin-top: 1.75rem !important; margin-bottom: 1.75rem !important; }
+  .my-20 { margin-top: 2rem !important; margin-bottom: 2rem !important; }
+  .my-24 { margin-top: 2.25rem !important; margin-bottom: 2.25rem !important; }
+  .my-32 { margin-top: 2.5rem !important; margin-bottom: 2.5rem !important; }
+
+  /* Tighter gaps to keep content beautifully integrated and easy to read */
+  .gap-8 { gap: 1rem !important; }
+  .gap-10 { gap: 1.15rem !important; }
+  .gap-12 { gap: 1.25rem !important; }
+  .gap-16 { gap: 1.5rem !important; }
+  .gap-24 { gap: 2rem !important; }
+}

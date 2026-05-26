@@ -150,7 +150,7 @@ const Layout = () => {
               )}
               {!userInfo && (
                 <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
-                  Patron
+                  Account
                 </span>
               )}
             </Link>

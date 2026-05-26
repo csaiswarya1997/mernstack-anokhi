@@ -68,7 +68,7 @@ const Login = () => {
             The Maison Zaloura Member Experience
           </motion.span>
           <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-primary tracking-tighter italic leading-tight">Bienvenue</motion.h1>
-          <motion.p variants={fadeInUp} className="text-secondary/60 font-serif italic text-lg leading-relaxed">Sign in to your patron account</motion.p>
+          <motion.p variants={fadeInUp} className="text-secondary/60 font-serif italic text-lg leading-relaxed">Sign in to your account</motion.p>
         </div>
 
         <motion.div
@@ -77,12 +77,12 @@ const Login = () => {
         >
           {/* Highlighted Top Access Link */}
           <div className="mb-10 pb-8 border-b border-gray-100 text-center">
-            <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-4">New to the Maison?</p>
+            <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-4">Don't have an account?</p>
             <Link 
               to="/register" 
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary/5 text-primary border border-primary/10 hover:bg-primary hover:text-white transition-all text-sm font-serif italic w-full justify-center"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary/5 text-primary border border-primary/10 hover:bg-primary hover:text-white transition-all text-sm font-sans font-bold uppercase tracking-wider w-full justify-center"
             >
-              Request Access & Join the Circle
+              Register / Create a New Account
             </Link>
           </div>
 

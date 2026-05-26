@@ -41,8 +41,8 @@ const ProductCard = ({ product }) => {
 
     if (!userInfo) {
       showConfirm(
-        'Patron Account Required', 
-        'Please sign in to your patron account to save pieces to your curated collection.', 
+        'Account Required', 
+        'Please sign in to your account to save pieces to your collection.', 
         () => navigate('/login', { state: { from: { pathname: window.location.pathname } } }),
         'Login',
         'Not Now'

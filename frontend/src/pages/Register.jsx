@@ -75,7 +75,7 @@ const Register = () => {
             The Maison Zaloura Member Experience
           </motion.span>
           <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-primary tracking-tighter italic leading-tight">Join the Circle</motion.h1>
-          <motion.p variants={fadeInUp} className="text-secondary/60 font-serif italic text-lg leading-relaxed">Create your patron account</motion.p>
+          <motion.p variants={fadeInUp} className="text-secondary/60 font-serif italic text-lg leading-relaxed">Create your account</motion.p>
         </div>
 
         <motion.div 
@@ -100,7 +100,7 @@ const Register = () => {
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
                 <input
                   type="text"
-                  placeholder="Alex Patron"
+                  placeholder="Alex"
                   className="w-full pl-12 pr-6 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none transition-all font-sans text-sm font-bold"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
