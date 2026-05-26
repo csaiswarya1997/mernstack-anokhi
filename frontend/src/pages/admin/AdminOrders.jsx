@@ -77,6 +77,236 @@ const AdminOrders = ({ filter }) => {
     }
   };
 
+  const handlePrintInvoice = (order) => {
+    const printWindow = window.open('', '_blank', 'width=800,height=900');
+    if (!printWindow) {
+      alert('Please allow popups to print invoices.');
+      return;
+    }
+    
+    const invoiceHtml = `
+      <html>
+        <head>
+          <title>Invoice - ${order._id}</title>
+          <style>
+            body { font-family: 'Courier New', Courier, monospace; color: #000; padding: 20px; font-size: 14px; line-height: 1.4; }
+            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px dashed #000; padding-bottom: 15px; }
+            .title { font-size: 22px; font-weight: bold; margin: 0; letter-spacing: 2px; }
+            .subtitle { font-size: 12px; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; color: #555; }
+            .info-grid { display: flex; justify-content: space-between; margin-bottom: 30px; gap: 20px; }
+            .info-block { flex: 1; }
+            .info-block:last-child { text-align: right; }
+            .info-title { font-weight: bold; text-transform: uppercase; font-size: 11px; color: #333; margin-bottom: 5px; border-bottom: 1px solid #000; display: inline-block; }
+            .table { border-collapse: collapse; margin-bottom: 30px; width: 100%; }
+            .table th { border-bottom: 2px solid #000; border-top: 2px solid #000; padding: 8px 4px; text-align: left; font-size: 12px; }
+            .table td { padding: 8px 4px; border-bottom: 1px dashed #ccc; font-size: 12px; }
+            .summary { float: right; width: 300px; margin-top: 20px; border-top: 1px solid #000; padding-top: 10px; }
+            .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+            .total-row { font-size: 16px; font-weight: bold; border-top: 2px double #000; padding-top: 8px; margin-top: 8px; }
+            .footer { margin-top: 80px; text-align: center; border-top: 1px dashed #000; padding-top: 20px; font-size: 11px; }
+            .signature { margin-top: 50px; text-align: right; font-size: 12px; }
+            @media print {
+              body { padding: 0; }
+              @page { margin: 1.5cm; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="title">ZALOURA</div>
+            <div class="subtitle">Tax Invoice / Bill of Supply</div>
+          </div>
+          
+          <div class="info-grid">
+            <div class="info-block">
+              <div class="info-title">Seller</div>
+              <strong>Zaloura Studio</strong><br />
+              Heritage Lane, Thrissur<br />
+              Kerala, India - 680007<br />
+              Phone: +91 89212 73858<br />
+              Email: zaloura.in@gmail.com
+            </div>
+            <div class="info-block" style="padding-left: 20px;">
+              <div class="info-title">Bill To / Ship To</div>
+              <strong>${order.shippingInfo.firstName} ${order.shippingInfo.lastName}</strong><br />
+              ${order.shippingInfo.address}<br />
+              ${order.shippingInfo.city}, ${order.shippingInfo.state} - ${order.shippingInfo.postalCode}<br />
+              Phone: ${order.shippingInfo.phone}<br />
+              Email: ${order.shippingInfo.email || 'N/A'}
+            </div>
+            <div class="info-block">
+              <div class="info-title">Invoice Details</div>
+              <strong>Invoice No:</strong> INV-${order._id.substring(18, 24).toUpperCase()}<br />
+              <strong>Invoice Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}<br />
+              <strong>Order ID:</strong> ${order._id}<br />
+              <strong>Payment Mode:</strong> Prepaid (Online)<br />
+              <strong>Payment Status:</strong> Completed
+            </div>
+          </div>
+          
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 45%;">Product Description</th>
+                <th style="width: 15%; text-align: center;">Size</th>
+                <th style="width: 10%; text-align: center;">Qty</th>
+                <th style="width: 15%; text-align: right;">Price</th>
+                <th style="width: 15%; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${order.orderItems.map(item => `
+                <tr>
+                  <td>
+                    ${item.name}<br />
+                    <span style="font-size: 10px; color: #555; font-family: monospace;">Ref: #${item.productCode || (productsMap.codes && productsMap.codes[item.product]) || 'N/A'}</span>
+                  </td>
+                  <td style="text-align: center;">${item.size || 'N/A'}</td>
+                  <td style="text-align: center;">${item.quantity}</td>
+                  <td style="text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
+                  <td style="text-align: right;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          
+          <div style="width: 100%; overflow: hidden;">
+            <div class="summary">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>₹${order.totalPrice.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="summary-row">
+                <span>Shipping:</span>
+                <span style="color: green; font-weight: bold;">FREE</span>
+              </div>
+              <div class="summary-row total-row">
+                <span>Grand Total:</span>
+                <span>₹${order.totalPrice.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="signature">
+            <p>For <strong>ZALOURA STUDIO</strong></p>
+            <br /><br />
+            <p>_____________________</p>
+            <p style="font-size: 10px; margin-top: 5px;">Authorized Signature</p>
+          </div>
+          
+          <div class="footer">
+            Thank you for shopping at Zaloura. Crafted with dedication, worn with elegance.
+          </div>
+          
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(invoiceHtml);
+    printWindow.document.close();
+  };
+
+  const handlePrintCourierLabel = (order) => {
+    const printWindow = window.open('', '_blank', 'width=600,height=500');
+    if (!printWindow) {
+      alert('Please allow popups to print shipping labels.');
+      return;
+    }
+    
+    const productsString = order.orderItems.map(item => `${item.name} (${item.size || 'N/A'}) x${item.quantity}`).join(', ');
+    
+    const labelHtml = `
+      <html>
+        <head>
+          <title>Shipping Label - ${order._id}</title>
+          <style>
+            body { font-family: 'Courier New', Courier, monospace; color: #000; padding: 20px; font-size: 13px; line-height: 1.4; }
+            .label-border { border: 3px double #000; padding: 20px; height: 90%; display: flex; flex-direction: column; justify-content: space-between; }
+            .header-label { border-bottom: 2px solid #000; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+            .brand-name { font-size: 20px; font-weight: bold; letter-spacing: 2px; }
+            .delivery-badge { font-weight: bold; border: 1px solid #000; padding: 3px 8px; font-size: 10px; text-transform: uppercase; }
+            .address-section { margin-top: 15px; margin-bottom: 15px; }
+            .address-title { font-weight: bold; font-size: 11px; text-transform: uppercase; margin-bottom: 3px; text-decoration: underline; }
+            .address-box { border: 1px dashed #000; padding: 10px; margin-top: 5px; font-size: 13px; }
+            .grid-label { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid #000; border-bottom: 2px solid #000; padding: 10px 0; margin-top: 15px; margin-bottom: 15px; }
+            .grid-item { border-right: 1px dashed #ccc; padding-left: 5px; }
+            .grid-item:last-child { border-right: none; }
+            .grid-item-title { font-weight: bold; font-size: 10px; text-transform: uppercase; color: #555; }
+            .product-badge { font-size: 11px; background-color: #f5f5f5; padding: 8px; border: 1px solid #ddd; margin-top: 10px; }
+            @media print {
+              body { padding: 0; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="label-border">
+            <div>
+              <div class="header-label">
+                <span class="brand-name">ZALOURA</span>
+                <span class="delivery-badge">PREPAID</span>
+              </div>
+              
+              <div class="address-section">
+                <div class="address-title">SHIP TO:</div>
+                <div class="address-box">
+                  <strong>${order.shippingInfo.firstName} ${order.shippingInfo.lastName}</strong><br />
+                  ${order.shippingInfo.address}<br />
+                  <strong>City:</strong> ${order.shippingInfo.city}<br />
+                  <strong>State:</strong> ${order.shippingInfo.state} - <strong>PIN:</strong> ${order.shippingInfo.postalCode}<br />
+                  <strong>Phone:</strong> ${order.shippingInfo.phone}
+                </div>
+              </div>
+              
+              <div class="address-section" style="opacity: 0.85;">
+                <div class="address-title">FROM (SENDER):</div>
+                <div style="font-size: 11px; margin-left: 5px;">
+                  <strong>ZALOURA STUDIO</strong><br />
+                  Heritage Lane, Thrissur, Kerala, India - 680007<br />
+                  Phone: +91 89212 73858
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="grid-label">
+                <div class="grid-item">
+                  <div class="grid-item-title">Order ID</div>
+                  <strong style="font-size: 11px;">${order._id}</strong>
+                </div>
+                <div class="grid-item">
+                  <div class="grid-item-title">Invoice Number</div>
+                  <strong>INV-${order._id.substring(18, 24).toUpperCase()}</strong>
+                </div>
+              </div>
+              
+              <div class="product-badge">
+                <div class="grid-item-title" style="margin-bottom: 3px;">Courier Item details</div>
+                <strong>Items:</strong> ${productsString}<br />
+                <strong>COD Amount:</strong> ₹0 (PREPAID)
+              </div>
+            </div>
+          </div>
+          
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(labelHtml);
+    printWindow.document.close();
+  };
+
   return (
     <div>
       <div className="mb-8">
@@ -365,7 +595,21 @@ const AdminOrders = ({ filter }) => {
               </div>
             </div>
             
-            <div className="p-6 bg-surface border-t border-champagne/30">
+            <div className="p-6 bg-surface border-t border-champagne/30 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <button 
+                  onClick={() => handlePrintInvoice(selectedOrder)}
+                  className="py-3 bg-white border border-primary text-primary rounded font-sans font-bold uppercase tracking-widest text-xs hover:bg-primary/5 transition-colors shadow-sm flex items-center justify-center gap-2"
+                >
+                  Print Invoice
+                </button>
+                <button 
+                  onClick={() => handlePrintCourierLabel(selectedOrder)}
+                  className="py-3 bg-white border border-primary text-primary rounded font-sans font-bold uppercase tracking-widest text-xs hover:bg-primary/5 transition-colors shadow-sm flex items-center justify-center gap-2"
+                >
+                  Print Label
+                </button>
+              </div>
               <button 
                 onClick={() => setSelectedOrder(null)}
                 className="w-full py-3 bg-primaryContainer text-white rounded font-sans font-bold uppercase tracking-widest text-xs hover:bg-primary transition-colors shadow-md"
