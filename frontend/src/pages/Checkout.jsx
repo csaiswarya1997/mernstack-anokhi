@@ -112,14 +112,21 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      // 1. Create Razorpay Order
+      // 1. Fetch Razorpay Key ID dynamically from backend
+      const keyRes = await fetch(`${API_URL}/api/payment/key`);
+      if (!keyRes.ok) {
+        throw new Error('Failed to fetch payment configuration.');
+      }
+      const { keyId } = await keyRes.json();
+
+      // 2. Create Razorpay Order
       const { id: razorpayOrderId, amount, currency } = await createPaymentOrder(cartTotal);
       
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-      // 2. Open Razorpay Checkout
+      // 3. Open Razorpay Checkout
       const options = {
-        key: 'rzp_test_SoK0TG3aXCMfRT', // Should use env variable in production
+        key: keyId,
         amount: amount,
         currency: currency,
         name: 'Zaloura Studio',

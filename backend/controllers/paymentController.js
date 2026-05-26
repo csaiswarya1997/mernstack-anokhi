@@ -62,3 +62,18 @@ export const verifyPayment = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
+
+// @desc    Get Razorpay Key ID
+// @route   GET /api/payment/key
+// @access  Public
+export const getRazorpayKey = async (req, res) => {
+  try {
+    if (!process.env.RAZORPAY_KEY_ID) {
+      return res.status(404).json({ message: 'Razorpay key ID is not configured.' });
+    }
+    res.json({ keyId: process.env.RAZORPAY_KEY_ID });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
