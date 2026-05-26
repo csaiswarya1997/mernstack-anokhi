@@ -152,8 +152,11 @@ const Checkout = () => {
             const success = await placeOrder(shippingInfo, paymentResult);
             if (success) {
               setOrderPlaced(true);
+            } else {
+              setIsSubmitting(false);
             }
           } else {
+            setIsSubmitting(false);
             showAlert('Payment Verification Failed', 'We could not verify your payment. Please contact support.');
           }
         },

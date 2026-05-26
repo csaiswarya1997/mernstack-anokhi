@@ -128,13 +128,17 @@ export const CartProvider = ({ children }) => {
         })
       });
       
-      const newOrder = await res.json();
-      setOrders(prev => [newOrder, ...prev]);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Server failed to save your order.');
+      }
+      
+      setOrders(prev => [data, ...prev]);
       clearCart();
-      return newOrder;
+      return data;
     } catch (err) {
       console.error('Error placing order:', err);
-      showAlert('Order Error', 'There was a problem placing your order. Please try again.');
+      showAlert('Order Error', err.message || 'There was a problem placing your order. Please try again.');
     }
   };
 
