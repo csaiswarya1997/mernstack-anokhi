@@ -23,6 +23,10 @@ const Bespoke = () => {
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [images, setImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Animation Variants
   const containerVariants = {
@@ -97,11 +101,6 @@ const Bespoke = () => {
       window.scrollTo(0, 0);
     }
   }, [isSubmitted]);
-
-  const [images, setImages] = useState([]);
-  const [uploading, setUploading] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

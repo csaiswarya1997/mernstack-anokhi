@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  MessageCircle, 
-  Instagram, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  MessageCircle,
+  Instagram,
   Clock,
   Save,
   Loader2,
@@ -25,7 +25,7 @@ const AdminSettings = () => {
   const { userInfo } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  
+
   // Security Form States
   const [adminPassword, setAdminPassword] = useState('');
   const [adminConfirmPassword, setAdminConfirmPassword] = useState('');
@@ -155,7 +155,7 @@ const AdminSettings = () => {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="bg-white border border-gray-100 rounded-[2.5rem] p-8 md:p-12 shadow-sm space-y-10">
-          
+
           {/* Address Section */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             <div className="md:col-span-4">
@@ -165,11 +165,11 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Physical location of the boutique shown on the contact page.</p>
             </div>
             <div className="md:col-span-8">
-              <textarea 
+              <textarea
                 required
                 rows="3"
                 value={formData.address}
-                onChange={e => setFormData({...formData, address: e.target.value})}
+                onChange={e => setFormData({ ...formData, address: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:border-primary transition-colors font-sans text-sm resize-none"
                 placeholder="Full address..."
               />
@@ -189,21 +189,21 @@ const AdminSettings = () => {
             <div className="md:col-span-8 space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Phone Number</label>
-                <input 
+                <input
                   required
                   type="text"
                   value={formData.phone}
-                  onChange={e => setFormData({...formData, phone: e.target.value})}
+                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Email Address</label>
-                <input 
+                <input
                   required
                   type="email"
                   value={formData.email}
-                  onChange={e => setFormData({...formData, email: e.target.value})}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
                   className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
                 />
               </div>
@@ -225,10 +225,10 @@ const AdminSettings = () => {
                 <MessageCircle size={20} className="text-green-500" />
                 <div className="flex-1">
                   <label className="text-[8px] uppercase font-bold text-gray-400 tracking-widest block mb-1">WhatsApp Business</label>
-                  <input 
+                  <input
                     type="text"
                     value={formData.whatsapp}
-                    onChange={e => setFormData({...formData, whatsapp: e.target.value})}
+                    onChange={e => setFormData({ ...formData, whatsapp: e.target.value })}
                     className="w-full bg-transparent outline-none font-sans text-sm"
                     placeholder="+91 ..."
                   />
@@ -238,10 +238,10 @@ const AdminSettings = () => {
                 <Instagram size={20} className="text-pink-500" />
                 <div className="flex-1">
                   <label className="text-[8px] uppercase font-bold text-gray-400 tracking-widest block mb-1">Instagram Handle</label>
-                  <input 
+                  <input
                     type="text"
                     value={formData.instagram}
-                    onChange={e => setFormData({...formData, instagram: e.target.value})}
+                    onChange={e => setFormData({ ...formData, instagram: e.target.value })}
                     className="w-full bg-transparent outline-none font-sans text-sm"
                     placeholder="@username"
                   />
@@ -261,11 +261,11 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Working hours displayed to users for consultation.</p>
             </div>
             <div className="md:col-span-8">
-              <input 
+              <input
                 required
                 type="text"
                 value={formData.workingHours}
-                onChange={e => setFormData({...formData, workingHours: e.target.value})}
+                onChange={e => setFormData({ ...formData, workingHours: e.target.value })}
                 className="w-full border-b border-gray-200 py-3 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
                 placeholder="e.g. 10 AM — 7 PM"
               />
@@ -283,10 +283,10 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Information about delivery times, costs, and international shipping.</p>
             </div>
             <div className="md:col-span-8">
-              <textarea 
+              <textarea
                 rows="6"
                 value={formData.shippingPolicy}
-                onChange={e => setFormData({...formData, shippingPolicy: e.target.value})}
+                onChange={e => setFormData({ ...formData, shippingPolicy: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:border-primary transition-colors font-sans text-sm resize-none"
                 placeholder="Shipping details..."
               />
@@ -304,10 +304,10 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Information about exchange windows, altered items, and quality assurance.</p>
             </div>
             <div className="md:col-span-8">
-              <textarea 
+              <textarea
                 rows="6"
                 value={formData.returnsPolicy}
-                onChange={e => setFormData({...formData, returnsPolicy: e.target.value})}
+                onChange={e => setFormData({ ...formData, returnsPolicy: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:border-primary transition-colors font-sans text-sm resize-none"
                 placeholder="Return and exchange details..."
               />
@@ -325,10 +325,10 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Information about customs, taxes, and global courier partners.</p>
             </div>
             <div className="md:col-span-8">
-              <textarea 
+              <textarea
                 rows="6"
                 value={formData.internationalPolicy}
-                onChange={e => setFormData({...formData, internationalPolicy: e.target.value})}
+                onChange={e => setFormData({ ...formData, internationalPolicy: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:border-primary transition-colors font-sans text-sm resize-none"
                 placeholder="International shipping details..."
               />
@@ -346,10 +346,10 @@ const AdminSettings = () => {
               <p className="text-xs text-secondary/40 mt-2">Information about handcrafted defects, inspections, and support.</p>
             </div>
             <div className="md:col-span-8">
-              <textarea 
+              <textarea
                 rows="6"
                 value={formData.qualityPolicy}
-                onChange={e => setFormData({...formData, qualityPolicy: e.target.value})}
+                onChange={e => setFormData({ ...formData, qualityPolicy: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:border-primary transition-colors font-sans text-sm resize-none"
                 placeholder="Quality and inspection details..."
               />
@@ -359,7 +359,7 @@ const AdminSettings = () => {
         </div>
 
         <div className="flex justify-end">
-          <button 
+          <button
             type="submit"
             disabled={saving}
             className="bg-primary text-white px-12 py-5 rounded-2xl font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3 disabled:opacity-50 disabled:translate-y-0"
@@ -384,7 +384,7 @@ const AdminSettings = () => {
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2 block">New Password</label>
                 <div className="relative">
-                  <input 
+                  <input
                     required
                     type={showAdminPassword ? "text" : "password"}
                     value={adminPassword}
@@ -403,7 +403,7 @@ const AdminSettings = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2 block">Confirm New Password</label>
-                <input 
+                <input
                   required
                   type={showAdminPassword ? "text" : "password"}
                   value={adminConfirmPassword}
@@ -417,7 +417,7 @@ const AdminSettings = () => {
         </div>
 
         <div className="flex justify-end">
-          <button 
+          <button
             type="submit"
             disabled={updatingPassword}
             className="bg-secondary text-white px-12 py-5 rounded-2xl font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl hover:bg-primary transition-all flex items-center gap-3 disabled:opacity-50"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, RotateCcw, ShieldCheck, Globe } from 'lucide-react';
-
 import { motion } from 'framer-motion';
 import API_URL from '../config';
 
@@ -52,6 +51,89 @@ const Shipping = () => {
     }
   };
 
+  const shippingDefaults = [
+    "At Zaloura, we carefully inspect and pack every product before dispatch to make sure it reaches you safely.",
+    "Processing Timeline: Orders are usually processed within 1–3 business days after order confirmation.",
+    "Estimated Delivery: Once the order is processed and shipped, the estimated delivery time is 7–15 working days, depending on your location and courier service availability.",
+    "Delivery Variations: Delivery time may vary due to public holidays, weather conditions, courier delays, or other unavoidable situations.",
+    "Status Tracking: Customers will receive order and shipping updates through WhatsApp, SMS, email, or website order tracking where available.",
+    "Delivery Accuracy: Please make sure your delivery address and phone number are correct before placing the order. Zaloura will not be responsible for delays or failed delivery caused by incorrect address, unavailable customer, or courier issues."
+  ];
+
+  const returnsDefaults = [
+    "Zaloura follows a No Return, No COD, and Limited Exchange Policy.",
+    "Prepaid Requirement: We do not accept returns once the product is delivered. Cash on Delivery is not available. All orders must be prepaid.",
+    "Exchange Conditions: Exchange is possible only if the product received is damaged, defective, or incorrect; the customer provides a clear, unedited, and original unboxing video; the issue is reported within 24 hours of delivery; the product is unused, unwashed, and in its original condition; and tags, packaging, and invoice are available.",
+    "Unboxing Verification: Exchange requests without a proper unboxing video will not be accepted. The unboxing video must clearly show the sealed package being opened, the product condition, and any issue found. Edited, paused, cut, or unclear videos will not be considered valid proof.",
+    "Exchange Exclusions: Exchange will not be accepted for size issues, color variation due to lighting/screen difference, change of mind, wrong address, or personal preference."
+  ];
+
+  const internationalDefaults = [
+    "Currently, Zaloura does not provide international delivery directly through the website.",
+    "WhatsApp Support: If any customer requires international delivery, they can contact us through WhatsApp before placing the order. Our team will check the product, location, shipping availability, delivery time, and charges, then confirm whether international delivery is possible.",
+    "Duties & Taxes: International shipping charges, customs duty, import taxes, or any additional charges from the destination country must be paid by the customer.",
+    "Transit Timeline: International delivery time may vary depending on the country, customs clearance, and courier service availability."
+  ];
+
+  const qualityDefaults = [
+    "At Zaloura, we make sure every product is checked before packing and dispatch.",
+    "Rigorous Inspection: Before delivery, we inspect the product for quality, damage, stitching/finishing, product condition, correct item & quantity, and packing safety.",
+    "Quality Commitment: We assure that only checked and approved products are packed and delivered to customers.",
+    "Slight Variations: Slight color differences may occur due to lighting, photography, or screen display settings. These are not considered product defects.",
+    "Our Promise: Our goal is to deliver good-quality products with proper checking and safe packaging."
+  ];
+
+  const parsePolicyToPoints = (dbText, defaultTextArray) => {
+    const rawText = dbText || defaultTextArray.join('\n');
+    const paragraphs = rawText
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(Boolean);
+
+    return (
+      <div className="space-y-4 mt-4">
+        {paragraphs.map((p, index) => {
+          const isBullet = p.startsWith('-') || p.startsWith('*') || p.startsWith('•') || /^\d+\./.test(p);
+          const cleaned = p.replace(/^[-*•\d+\.]\s*/, '');
+          const colonIndex = cleaned.indexOf(':');
+          const hasColon = colonIndex > 0 && colonIndex < 35;
+
+          if (isBullet || hasColon) {
+            let title = '';
+            let description = cleaned;
+
+            if (hasColon) {
+              title = cleaned.substring(0, colonIndex).trim();
+              description = cleaned.substring(colonIndex + 1).trim();
+            }
+
+            return (
+              <div key={index} className="flex items-start gap-3 pl-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-primaryContainer mt-2 shrink-0" />
+                <span className="text-secondary/70 font-sans text-sm leading-relaxed">
+                  {title ? (
+                    <>
+                      <strong className="text-primary font-serif font-semibold italic mr-1">{title}:</strong>
+                      {description}
+                    </>
+                  ) : (
+                    cleaned
+                  )}
+                </span>
+              </div>
+            );
+          }
+
+          return (
+            <p key={index} className="text-secondary/80 font-sans text-sm leading-relaxed">
+              {p}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -100,22 +182,9 @@ const Shipping = () => {
               >
                 <Truck size={32} />
               </motion.div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-3xl font-serif text-primary mb-6 italic">Shipping Policy</h2>
-                <div className="space-y-6 text-secondary/70 font-sans leading-relaxed whitespace-pre-wrap">
-                  {settings?.shippingPolicy || (
-                    <>
-                      <p>
-                        We offer complimentary standard shipping on all domestic orders within India. Each piece is handcrafted to order and typically ships within 7-10 business days.
-                      </p>
-                      <ul className="space-y-4 list-disc pl-5">
-                        <li>Domestic Delivery: 3-5 business days after dispatch.</li>
-                        <li>International Shipping: 10-15 business days via premium couriers (DHL/FedEx).</li>
-                        <li>Express Shipping: Available upon request for urgent requirements.</li>
-                      </ul>
-                    </>
-                  )}
-                </div>
+                {parsePolicyToPoints(settings?.shippingPolicy, shippingDefaults)}
               </div>
             </motion.div>
 
@@ -127,11 +196,9 @@ const Shipping = () => {
               >
                 <Globe size={32} />
               </motion.div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-serif text-primary mb-4 italic">International Delivery</h2>
-                <div className="text-secondary/70 font-sans leading-relaxed whitespace-pre-wrap">
-                  {settings?.internationalPolicy || "Zaloura ships worldwide. Please note that international orders may be subject to customs duties and taxes upon arrival in the destination country, which are the responsibility of the recipient."}
-                </div>
+                {parsePolicyToPoints(settings?.internationalPolicy, internationalDefaults)}
               </div>
             </motion.div>
           </div>
@@ -146,22 +213,9 @@ const Shipping = () => {
               >
                 <RotateCcw size={32} />
               </motion.div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-3xl font-serif text-primary mb-6 italic">Returns & Exchanges</h2>
-                <div className="space-y-6 text-secondary/70 font-sans leading-relaxed whitespace-pre-wrap">
-                  {settings?.returnsPolicy || (
-                    <>
-                      <p>
-                        As our garments are handcrafted and often made to order, we maintain a selective return policy to ensure sustainability and quality.
-                      </p>
-                      <ul className="space-y-4 list-disc pl-5">
-                        <li>7-Day Return Window: Items must be unused, with all tags intact.</li>
-                        <li>Exchanges: Size exchanges are complimentary for domestic orders.</li>
-                        <li>Custom Orders: Bespoke and altered items are final sale.</li>
-                      </ul>
-                    </>
-                  )}
-                </div>
+                {parsePolicyToPoints(settings?.returnsPolicy, returnsDefaults)}
               </div>
             </motion.div>
 
@@ -173,11 +227,9 @@ const Shipping = () => {
               >
                 <ShieldCheck size={32} />
               </motion.div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-serif text-primary mb-4 italic">Quality Assurance</h2>
-                <div className="text-secondary/70 font-sans leading-relaxed whitespace-pre-wrap">
-                  {settings?.qualityPolicy || "If you receive a damaged or defective piece, please contact our concierge team within 48 hours of delivery with photographic evidence for an immediate replacement."}
-                </div>
+                {parsePolicyToPoints(settings?.qualityPolicy, qualityDefaults)}
               </div>
             </motion.div>
           </div>

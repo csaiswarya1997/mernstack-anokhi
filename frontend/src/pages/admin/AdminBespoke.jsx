@@ -29,8 +29,10 @@ const AdminBespoke = () => {
   };
 
   useEffect(() => {
-    fetchRequests();
-  }, []);
+    if (userInfo?.token) {
+      fetchRequests();
+    }
+  }, [userInfo]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {
