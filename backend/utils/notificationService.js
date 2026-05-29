@@ -2,20 +2,32 @@ import 'dotenv/config';
 import nodemailer from 'nodemailer';
 import twilio from 'twilio';
 
-// Configure Email Transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+// Lazy-initialized Email Transporter
+let transporter;
+const getTransporter = () => {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
   }
-});
+  return transporter;
+};
 
-// Configure Twilio Client
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID, 
-  process.env.TWILIO_AUTH_TOKEN
-);
+// Lazy-initialized Twilio Client
+let twilioClient;
+const getTwilioClient = () => {
+  if (!twilioClient) {
+    twilioClient = twilio(
+      process.env.TWILIO_ACCOUNT_SID, 
+      process.env.TWILIO_AUTH_TOKEN
+    );
+  }
+  return twilioClient;
+};
 
 /**
  * Send Order Confirmation Email
@@ -87,7 +99,7 @@ export const sendOrderEmail = async (order) => {
       return;
     }
 
-    await transporter.sendMail({
+    await getTransporter().sendMail({
       from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
       to: shippingInfo.email,
       subject: `Zaloura Order Confirmation #${_id.toString().substring(18, 24).toUpperCase()}`,
@@ -124,7 +136,7 @@ export const sendOrderSMS = async (order) => {
     const phoneStr = shippingInfo.phone.toString();
     const recipientPhone = phoneStr.startsWith('+') ? phoneStr : `+91${phoneStr}`;
 
-    await twilioClient.messages.create({
+    await getTwilioClient().messages.create({
       body: message,
       from: process.env.TWILIO_PHONE_NUMBER,
       to: recipientPhone
@@ -160,7 +172,7 @@ export const sendOrderWhatsAppTwilio = async (order) => {
     const phoneStr = shippingInfo.phone.toString();
     const recipientPhone = phoneStr.startsWith('+') ? phoneStr : `+91${phoneStr}`;
 
-    const response = await twilioClient.messages.create({
+    const response = await getTwilioClient().messages.create({
       body: message,
       from: `whatsapp:${process.env.TWILIO_WHATSAPP_NUMBER}`,
       to: `whatsapp:${recipientPhone}`
@@ -289,7 +301,7 @@ export const sendRestockEmail = async (request, origin = 'http://localhost:5173'
       return;
     }
 
-    await transporter.sendMail({
+    await getTransporter().sendMail({
       from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: `Restocked! ${productName} (Size ${size}) is now available`,
