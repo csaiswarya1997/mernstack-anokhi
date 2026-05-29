@@ -1,15 +1,38 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import Order from '../models/Order.js';
+import Product from '../models/Product.js';
 
 // @desc    Create Razorpay order
 // @route   POST /api/payment/order
 // @access  Private
 export const createRazorpayOrder = async (req, res) => {
   try {
-    const { amount } = req.body;
+    const { amount, cartItems } = req.body;
 
     console.log(`[PAYMENT] Creating order for amount: ${amount} INR`);
+    
+    // Verify & Reserve stock availability immediately in DB to lock it during the checkout payment phase
+    if (cartItems && Array.isArray(cartItems)) {
+      for (const item of cartItems) {
+        const product = await Product.findById(item._id || item.id);
+        if (!product) {
+          return res.status(404).json({ message: `Product not found: ${item.name || 'Unknown'}` });
+        }
+        
+        const availableStock = product.stockBySize?.[item.size] || 0;
+        if (availableStock < item.quantity) {
+          return res.status(400).json({ 
+            message: `Insufficient stock: only ${availableStock} left for ${product.name} in size ${item.size}. Please adjust your bag.` 
+          });
+        }
+
+        // Lock (Reserve) the stock in the database
+        product.stockBySize[item.size] -= item.quantity;
+        product.countInStock = Object.values(product.stockBySize).reduce((sum, val) => sum + val, 0);
+        await product.save();
+      }
+    }
     
     const instance = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
@@ -74,6 +97,32 @@ export const getRazorpayKey = async (req, res) => {
     res.json({ keyId: process.env.RAZORPAY_KEY_ID });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+// @desc    Release reserved stock if payment fails / popup is closed
+// @route   POST /api/payment/release
+// @access  Private
+export const releaseStock = async (req, res) => {
+  try {
+    const { cartItems } = req.body;
+    
+    console.log('[PAYMENT] Releasing stock for items due to payment cancellation/dismissal');
+
+    if (cartItems && Array.isArray(cartItems)) {
+      for (const item of cartItems) {
+        const product = await Product.findById(item._id || item.id);
+        if (product && product.stockBySize) {
+          product.stockBySize[item.size] += Number(item.quantity || 1);
+          product.countInStock = Object.values(product.stockBySize).reduce((sum, val) => sum + val, 0);
+          await product.save();
+        }
+      }
+    }
+    res.json({ message: 'Stock released successfully' });
+  } catch (error) {
+    console.error('[STOCK RELEASE ERROR]:', error);
+    res.status(500).json({ message: 'Failed to release stock', error: error.message });
   }
 };
 

@@ -43,17 +43,19 @@ const createOrder = async (req, res) => {
 
     const createdOrder = await order.save();
 
-    // Reduce Stock
-    for (const item of orderItems) {
-      const product = await Product.findById(item.product);
-      if (product && product.stockBySize && product.stockBySize[item.size] !== undefined) {
-        product.stockBySize[item.size] -= item.quantity;
-        if (product.stockBySize[item.size] < 0) product.stockBySize[item.size] = 0;
-        
-        // Recalculate total countInStock
-        product.countInStock = Object.values(product.stockBySize).reduce((sum, val) => sum + val, 0);
-        
-        await product.save();
+    // Reduce Stock only if it was not already reserved during the payment order phase (i.e. Cash on Delivery or unpaid order)
+    if (!createdOrder.isPaid) {
+      for (const item of orderItems) {
+        const product = await Product.findById(item.product);
+        if (product && product.stockBySize && product.stockBySize[item.size] !== undefined) {
+          product.stockBySize[item.size] -= item.quantity;
+          if (product.stockBySize[item.size] < 0) product.stockBySize[item.size] = 0;
+          
+          // Recalculate total countInStock
+          product.countInStock = Object.values(product.stockBySize).reduce((sum, val) => sum + val, 0);
+          
+          await product.save();
+        }
       }
     }
 

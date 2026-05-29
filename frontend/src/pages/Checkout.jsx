@@ -5,7 +5,7 @@ import { ChevronRight, CreditCard, Truck, CheckCircle2, ShieldCheck, MapPin, Pho
 import API_URL from '../config';
 
 const Checkout = () => {
-  const { cartItems, cartTotal, placeOrder, createPaymentOrder, verifyPayment, showAlert } = useCart();
+  const { cartItems, cartTotal, placeOrder, createPaymentOrder, verifyPayment, releasePaymentStock, showAlert } = useCart();
   const navigate = useNavigate();
   const [step, setStep] = useState(1); // 1: Shipping, 2: Review & Payment
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -161,10 +161,14 @@ const Checkout = () => {
               setOrderPlaced(true);
             } else {
               setIsSubmitting(false);
+              // Safe fallback: release stock if order failed to save in DB after payment verification
+              await releasePaymentStock(cartItems);
             }
           } else {
             setIsSubmitting(false);
             showAlert('Payment Verification Failed', 'We could not verify your payment. Please contact support.');
+            // Release stock on payment verification failure
+            await releasePaymentStock(cartItems);
           }
         },
         prefill: {
@@ -176,8 +180,10 @@ const Checkout = () => {
           color: '#84624D'
         },
         modal: {
-          ondismiss: () => {
+          ondismiss: async () => {
             setIsSubmitting(false);
+            // Release reserved stock if customer cancels checkout
+            await releasePaymentStock(cartItems);
           }
         }
       };
@@ -188,6 +194,8 @@ const Checkout = () => {
       console.error('Payment flow error:', error);
       showAlert('Payment Error', error.message || 'There was a problem initiating your payment.');
       setIsSubmitting(false);
+      // Release reserved stock if error occurred during initiation phase
+      await releasePaymentStock(cartItems);
     }
   };
 

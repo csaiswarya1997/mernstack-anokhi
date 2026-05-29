@@ -155,7 +155,7 @@ export const CartProvider = ({ children }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userInfo?.token}`
         },
-        body: JSON.stringify({ amount })
+        body: JSON.stringify({ amount, cartItems })
       });
 
       const data = await res.json();
@@ -188,13 +188,32 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const releasePaymentStock = async (items) => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (!userInfo || !userInfo.token) return;
+
+      await fetch(`${API_URL}/api/payment/release`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userInfo?.token}`
+        },
+        body: JSON.stringify({ cartItems: items })
+      });
+      console.log('[PAYMENT] Stock release API triggered successfully');
+    } catch (err) {
+      console.error('Error releasing payment stock:', err);
+    }
+  };
+
   const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   return (
     <CartContext.Provider value={{ 
       cartItems, orders, addToCart, removeFromCart, updateQuantity, 
-      clearCart, placeOrder, createPaymentOrder, verifyPayment, cartTotal, cartCount,
+      clearCart, placeOrder, createPaymentOrder, verifyPayment, releasePaymentStock, cartTotal, cartCount,
       showAlert, showConfirm
     }}>
       {children}
