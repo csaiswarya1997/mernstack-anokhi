@@ -28,6 +28,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminBespoke from './pages/admin/AdminBespoke';
 import AdminBespokeDetails from './pages/admin/AdminBespokeDetails';
 import AdminEnquiries from './pages/admin/AdminEnquiries';
+import AdminRestock from './pages/admin/AdminRestock';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminUsers from './pages/admin/AdminUsers';
 
@@ -84,6 +85,7 @@ function App() {
               <Route path="bespoke" element={<AdminBespoke />} />
               <Route path="bespoke/:id" element={<AdminBespokeDetails />} />
               <Route path="enquiries" element={<AdminEnquiries />} />
+              <Route path="restock" element={<AdminRestock />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>

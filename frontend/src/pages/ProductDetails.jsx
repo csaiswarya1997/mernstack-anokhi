@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Minus, Plus, ShoppingCart, Star, MessageSquare, ChevronLeft, ChevronRight, Truck, ShieldCheck, RefreshCw, Clock, ChevronDown, Info, Ruler, Heart, Share2, AlignLeft, X, Maximize2, Sparkles } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, Star, MessageSquare, ChevronLeft, ChevronRight, Truck, ShieldCheck, RefreshCw, Clock, ChevronDown, Info, Ruler, Heart, Share2, AlignLeft, X, Maximize2, Sparkles, Bell } from 'lucide-react';
 import API_URL from '../config';
 import ProductCard from '../components/ProductCard';
 
@@ -24,10 +24,58 @@ const ProductDetails = () => {
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
 
+  // Restock Notification States
+  const [isRestockModalOpen, setIsRestockModalOpen] = useState(false);
+  const [restockName, setRestockName] = useState('');
+  const [restockEmail, setRestockEmail] = useState('');
+  const [restockPhone, setRestockPhone] = useState('');
+  const [isSubmittingRestock, setIsSubmittingRestock] = useState(false);
+
   // Review form states
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewName, setReviewName] = useState('');
   const [reviewComment, setReviewComment] = useState('');
+
+  // Prefill restock request modal when user info is available
+  useEffect(() => {
+    if (isRestockModalOpen && userInfo) {
+      setRestockName(userInfo.name || '');
+      setRestockEmail(userInfo.email || '');
+      setRestockPhone(userInfo.phone || '');
+    }
+  }, [isRestockModalOpen, userInfo]);
+
+  const handleRestockSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmittingRestock(true);
+    try {
+      const res = await fetch(`${API_URL}/api/products/${id}/restock-notification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: restockName,
+          email: restockEmail,
+          phone: restockPhone,
+          size: selectedSize
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setIsRestockModalOpen(false);
+        showAlert('Success', data.message || 'You have been added to the waitlist!');
+        setRestockName('');
+        setRestockEmail('');
+        setRestockPhone('');
+      } else {
+        showAlert('Waitlist Info', data.message || 'Failed to register. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      showAlert('Error', 'Something went wrong. Please check your connection.');
+    } finally {
+      setIsSubmittingRestock(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProductAndRelated = async () => {
@@ -452,18 +500,24 @@ const ProductDetails = () => {
                 const cartItem = cartItems ? cartItems.find(item => (item.id === product._id || item._id === product._id) && item.size === size) : null;
                 const cartQty = cartItem ? cartItem.quantity : 0;
                 const displayedStock = Math.max(0, stockNum - cartQty);
+                const isOut = displayedStock === 0;
                 return (
                   <motion.button
-                    whileHover={displayedStock > 0 ? { y: -2, shadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" } : {}}
-                    whileTap={displayedStock > 0 ? { scale: 0.95 } : {}}
+                    whileHover={{ y: -2, shadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+                    whileTap={{ scale: 0.95 }}
                     key={size}
-                    disabled={displayedStock === 0}
                     onClick={() => setSelectedSize(size)}
                     className={`min-w-[56px] h-14 rounded-lg border flex flex-col items-center justify-center font-sans transition-all
-                      ${selectedSize === size ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : displayedStock === 0 ? 'bg-gray-50 text-gray-300 border-gray-100' : 'bg-white text-primary border-gray-100 hover:border-primary'}`}
+                      ${selectedSize === size 
+                        ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' 
+                        : isOut 
+                          ? 'bg-gray-50 text-gray-400 border-dashed border-gray-300 hover:border-gray-400 opacity-80' 
+                          : 'bg-white text-primary border-gray-100 hover:border-primary'}`}
                   >
-                    <span className="text-sm font-bold">{size}</span>
-                    <span className="text-[8px] uppercase mt-1 font-bold opacity-60">{displayedStock === 0 ? 'Sold' : `${displayedStock} Left`}</span>
+                    <span className={`text-sm font-bold ${isOut && selectedSize !== size ? 'line-through decoration-gray-300' : ''}`}>{size}</span>
+                    <span className="text-[8px] uppercase mt-1 font-bold opacity-60">
+                      {isOut ? 'Sold Out' : `${displayedStock} Left`}
+                    </span>
                   </motion.button>
                 );
               })}
@@ -471,22 +525,29 @@ const ProductDetails = () => {
           </div>
 
           <div className="space-y-4 pt-2">
-            <motion.button
-              whileHover={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 1.02, backgroundColor: "#2d3436" } : {}}
-              whileTap={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 0.98 } : {}}
-              disabled={displayedCountInStock === 0 || !selectedSize || selectedSizeDisplayedStock === 0}
-              onClick={() => selectedSize && addToCart({ ...product, size: selectedSize })}
-              className={`w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl
-                ${(!selectedSize || selectedSizeDisplayedStock === 0) ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-primaryContainer text-white shadow-primaryContainer/20'}`}
-            >
-              {product.countInStock === 0 || displayedCountInStock === 0 
-                ? 'Out of Stock' 
-                : !selectedSize 
+            {selectedSize && selectedSizeDisplayedStock === 0 ? (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsRestockModalOpen(true)}
+                className="w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl bg-secondary text-white hover:bg-secondary/90 flex items-center justify-center gap-2"
+              >
+                <Bell size={12} className="animate-pulse" /> Notify Me When Restocked
+              </motion.button>
+            ) : (
+              <motion.button
+                whileHover={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 1.02, backgroundColor: "#2d3436" } : {}}
+                whileTap={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 0.98 } : {}}
+                disabled={!selectedSize}
+                onClick={() => selectedSize && addToCart({ ...product, size: selectedSize })}
+                className={`w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl
+                  ${!selectedSize ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-primaryContainer text-white shadow-primaryContainer/20'}`}
+              >
+                {!selectedSize 
                   ? 'Select a Size' 
-                  : selectedSizeDisplayedStock === 0 
-                    ? 'Limit Reached (All in Bag)' 
-                    : `Add to Bag — ₹${(product.price || 0).toLocaleString('en-IN')}`}
-            </motion.button>
+                  : `Add to Bag — ₹${(product.price || 0).toLocaleString('en-IN')}`}
+              </motion.button>
+            )}
           </div>
 
           {/* Description */}
@@ -629,6 +690,93 @@ const ProductDetails = () => {
           </motion.div>
         </motion.section>
       )}
+
+      {/* RESTOCK WAITLIST MODAL */}
+      <AnimatePresence>
+        {isRestockModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0, scale: 0.95 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 50, opacity: 0, scale: 0.95 }}
+              className="bg-white max-w-md w-full overflow-hidden rounded-[1.5rem] shadow-2xl border border-gray-100"
+            >
+              <div className="relative p-8">
+                <button
+                  onClick={() => setIsRestockModalOpen(false)}
+                  className="absolute top-6 right-6 text-gray-400 hover:text-primary transition-colors p-2"
+                >
+                  <X size={20} />
+                </button>
+
+                <div className="space-y-6">
+                  <div className="text-center space-y-2 pt-2">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto text-primaryContainer">
+                      <Bell size={24} />
+                    </div>
+                    <h2 className="text-2xl font-serif text-primary italic pt-2">Notify Me</h2>
+                    <p className="text-xs text-gray-500 font-sans leading-relaxed">
+                      Be the first to know when <strong>{product.name}</strong> (Size <strong>{selectedSize}</strong>) is back in stock.
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleRestockSubmit} className="space-y-4">
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-gray-400">Full Name *</label>
+                      <input
+                        required
+                        type="text"
+                        value={restockName}
+                        onChange={(e) => setRestockName(e.target.value)}
+                        className="w-full border-b border-gray-200 py-2 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-gray-400">Email Address *</label>
+                      <input
+                        required
+                        type="email"
+                        value={restockEmail}
+                        onChange={(e) => setRestockEmail(e.target.value)}
+                        className="w-full border-b border-gray-200 py-2 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-gray-400">Phone Number (Optional)</label>
+                      <input
+                        type="tel"
+                        value={restockPhone}
+                        onChange={(e) => setRestockPhone(e.target.value)}
+                        className="w-full border-b border-gray-200 py-2 outline-none focus:border-primary transition-colors bg-transparent font-sans text-sm"
+                        placeholder="Enter your phone number"
+                      />
+                    </div>
+
+                    <div className="pt-4">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        disabled={isSubmittingRestock}
+                        className="w-full py-4 bg-primary text-white rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-lg hover:shadow-2xl transition-all flex items-center justify-center gap-2"
+                      >
+                        {isSubmittingRestock ? 'Submitting...' : 'Send Request'}
+                      </motion.button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
