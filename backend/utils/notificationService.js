@@ -240,3 +240,64 @@ export const sendOrderWhatsApp = async (order) => {
   // Otherwise fallback to Twilio
   return sendOrderWhatsAppTwilio(order);
 };
+
+/**
+ * Send Restock Notification Email
+ * @param {Object} request - The RestockNotification document
+ * @param {string} origin - Frontend origin URL for product redirection
+ */
+export const sendRestockEmail = async (request, origin = 'http://localhost:5173') => {
+  const { name, email, productName, size, product } = request;
+  
+  const productUrl = `${origin}/product/${product}`;
+
+  const emailHtml = `
+    <div style="font-family: 'Playfair Display', serif; color: #1a1a1a; max-width: 600px; margin: auto; border: 1px solid #b69a83; padding: 40px; background-color: #fff;">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #84624D; margin: 0; font-size: 32px; letter-spacing: 2px;">ZALOURA</h1>
+        <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 10px; margin-top: 5px; color: #666;">Boutique & Atelier</p>
+      </div>
+      
+      <div style="border-bottom: 2px solid #f9f6f2; padding-bottom: 20px; margin-bottom: 30px; text-align: center;">
+        <h2 style="font-size: 22px; margin-bottom: 10px; color: #84624D; font-style: italic;">Back In Stock!</h2>
+        <p style="font-size: 14px; color: #666; line-height: 1.6;">Dear ${name}, good news! Your selected masterpiece is back in stock.</p>
+      </div>
+
+      <div style="background-color: #f9f6f2; padding: 30px; border-radius: 12px; font-size: 14px; line-height: 1.6; margin-bottom: 30px; text-align: center;">
+        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #1a1a1a;">${productName}</p>
+        <p style="margin: 5px 0 15px; color: #84624D; font-weight: bold;">Size: ${size}</p>
+        
+        <a href="${productUrl}" style="display: inline-block; background-color: #84624D; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          Acquire Masterpiece
+        </a>
+      </div>
+
+      <p style="font-size: 12px; color: #666; line-height: 1.6; text-align: center;">
+        Due to high request rates, inventory is extremely limited and we cannot guarantee availability. We recommend checking out as soon as possible.
+      </p>
+
+      <div style="text-align: center; margin-top: 40px; font-size: 11px; color: #999; border-top: 1px solid #eee; padding-top: 20px;">
+        <p>© 2026 Zaloura Boutique. All rights reserved.</p>
+        <p>This is an automated restock alert. Please do not reply.</p>
+      </div>
+    </div>
+  `;
+
+  try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.log(`[EMAIL SIMULATION] Restock Email simulation for ${email}. Link: ${productUrl}`);
+      return;
+    }
+
+    await transporter.sendMail({
+      from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `Restocked! ${productName} (Size ${size}) is now available`,
+      html: emailHtml
+    });
+    
+    console.log(`[NOTIFICATION] Restock Email sent successfully to ${email}`);
+  } catch (error) {
+    console.error('Error sending restock notification email:', error);
+  }
+};

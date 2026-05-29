@@ -1,5 +1,6 @@
 import Product from '../models/Product.js';
 import RestockNotification from '../models/RestockNotification.js';
+import { sendRestockEmail } from '../utils/notificationService.js';
 
 // @desc    Create a new restock notification request
 // @route   POST /api/products/:id/restock-notification
@@ -90,8 +91,15 @@ export const updateStatus = async (req, res) => {
       return res.status(404).json({ message: 'Restock notification request not found.' });
     }
 
+    const previousStatus = request.status;
     request.status = status;
     const updatedRequest = await request.save();
+
+    // Trigger Restock Notification Email if status changes to Notified
+    if (status === 'Notified' && previousStatus !== 'Notified') {
+      // Fire and forget email dispatch in background
+      sendRestockEmail(updatedRequest, req.headers.origin);
+    }
 
     res.json(updatedRequest);
   } catch (error) {
