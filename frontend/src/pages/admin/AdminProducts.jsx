@@ -56,7 +56,7 @@ const AdminProducts = () => {
     category: 'Kurti',
     productCode: '',
     description: '',
-    stockBySize: { S: 0, M: 0, L: 0, XL: 0 }
+    stockBySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 }
   });
   const [images, setImages] = useState([]); // Array of File objects
 
@@ -81,7 +81,7 @@ const AdminProducts = () => {
       category: product.category,
       productCode: product.productCode || '',
       description: product.description,
-      stockBySize: product.stockBySize || { S: 0, M: 0, L: 0, XL: 0 }
+      stockBySize: product.stockBySize || { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 }
     });
     setImages(product.images && product.images.length > 0 ? product.images : [product.image]);
     setEditingProductId(product._id);
@@ -112,7 +112,7 @@ const AdminProducts = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', price: '', originalPrice: '', category: 'Kurti', productCode: '', description: '', stockBySize: { S: 0, M: 0, L: 0, XL: 0 } });
+    setFormData({ name: '', price: '', originalPrice: '', category: 'Kurti', productCode: '', description: '', stockBySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 } });
     setImages([]);
     setEditingProductId(null);
     setShowForm(false);
@@ -207,10 +207,12 @@ const AdminProducts = () => {
         originalPrice: Number(formData.originalPrice),
         price: formData.price ? Number(formData.price) : Number(formData.originalPrice),
         stockBySize: {
+          XS: Number(formData.stockBySize.XS || 0),
           S: Number(formData.stockBySize.S || 0),
           M: Number(formData.stockBySize.M || 0),
           L: Number(formData.stockBySize.L || 0),
           XL: Number(formData.stockBySize.XL || 0),
+          XXL: Number(formData.stockBySize.XXL || 0),
         }
       };
 
@@ -312,8 +314,8 @@ const AdminProducts = () => {
               </div>
               <div className="md:col-span-2">
                 <label className="block text-xs uppercase tracking-widest font-sans font-semibold text-primary mb-4">Stock by Size</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {['S', 'M', 'L', 'XL'].map(size => (
+                <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
+                  {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
                     <div key={size}>
                       <label className="block text-[10px] uppercase tracking-widest font-sans font-semibold text-secondary mb-1">Size {size}</label>
                       <input 
@@ -456,7 +458,21 @@ const AdminProducts = () => {
                       <td className="px-6 py-4 text-secondary">{product.category}</td>
                       <td className="px-6 py-4 font-semibold text-primary">₹{product.price.toLocaleString('en-IN')}</td>
                       <td className="px-6 py-4 text-secondary/50 line-through">₹{(product.originalPrice || product.price).toLocaleString('en-IN')}</td>
-                      <td className="px-6 py-4 text-secondary">{product.countInStock}</td>
+                      <td className="px-6 py-4">
+                        <div>
+                          <span className="font-bold text-primary">{product.countInStock}</span>
+                          <div className="text-[10px] text-secondary/60 mt-1 font-mono leading-none flex flex-wrap gap-1 max-w-[150px]">
+                            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
+                              const stock = product.stockBySize?.[size] || 0;
+                              return (
+                                <span key={size} className={`px-1 rounded text-[9px] font-bold border ${stock === 0 ? 'bg-red-50/50 text-red-400 border-red-100/50' : 'bg-green-50/50 text-green-600 border-green-100/50'}`}>
+                                  {size}:{stock}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1 text-amber-500 font-bold">
                           <Star size={14} fill="currentColor" />
@@ -510,6 +526,16 @@ const AdminProducts = () => {
                         <span className="text-secondary/40 line-through text-xs">₹{(product.originalPrice || product.price).toLocaleString('en-IN')}</span>
                       </div>
                       <p className="text-[11px] text-secondary">Stock: <span className="font-bold text-primary">{product.countInStock}</span></p>
+                      <div className="text-[10px] text-secondary/60 mt-2 font-mono flex flex-wrap gap-1">
+                        {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
+                          const stock = product.stockBySize?.[size] || 0;
+                          return (
+                            <span key={size} className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${stock === 0 ? 'bg-red-50/50 text-red-400 border-red-100/50' : 'bg-green-50/50 text-green-600 border-green-100/50'}`}>
+                              {size}:{stock}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center bg-surface/50 p-2 rounded-lg border border-champagne/20">

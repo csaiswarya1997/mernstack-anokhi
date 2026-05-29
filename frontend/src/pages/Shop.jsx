@@ -15,9 +15,11 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Filter states
+  // Filter & Sort states
   const [selectedCategories, setSelectedCategories] = useState(category ? [category] : []);
   const [selectedPrices, setSelectedPrices] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [sortBy, setSortBy] = useState('latest');
 
   // Animation Variants
   const containerVariants = {
@@ -102,6 +104,22 @@ const Shop = () => {
           });
         }
 
+        // Sizes in stock
+        if (selectedSizes.length > 0) {
+          filtered = filtered.filter(p =>
+            selectedSizes.some(size => p.stockBySize && p.stockBySize[size] > 0)
+          );
+        }
+
+        // Sorting (Price Low-High, Price High-Low, Latest)
+        if (sortBy === 'lowToHigh') {
+          filtered.sort((a, b) => a.price - b.price);
+        } else if (sortBy === 'highToLow') {
+          filtered.sort((a, b) => b.price - a.price);
+        } else {
+          filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        }
+
         setProducts(filtered);
       } catch (err) {
         console.error('Failed to fetch products', err);
@@ -115,7 +133,7 @@ const Shop = () => {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [selectedCategories, selectedPrices, searchQuery]);
+  }, [selectedCategories, selectedPrices, selectedSizes, searchQuery, sortBy]);
 
   const handleCategoryChange = (cat) => {
     setSelectedCategories(prev =>
@@ -129,6 +147,12 @@ const Shop = () => {
   const handlePriceChange = (range) => {
     setSelectedPrices(prev =>
       prev.includes(range) ? prev.filter(r => r !== range) : [...prev, range]
+    );
+  };
+
+  const handleSizeChange = (size) => {
+    setSelectedSizes(prev =>
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
     );
   };
 
@@ -172,14 +196,24 @@ const Shop = () => {
               <Filter size={14} />
               {isFilterOpen ? 'Hide Filters' : 'Refine Selection'}
             </button>
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="bg-gray-50 border border-gray-100 text-primary hover:border-primary/20 px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] outline-none cursor-pointer transition-all"
+            >
+              <option value="latest">Latest Treasures</option>
+              <option value="lowToHigh">Price: Low to High</option>
+              <option value="highToLow">Price: High to Low</option>
+            </select>
             
             <AnimatePresence>
-              {(selectedCategories.length > 0 || selectedPrices.length > 0 || searchQuery) && (
+              {(selectedCategories.length > 0 || selectedPrices.length > 0 || selectedSizes.length > 0 || searchQuery) && (
                 <motion.button 
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  onClick={() => { setSelectedCategories([]); setSelectedPrices([]); navigate('/shop'); }}
+                  onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate('/shop'); }}
                   className="flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
                 >
                   <X size={14} /> Clear Selection
@@ -255,6 +289,25 @@ const Shop = () => {
                     ))}
                   </ul>
                 </div>
+
+                <div>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 mb-6 border-b border-gray-50 pb-3">Sizes In Stock</h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => {
+                      const isSelected = selectedSizes.includes(size);
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => handleSizeChange(size)}
+                          className={`h-10 rounded-xl border flex items-center justify-center font-sans text-xs font-bold uppercase transition-all
+                            ${isSelected ? 'bg-primary border-primary text-white shadow-lg shadow-primary/10' : 'bg-white border-gray-100 text-secondary/60 hover:border-primary/20'}`}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </motion.aside>
           )}
@@ -299,7 +352,7 @@ const Shop = () => {
                   <h3 className="text-2xl font-serif text-primary mb-3 tracking-tighter italic">No matching pieces found</h3>
                   <p className="text-secondary/50 text-sm mb-10 max-w-xs mx-auto font-sans">Try refining your selection or resetting your search to explore the atelier.</p>
                   <button
-                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); navigate('/shop'); }}
+                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate('/shop'); }}
                     className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-2xl hover:bg-primaryContainer transition-all"
                   >
                     Reset Selection

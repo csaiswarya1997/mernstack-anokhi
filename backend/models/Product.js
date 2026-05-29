@@ -13,10 +13,12 @@ const productSchema = mongoose.Schema(
     restockedAt: { type: Date },
     countInStock: { type: Number, required: true, default: 0 },
     stockBySize: {
+      XS: { type: Number, default: 0 },
       S: { type: Number, default: 0 },
       M: { type: Number, default: 0 },
       L: { type: Number, default: 0 },
-      XL: { type: Number, default: 0 }
+      XL: { type: Number, default: 0 },
+      XXL: { type: Number, default: 0 }
     },
     sizes: [{ type: String }],
     reviews: [

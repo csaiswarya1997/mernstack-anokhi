@@ -14,6 +14,23 @@ const createOrder = async (req, res) => {
       return;
     }
 
+    // Verify stock availability for all items before saving the order
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        res.status(404).json({ message: `Product not found: ${item.name || 'Unknown'}` });
+        return;
+      }
+      
+      const availableStock = product.stockBySize?.[item.size] || 0;
+      if (availableStock < item.quantity) {
+        res.status(400).json({ 
+          message: `Insufficient stock: only ${availableStock} left for ${product.name} in size ${item.size}.` 
+        });
+        return;
+      }
+    }
+
     const order = new Order({
       user: req.user._id,
       orderItems,

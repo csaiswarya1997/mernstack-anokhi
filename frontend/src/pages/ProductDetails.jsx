@@ -170,7 +170,7 @@ const ProductDetails = () => {
   ].filter(Boolean);
 
   const uniqueImages = [...new Set(allImages)];
-  const sizes = ['S', 'M', 'L', 'XL'];
+  const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   const nextImage = () => {
     const currentIndex = uniqueImages.indexOf(mainImage);
@@ -312,13 +312,13 @@ const ProductDetails = () => {
                         </tr>
                       </thead>
                       <tbody className="text-xs md:text-sm font-sans text-secondary">
-                        {['S', 'M', 'L', 'XL'].map((s, idx) => (
+                        {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((s, idx) => (
                           <tr key={s} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group">
                             <td className="py-4 md:py-6 font-bold group-hover:text-primary transition-colors">{s}</td>
+                            <td className="py-4 md:py-6">{32 + idx * 2} - {34 + idx * 2}</td>
+                            <td className="py-4 md:py-6">{26 + idx * 2} - {28 + idx * 2}</td>
                             <td className="py-4 md:py-6">{34 + idx * 2} - {36 + idx * 2}</td>
-                            <td className="py-4 md:py-6">{28 + idx * 2} - {30 + idx * 2}</td>
-                            <td className="py-4 md:py-6">{36 + idx * 2} - {38 + idx * 2}</td>
-                            <td className="py-4 md:py-6">{44 + idx}</td>
+                            <td className="py-4 md:py-6">{43 + idx}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -445,8 +445,9 @@ const ProductDetails = () => {
                 Size Guide
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-3">
-              {Object.entries(product.stockBySize || { S: 0, M: 0, L: 0, XL: 0 }).map(([size, stock]) => {
+            <div className="grid grid-cols-6 gap-3">
+              {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
+                const stock = product.stockBySize?.[size] || 0;
                 const stockNum = Number(stock || 0);
                 const cartItem = cartItems ? cartItems.find(item => (item.id === product._id || item._id === product._id) && item.size === size) : null;
                 const cartQty = cartItem ? cartItem.quantity : 0;
