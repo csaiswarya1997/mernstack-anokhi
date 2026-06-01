@@ -159,6 +159,69 @@ export const sendOrderEmail = async (order) => {
 };
 
 /**
+ * Send Shipping Confirmation Email
+ * @param {Object} order - The updated order object
+ */
+export const sendShippingEmail = async (order) => {
+  const { _id, shippingInfo, orderItems } = order;
+  
+  const itemsHtml = orderItems.map(item => `
+    <tr>
+      <td style="padding: 10px; border-bottom: 1px solid #eee;">
+        <strong>${item.name}</strong><br/>
+        <small>Size: ${item.size} | Qty: ${item.quantity}</small>
+      </td>
+    </tr>
+  `).join('');
+
+  const emailHtml = `
+    <div style="font-family: 'Playfair Display', serif; color: #1a1a1a; max-width: 600px; margin: auto; border: 1px solid #b69a83; padding: 40px; background-color: #fff;">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #84624D; margin: 0; font-size: 32px; letter-spacing: 2px;">ZALOURA</h1>
+        <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 10px; margin-top: 5px; color: #666;">Boutique & Atelier</p>
+      </div>
+      
+      <div style="border-bottom: 2px solid #f9f6f2; padding-bottom: 20px; margin-bottom: 30px; text-align: center;">
+        <h2 style="font-size: 22px; margin-bottom: 10px; color: #84624D; font-style: italic;">On Its Way!</h2>
+        <p style="font-size: 14px; color: #666; line-height: 1.6;">Dear ${shippingInfo.firstName}, great news! Your handcrafted masterpiece has been dispatched and is now on its way to you.</p>
+        <p style="font-size: 12px; color: #b69a83; font-weight: bold;">Order ID: #${_id.toString().substring(18, 24).toUpperCase()}</p>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 30px;">
+        <thead>
+          <tr style="background-color: #f9f6f2;">
+            <th style="padding: 10px; text-align: left;">Dispatched Item Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemsHtml}
+        </tbody>
+      </table>
+
+      <div style="background-color: #f9f6f2; padding: 20px; border-radius: 8px; font-size: 12px; line-height: 1.6;">
+        <p style="margin: 0; font-weight: bold; color: #b69a83; text-transform: uppercase; margin-bottom: 5px;">Shipping Destination:</p>
+        <p style="margin: 0;">${shippingInfo.address}, ${shippingInfo.city}</p>
+        <p style="margin: 0;">${shippingInfo.state} - ${shippingInfo.postalCode}, ${shippingInfo.country}</p>
+        <p style="margin: 5px 0 0; font-weight: bold;">Phone: ${shippingInfo.phone}</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; font-size: 11px; color: #999; border-top: 1px solid #eee; padding-top: 20px;">
+        <p>© 2026 Zaloura Boutique. All rights reserved.</p>
+        <p>This is an automated shipping notification. Please do not reply.</p>
+      </div>
+    </div>
+  `;
+
+  const customerName = `${shippingInfo.firstName} ${shippingInfo.lastName || ''}`.trim();
+  await sendEmailHelper({
+    to: shippingInfo.email,
+    name: customerName,
+    subject: `Your Zaloura Masterpiece has Shipped! #${_id.toString().substring(18, 24).toUpperCase()}`,
+    html: emailHtml
+  });
+};
+
+/**
  * Send Order Confirmation SMS
  * @param {Object} order - The created order object
  */

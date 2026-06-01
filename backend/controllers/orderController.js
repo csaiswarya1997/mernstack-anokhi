@@ -1,6 +1,6 @@
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
-import { sendOrderEmail, sendOrderSMS, sendOrderWhatsApp } from '../utils/notificationService.js';
+import { sendOrderEmail, sendOrderSMS, sendOrderWhatsApp, sendShippingEmail } from '../utils/notificationService.js';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -100,6 +100,11 @@ const updateOrderStatus = async (req, res) => {
       const oldStatus = order.status;
       order.status = status;
       const updatedOrder = await order.save();
+
+      // Trigger Shipping Confirmation Email if status changes to Shipped
+      if (status === 'Shipped' && oldStatus !== 'Shipped') {
+        sendShippingEmail(updatedOrder);
+      }
 
       // Handle Stock restoration/reduction on status change
       if (status === 'Cancelled' && oldStatus !== 'Cancelled') {
