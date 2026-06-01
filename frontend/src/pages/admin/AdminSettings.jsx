@@ -147,7 +147,7 @@ const AdminSettings = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto pb-24">
+    <div className="max-w-7xl mx-auto pb-24">
       <div className="mb-12">
         <h1 className="text-4xl font-serif text-primary">Store Configuration</h1>
         <p className="text-xs text-secondary/40 uppercase tracking-[0.2em] font-bold mt-2">Manage Public Contact Information</p>

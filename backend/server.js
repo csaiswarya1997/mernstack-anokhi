@@ -11,6 +11,8 @@ import userRoutes from './routes/userRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import mediaRoutes from './routes/mediaRoutes.js';
 import User from './models/User.js';
 
 dotenv.config();
@@ -63,6 +65,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/media', mediaRoutes);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

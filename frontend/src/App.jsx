@@ -32,6 +32,7 @@ import AdminEnquiries from './pages/admin/AdminEnquiries';
 import AdminRestock from './pages/admin/AdminRestock';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminMedia from './pages/admin/AdminMedia';
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
               <Route path="enquiries" element={<AdminEnquiries />} />
               <Route path="restock" element={<AdminRestock />} />
               <Route path="users" element={<AdminUsers />} />
+              <Route path="media" element={<AdminMedia />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Routes>
