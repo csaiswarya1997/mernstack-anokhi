@@ -20,6 +20,59 @@ const getTransporter = () => {
   return transporter;
 };
 
+// Generic Email Helper with Brevo HTTP API and SMTP Fallback
+const sendEmailHelper = async ({ to, name, subject, html }) => {
+  if (process.env.BREVO_API_KEY) {
+    try {
+      console.log(`[NOTIFICATION] Attempting to send email via Brevo HTTP API to ${to}...`);
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': process.env.BREVO_API_KEY,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'Zaloura Boutique', email: 'zaloura.in@gmail.com' },
+          to: [{ email: to, name: name || '' }],
+          subject: subject,
+          htmlContent: html
+        })
+      });
+      
+      const result = await response.json();
+      if (response.ok) {
+        console.log(`[NOTIFICATION] Email sent via Brevo HTTP API successfully to ${to}`);
+        return true;
+      } else {
+        console.error('[BREVO API ERROR]:', result);
+      }
+    } catch (error) {
+      console.error('Error sending email via Brevo HTTP API:', error);
+    }
+  }
+
+  // Fallback to standard SMTP
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log(`[EMAIL SIMULATION] SMTP credentials missing. Simulation for ${to}`);
+    return false;
+  }
+
+  try {
+    await getTransporter().sendMail({
+      from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
+      to: to,
+      subject: subject,
+      html: html
+    });
+    console.log(`[NOTIFICATION] Email sent via SMTP successfully to ${to}`);
+    return true;
+  } catch (error) {
+    console.error('Error sending email via SMTP:', error);
+    return false;
+  }
+};
+
 // Lazy-initialized Twilio Client
 let twilioClient;
 const getTwilioClient = () => {
@@ -96,23 +149,13 @@ export const sendOrderEmail = async (order) => {
     </div>
   `;
 
-  try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log(`[EMAIL SIMULATION] Credentials missing. Confirmation for ${shippingInfo.email}`);
-      return;
-    }
-
-    await getTransporter().sendMail({
-      from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
-      to: shippingInfo.email,
-      subject: `Zaloura Order Confirmation #${_id.toString().substring(18, 24).toUpperCase()}`,
-      html: emailHtml
-    });
-    
-    console.log(`[NOTIFICATION] Confirmation Email sent to ${shippingInfo.email}`);
-  } catch (error) {
-    console.error('Error sending order confirmation email:', error);
-  }
+  const customerName = `${shippingInfo.firstName} ${shippingInfo.lastName || ''}`.trim();
+  await sendEmailHelper({
+    to: shippingInfo.email,
+    name: customerName,
+    subject: `Zaloura Order Confirmation #${_id.toString().substring(18, 24).toUpperCase()}`,
+    html: emailHtml
+  });
 };
 
 /**
@@ -304,21 +347,10 @@ export const sendRestockEmail = async (request, origin) => {
     </div>
   `;
 
-  try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log(`[EMAIL SIMULATION] Restock Email simulation for ${email}. Link: ${productUrl}`);
-      return;
-    }
-
-    await getTransporter().sendMail({
-      from: `"Zaloura Boutique" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: `Restocked! ${productName} (Size ${size}) is now available`,
-      html: emailHtml
-    });
-    
-    console.log(`[NOTIFICATION] Restock Email sent successfully to ${email}`);
-  } catch (error) {
-    console.error('Error sending restock notification email:', error);
-  }
+  await sendEmailHelper({
+    to: email,
+    name: name,
+    subject: `Restocked! ${productName} (Size ${size}) is now available`,
+    html: emailHtml
+  });
 };
