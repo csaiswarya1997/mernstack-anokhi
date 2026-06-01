@@ -358,6 +358,14 @@ const Profile = () => {
                                 <p className="text-[10px] lg:text-xs font-mono font-bold">#{order._id.slice(-8).toUpperCase()}</p>
                               </div>
                               <div>
+                                <p className={`text-[7px] lg:text-[8px] uppercase tracking-widest font-bold ${isExpanded ? 'text-white/60' : 'text-gray-400'}`}>Placed On</p>
+                                <p className="text-[10px] lg:text-xs font-bold">{new Date(order.createdAt).toLocaleDateString()}</p>
+                              </div>
+                              <div>
+                                <p className={`text-[7px] lg:text-[8px] uppercase tracking-widest font-bold ${isExpanded ? 'text-white/60' : 'text-gray-400'}`}>Last Updated</p>
+                                <p className="text-[10px] lg:text-xs font-bold">{new Date(order.updatedAt).toLocaleDateString()}</p>
+                              </div>
+                              <div>
                                 <p className={`text-[7px] lg:text-[8px] uppercase tracking-widest font-bold ${isExpanded ? 'text-white/60' : 'text-gray-400'}`}>Investment</p>
                                 <p className="text-[10px] lg:text-xs font-bold">₹{order.totalPrice.toLocaleString('en-IN')}</p>
                               </div>

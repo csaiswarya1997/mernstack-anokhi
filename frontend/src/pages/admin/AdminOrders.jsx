@@ -354,7 +354,10 @@ const AdminOrders = ({ filter }) => {
                     .map(order => (
                       <tr key={order._id} className="hover:bg-surface/50 transition-colors">
                         <td className="px-6 py-4 font-mono text-secondary text-xs">{order._id.substring(18, 24)}</td>
-                        <td className="px-6 py-4 text-secondary">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-secondary">
+                          <p className="font-semibold text-xs text-primary">Pl: {new Date(order.createdAt).toLocaleDateString()}</p>
+                          <p className="text-[10px] text-gray-400 mt-0.5">Up: {new Date(order.updatedAt).toLocaleDateString()}</p>
+                        </td>
                         <td className="px-6 py-4">
                           <p className="text-primary font-semibold">{order.shippingInfo.firstName} {order.shippingInfo.lastName}</p>
                           <p className="text-secondary text-xs">{order.shippingInfo.city}</p>
@@ -435,7 +438,7 @@ const AdminOrders = ({ filter }) => {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-[10px] font-mono text-secondary uppercase tracking-widest">ID: {order._id.substring(18, 24)}</p>
-                        <p className="text-xs text-secondary/60 mt-0.5">{new Date(order.createdAt).toLocaleDateString()}</p>
+                        <p className="text-[10px] text-secondary/60 mt-0.5">Pl: {new Date(order.createdAt).toLocaleDateString()} | Up: {new Date(order.updatedAt).toLocaleDateString()}</p>
                       </div>
                       <select
                         value={order.status}
@@ -522,6 +525,14 @@ const AdminOrders = ({ filter }) => {
                     <span className="px-2 py-0.5 bg-primaryContainer/10 text-primaryContainer text-[10px] font-bold rounded uppercase tracking-wider">
                       {selectedOrder.status}
                     </span>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase text-secondary font-semibold mb-1">Date Placed</p>
+                    <p className="text-primary text-xs">{new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase text-secondary font-semibold mb-1">Last Updated</p>
+                    <p className="text-primary text-xs">{new Date(selectedOrder.updatedAt).toLocaleString()}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-[10px] uppercase text-secondary font-semibold mb-1">Shipping Address</p>
