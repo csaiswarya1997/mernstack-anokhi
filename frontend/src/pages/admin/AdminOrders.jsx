@@ -589,6 +589,39 @@ const AdminOrders = ({ filter }) => {
                 </div>
               </div>
 
+              {/* Payment Details */}
+              <div>
+                <h3 className="text-xs uppercase tracking-widest font-sans font-bold text-secondary mb-4 border-b border-champagne/30 pb-1">Payment Details</h3>
+                <div className="bg-surface p-4 rounded-lg border border-champagne/50 space-y-3 font-sans text-sm text-secondary">
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-xs uppercase tracking-wider text-gray-400">Payment Status</span>
+                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider ${selectedOrder.isPaid ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'}`}>
+                      {selectedOrder.isPaid ? 'Paid' : 'Unpaid'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-xs uppercase tracking-wider text-gray-400">Method</span>
+                    <span className="text-primary font-semibold">Razorpay Online</span>
+                  </div>
+                  {selectedOrder.paymentResult && selectedOrder.paymentResult.id && (
+                    <>
+                      <div className="flex justify-between">
+                        <span className="font-semibold text-xs uppercase tracking-wider text-gray-400">Razorpay Payment ID</span>
+                        <span className="font-mono text-xs text-primary font-bold">{selectedOrder.paymentResult.id}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-semibold text-xs uppercase tracking-wider text-gray-400">Transaction Time</span>
+                        <span className="text-xs text-primary">{new Date(selectedOrder.paymentResult.update_time).toLocaleString()}</span>
+                      </div>
+                    </>
+                  )}
+                  <div className="flex justify-between pt-2 border-t border-champagne/20">
+                    <span className="font-bold text-xs uppercase tracking-wider text-primary">Paid Amount</span>
+                    <span className="font-sans font-bold text-primary text-base">₹{selectedOrder.totalPrice.toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Order Summary */}
               <div className="bg-surface p-4 rounded-lg border border-champagne/50">
                 <div className="flex justify-between items-center text-secondary font-sans text-sm mb-2">
