@@ -7,7 +7,15 @@ const AdminOrders = ({ filter }) => {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [productsMap, setProductsMap] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const { userInfo } = useAuth();
+
+  // Reset filters when order tab switches
+  useEffect(() => {
+    setSearchTerm('');
+    setStatusFilter('All');
+  }, [filter]);
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
@@ -307,6 +315,33 @@ const AdminOrders = ({ filter }) => {
     printWindow.document.close();
   };
 
+  const filteredOrders = orders.filter(order => {
+    // 1. Filter by Route Prop
+    if (filter === 'Processing' && order.status !== 'Processing') return false;
+    if (filter === 'Fulfillment' && !['Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].includes(order.status)) return false;
+    
+    // 2. Filter by Local Status Dropdown
+    if (statusFilter !== 'All' && order.status !== statusFilter) return false;
+
+    // 3. Filter by Search Term (Order ID, Customer Name)
+    if (searchTerm.trim() !== '') {
+      const term = searchTerm.trim().toLowerCase().replace(/^#/, '').replace(/^inv-/, '');
+      
+      const orderIdFull = order._id.toLowerCase();
+      const orderIdShort = order._id.substring(18, 24).toLowerCase();
+      const matchOrderId = orderIdFull.includes(term) || orderIdShort.includes(term);
+
+      const firstName = order.shippingInfo?.firstName?.toLowerCase() || '';
+      const lastName = order.shippingInfo?.lastName?.toLowerCase() || '';
+      const fullName = `${firstName} ${lastName}`;
+      const matchCustomer = firstName.includes(term) || lastName.includes(term) || fullName.includes(term);
+
+      return matchOrderId || matchCustomer;
+    }
+
+    return true;
+  });
+
   return (
     <div>
       <div className="mb-8">
@@ -322,11 +357,38 @@ const AdminOrders = ({ filter }) => {
         </p>
       </div>
 
+      {/* Search and Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <input 
+          type="text" 
+          placeholder="Search orders by ID or customer name..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="flex-1 border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-white text-sm"
+        />
+        {filter !== 'Processing' && (
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full sm:w-48 border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-white text-sm text-primary"
+          >
+            <option value="All">All Statuses</option>
+            {filter !== 'Fulfillment' && <option value="Processing">Processing</option>}
+            <option value="Shipped">Shipped</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        )}
+      </div>
+
       <div className="bg-white rounded-lg shadow-sm border border-champagne/50 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-secondary font-sans">Loading orders...</div>
-        ) : orders.length === 0 ? (
-          <div className="p-8 text-center text-secondary font-sans">No orders have been placed yet.</div>
+        ) : filteredOrders.length === 0 ? (
+          <div className="p-8 text-center text-secondary font-sans">
+            {orders.length === 0 ? 'No orders have been placed yet.' : 'No orders found matching your search and filters.'}
+          </div>
         ) : (
           <>
             {/* Desktop Table View */}
@@ -344,14 +406,7 @@ const AdminOrders = ({ filter }) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-champagne/30">
-                  {orders
-                    .filter(order => {
-                      if (filter === 'Processing') return order.status === 'Processing';
-                      if (filter === 'Fulfillment') return ['Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].includes(order.status);
-                      if (filter === 'Payments') return true;
-                      return true;
-                    })
-                    .map(order => (
+                  {filteredOrders.map(order => (
                       <tr key={order._id} className="hover:bg-surface/50 transition-colors">
                         <td className="px-6 py-4 font-mono text-secondary text-xs">{order._id.substring(18, 24)}</td>
                         <td className="px-6 py-4 text-secondary">
@@ -426,14 +481,7 @@ const AdminOrders = ({ filter }) => {
 
             {/* Mobile Card View */}
             <div className="lg:hidden divide-y divide-champagne/30">
-              {orders
-                .filter(order => {
-                  if (filter === 'Processing') return order.status === 'Processing';
-                  if (filter === 'Fulfillment') return ['Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].includes(order.status);
-                  if (filter === 'Payments') return true; // Show all for now, as they are paid on checkout
-                  return true;
-                })
-                .map(order => (
+              {filteredOrders.map(order => (
                   <div key={order._id} className="p-4 space-y-4">
                     <div className="flex justify-between items-start">
                       <div>

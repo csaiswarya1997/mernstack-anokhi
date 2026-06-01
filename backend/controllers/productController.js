@@ -28,12 +28,13 @@ const getProducts = async (req, res) => {
 
     // 1. Keyword search (Name, description, category, productCode)
     if (keyword) {
+      const cleanKeyword = keyword.trim().replace(/^#/, '');
       andConditions.push({
         $or: [
-          { name: { $regex: keyword, $options: 'i' } },
-          { description: { $regex: keyword, $options: 'i' } },
-          { category: { $regex: keyword, $options: 'i' } },
-          { productCode: { $regex: keyword, $options: 'i' } }
+          { name: { $regex: keyword.trim(), $options: 'i' } },
+          { description: { $regex: keyword.trim(), $options: 'i' } },
+          { category: { $regex: keyword.trim(), $options: 'i' } },
+          { productCode: { $regex: cleanKeyword, $options: 'i' } }
         ]
       });
     }

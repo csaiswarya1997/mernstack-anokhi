@@ -254,9 +254,12 @@ const AdminProducts = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          (product.productCode && product.productCode.toLowerCase().includes(searchTerm.toLowerCase()));
+    const cleanSearch = searchTerm.trim().toLowerCase();
+    const searchWithoutHash = cleanSearch.startsWith('#') ? cleanSearch.substring(1) : cleanSearch;
+    
+    const matchesSearch = product.name.toLowerCase().includes(cleanSearch) ||
+                          product.category.toLowerCase().includes(cleanSearch) ||
+                          (product.productCode && product.productCode.toLowerCase().includes(searchWithoutHash));
     const matchesCategory = filterCategory === 'All' || product.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
@@ -405,7 +408,7 @@ const AdminProducts = () => {
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <input 
           type="text" 
-          placeholder="Search products by name..." 
+          placeholder="Search products by name, category, or code..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-1 border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-surface"

@@ -123,11 +123,14 @@ const AdminRestock = () => {
 
     // Filter by search keyword
     if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+      const term = searchTerm.trim().toLowerCase();
+      const termWithoutHash = term.startsWith('#') ? term.substring(1) : term;
+      
       const matchName = request.name?.toLowerCase().includes(term);
       const matchEmail = request.email?.toLowerCase().includes(term);
       const matchProduct = request.productName?.toLowerCase().includes(term);
-      const matchCode = request.productCode?.toLowerCase().includes(term);
+      const matchCode = request.productCode?.toLowerCase().includes(termWithoutHash);
+      
       return matchName || matchEmail || matchProduct || matchCode;
     }
 

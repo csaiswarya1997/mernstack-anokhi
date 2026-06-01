@@ -25,6 +25,7 @@ import { Toaster } from 'react-hot-toast';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminPayments from './pages/admin/AdminPayments';
 import AdminBespoke from './pages/admin/AdminBespoke';
 import AdminBespokeDetails from './pages/admin/AdminBespokeDetails';
 import AdminEnquiries from './pages/admin/AdminEnquiries';
@@ -81,7 +82,7 @@ function App() {
               <Route path="orders" element={<AdminOrders />} />
               <Route path="orders-processing" element={<AdminOrders filter="Processing" />} />
               <Route path="orders-fulfillment" element={<AdminOrders filter="Fulfillment" />} />
-              <Route path="payments" element={<AdminOrders filter="Payments" />} />
+              <Route path="payments" element={<AdminPayments />} />
               <Route path="bespoke" element={<AdminBespoke />} />
               <Route path="bespoke/:id" element={<AdminBespokeDetails />} />
               <Route path="enquiries" element={<AdminEnquiries />} />
