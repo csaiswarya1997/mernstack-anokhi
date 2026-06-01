@@ -258,10 +258,16 @@ export const sendOrderWhatsApp = async (order) => {
  * @param {Object} request - The RestockNotification document
  * @param {string} origin - Frontend origin URL for product redirection
  */
-export const sendRestockEmail = async (request, origin = 'http://localhost:5173') => {
+export const sendRestockEmail = async (request, origin) => {
   const { name, email, productName, size, product } = request;
   
-  const productUrl = `${origin}/product/${product}`;
+  // Robustly determine the frontend URL
+  let frontendUrl = process.env.FRONTEND_URL || origin;
+  if (!frontendUrl || frontendUrl.includes('localhost:5000') || frontendUrl === 'null' || frontendUrl === 'undefined') {
+    frontendUrl = 'http://localhost:5173';
+  }
+  
+  const productUrl = `${frontendUrl}/product/${product}`;
 
   const emailHtml = `
     <div style="font-family: 'Playfair Display', serif; color: #1a1a1a; max-width: 600px; margin: auto; border: 1px solid #b69a83; padding: 40px; background-color: #fff;">
