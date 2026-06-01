@@ -99,6 +99,17 @@ const updateOrderStatus = async (req, res) => {
     if (order) {
       const oldStatus = order.status;
       order.status = status;
+
+      // Track status change timestamps
+      if (status === 'Shipped' && oldStatus !== 'Shipped') {
+        order.shippedAt = new Date();
+      } else if (status === 'Out for Delivery' && oldStatus !== 'Out for Delivery') {
+        order.outForDeliveryAt = new Date();
+      } else if (status === 'Delivered' && oldStatus !== 'Delivered') {
+        order.deliveredAt = new Date();
+        order.isDelivered = true;
+      }
+
       const updatedOrder = await order.save();
 
       // Trigger Shipping Confirmation Email if status changes to Shipped

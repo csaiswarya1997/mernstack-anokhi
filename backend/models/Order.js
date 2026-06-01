@@ -43,6 +43,9 @@ const orderSchema = mongoose.Schema(
     isPaid: { type: Boolean, required: true, default: false },
     isDelivered: { type: Boolean, required: true, default: false },
     status: { type: String, required: true, default: 'Processing' },
+    shippedAt: { type: Date },
+    outForDeliveryAt: { type: Date },
+    deliveredAt: { type: Date },
   },
   {
     timestamps: true,

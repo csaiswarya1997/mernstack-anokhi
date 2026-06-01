@@ -181,6 +181,25 @@ const Profile = () => {
     return idx === -1 ? 0 : idx;
   };
 
+  const getStepDate = (order, stepKey) => {
+    if (stepKey === 'Processing') {
+      return order.createdAt ? new Date(order.createdAt).toLocaleDateString() : '';
+    }
+    if (stepKey === 'Shipped') {
+      if (order.shippedAt) return new Date(order.shippedAt).toLocaleDateString();
+      if (order.status === 'Shipped') return new Date(order.updatedAt).toLocaleDateString();
+    }
+    if (stepKey === 'Out for Delivery') {
+      if (order.outForDeliveryAt) return new Date(order.outForDeliveryAt).toLocaleDateString();
+      if (order.status === 'Out for Delivery') return new Date(order.updatedAt).toLocaleDateString();
+    }
+    if (stepKey === 'Delivered') {
+      if (order.deliveredAt) return new Date(order.deliveredAt).toLocaleDateString();
+      if (order.status === 'Delivered') return new Date(order.updatedAt).toLocaleDateString();
+    }
+    return '';
+  };
+
   const toggleOrder = (orderId) => {
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
@@ -428,6 +447,11 @@ const Profile = () => {
                                                 <p className={`md:mt-3 text-[9px] md:text-[10px] uppercase tracking-widest font-bold transition-colors ${isStepDone ? 'text-primary' : 'text-gray-300'}`}>
                                                   {step.label}
                                                 </p>
+                                                {isStepDone && getStepDate(order, step.key) && (
+                                                  <p className="text-[8px] font-sans text-gray-400 mt-0.5 font-bold tracking-wider">
+                                                    {getStepDate(order, step.key)}
+                                                  </p>
+                                                )}
                                                 <p className="md:hidden text-[7px] text-gray-400 font-sans tracking-widest mt-0.5">
                                                   {isStepDone ? (isActive ? 'Current' : 'Done') : 'Wait'}
                                                 </p>
