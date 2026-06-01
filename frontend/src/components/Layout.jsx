@@ -11,7 +11,8 @@ import {
   Phone,
   Instagram,
   MapPin,
-  MessageCircle
+  MessageCircle,
+  Share2
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -52,7 +53,7 @@ const Layout = () => {
     damping: 30,
     restDelta: 0.001
   });
-  const { cartCount } = useCart();
+  const { cartCount, showAlert } = useCart();
   const { userInfo } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -81,6 +82,28 @@ const Layout = () => {
       navigate(`/shop?q=${encodeURIComponent(searchQuery)}`);
       setIsSearchOpen(false);
       setSearchQuery('');
+    }
+  };
+
+  const handleShareWebsite = async (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const siteUrl = window.location.origin;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Zaloura Boutique & Atelier',
+          text: 'Explore handcrafted luxury and elegant heritage textiles at Zaloura Boutique & Atelier.',
+          url: siteUrl
+        });
+      } else {
+        await navigator.clipboard.writeText(siteUrl);
+        showAlert('Link Copied', 'Website link copied to clipboard.');
+      }
+    } catch (err) {
+      console.error('Error sharing website', err);
     }
   };
 
@@ -138,8 +161,11 @@ const Layout = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary">
+            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Search">
               <Search size={20} />
+            </button>
+            <button onClick={handleShareWebsite} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Share Website">
+              <Share2 size={20} />
             </button>
             <Link to={userInfo ? "/profile" : "/login"} className="p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group">
               <User size={20} className="text-primary" />
@@ -249,6 +275,9 @@ const Layout = () => {
                 <a href={`mailto:${settings?.email}`} className="text-white/30 hover:text-primary transition-colors">
                   <Mail size={16} />
                 </a>
+                <button onClick={handleShareWebsite} className="text-white/30 hover:text-primary transition-colors flex items-center justify-center p-0 bg-transparent border-none" title="Share Website">
+                  <Share2 size={16} />
+                </button>
               </div>
             </div>
 

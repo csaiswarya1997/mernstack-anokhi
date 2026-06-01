@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, Share2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -83,6 +83,26 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const handleShare = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const productUrl = `${window.location.origin}/product/${productId}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name} at Zaloura Boutique!`,
+          url: productUrl
+        });
+      } else {
+        await navigator.clipboard.writeText(productUrl);
+        showAlert('Link Copied', 'Product link copied to clipboard.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const productCartItems = cartItems ? cartItems.filter(item => (item.id === productId || item._id === productId)) : [];
   const productCartQty = productCartItems.reduce((sum, item) => sum + item.quantity, 0);
   const isSoldOut = product.countInStock - productCartQty <= 0;
@@ -113,6 +133,16 @@ const ProductCard = ({ product }) => {
             ${isWishlisted ? 'bg-primary text-white scale-110' : 'bg-white/80 text-gray-400 hover:text-primary'}`}
         >
           <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} />
+        </motion.button>
+
+        {/* Share Icon */}
+        <motion.button 
+          whileTap={{ scale: 0.8 }}
+          onClick={handleShare}
+          className="absolute top-[60px] right-4 w-10 h-10 rounded-full flex items-center justify-center bg-white/80 text-gray-400 hover:text-primary backdrop-blur-md shadow-xl transition-all duration-300 z-10"
+          title="Share Product"
+        >
+          <Share2 size={14} />
         </motion.button>
         
         {/* Product Code Overlay */}
