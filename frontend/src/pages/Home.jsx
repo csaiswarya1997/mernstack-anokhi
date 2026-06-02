@@ -5,7 +5,10 @@ import { ArrowRight, Star, Quote, ChevronRight } from 'lucide-react';
 import API_URL from '../config';
 
 // Import images
-import heroImg from '../assets/hero-main.png';
+import heroImg from '../assets/hero-main-hd.png';
+import kurtiImgHero from '../assets/hero-kurti-hd.png';
+import coordImgHero from '../assets/hero-coord-hd.png';
+import girlsImgHero from '../assets/hero-girls-hd.png';
 import kurtiImg from '../assets/category-kurti.png';
 import salwarImg from '../assets/category-salwar.png';
 import artisanImg from '../assets/artisan-story.png';
@@ -14,6 +17,57 @@ const Home = () => {
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      image: heroImg,
+      subtitle: "ZALOURA ATELIER — Est. 2024",
+      titlePart1: "Wear",
+      titlePart2: "Elegance",
+      description: "Discover a curated collection where heritage craftsmanship meets contemporary elegance.",
+      ctaText: "Explore Collection",
+      ctaLink: "/shop",
+      position: "object-top"
+    },
+    {
+      image: kurtiImgHero,
+      subtitle: "HERITAGE COUTURE",
+      titlePart1: "Artisanal",
+      titlePart2: "Kurtis & Salwars",
+      description: "Indulge in handpicked, premium kurtis and gorgeous traditional salwar ensembles.",
+      ctaText: "Shop Collection",
+      ctaLink: "/shop",
+      position: "object-top"
+    },
+    {
+      image: coordImgHero,
+      subtitle: "MODERN ATELIER",
+      titlePart1: "Premium",
+      titlePart2: "Co-ord Sets",
+      description: "Redefine comfort and style with our contemporary silk co-ord sets.",
+      ctaText: "Explore Co-ords",
+      ctaLink: "/bespoke",
+      position: "object-top"
+    },
+    {
+      image: girlsImgHero,
+      subtitle: "MAISON ZALOURA STORIES",
+      titlePart1: "Celebrate",
+      titlePart2: "Togetherness",
+      description: "Designed for life's beautiful moments. Share the joy of handcrafted premium ethnic and fusion wear.",
+      ctaText: "Explore Festive",
+      ctaLink: "/shop",
+      position: "object-[center_75%]"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   useEffect(() => {
     const fetchLatestProducts = async () => {
@@ -54,37 +108,72 @@ const Home = () => {
     <div className="overflow-hidden">
       {/* Cinematic Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={heroImg}
-            alt="Zaloura Hero"
-            className="w-full h-full object-cover scale-105 animate-[ken-burns_20s_infinite_alternate]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/40 to-transparent"></div>
+        {/* Background Slider Stack */}
+        <div className="absolute inset-0 z-0">
+          {slides.map((slide, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
+                idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              }`}
+            >
+              <img
+                src={slide.image}
+                alt={`Zaloura Hero Slide ${idx + 1}`}
+                className={`w-full h-full object-cover ${slide.position} scale-105 ${
+                  idx === currentSlide ? 'animate-[ken-burns_20s_infinite_alternate]' : ''
+                }`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/40 to-transparent"></div>
+            </div>
+          ))}
         </div>
 
+        {/* Slide Content */}
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16 w-full">
-          <div className="max-w-2xl reveal-left">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/60 block mb-6 italic">ZALOURA ATELIER — Est. 2024</span>
-            <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.1] italic">
-              Wear <br />
-              <span className="text-primary not-italic">Elegance</span>
+          <div className="max-w-2xl reveal-left active">
+            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/60 block mb-6 italic transition-all duration-1000 ease-in-out">
+              {slides[currentSlide].subtitle}
+            </span>
+            <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.1] italic transition-all duration-1000 ease-in-out">
+              {slides[currentSlide].titlePart1} <br />
+              <span className="text-primary not-italic">{slides[currentSlide].titlePart2}</span>
             </h1>
-            <p className="text-xl text-white/70 font-sans mb-12 max-w-lg leading-relaxed italic">
-              Discover a curated collection where heritage craftsmanship meets contemporary elegance.
+            <p className="text-xl text-white/70 font-sans mb-12 max-w-lg leading-relaxed italic transition-all duration-1000 ease-in-out">
+              {slides[currentSlide].description}
             </p>
             <div className="flex flex-wrap gap-6">
-              <Link to="/shop" className="bg-white text-primary px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-champagne hover:-translate-y-1 transition-all shadow-2xl flex items-center gap-3">
-                Explore Collection <ArrowRight size={14} />
+              <Link
+                to={slides[currentSlide].ctaLink}
+                className="bg-white text-primary px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-champagne hover:-translate-y-1 transition-all shadow-2xl flex items-center gap-3"
+              >
+                {slides[currentSlide].ctaText} <ArrowRight size={14} />
               </Link>
-              <Link to="/bespoke" className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all backdrop-blur-sm">
+              <Link
+                to="/bespoke"
+                className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all backdrop-blur-sm"
+              >
                 Bespoke Atelier
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 reveal-up delay-1000">
+        {/* Slide Indicators / Navigation Dots */}
+        <div className="absolute bottom-12 right-4 md:right-16 z-20 flex gap-3">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                idx === currentSlide ? 'w-8 bg-primary' : 'w-2 bg-white/40 hover:bg-white/70'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 reveal-up delay-1000 active">
           <span className="text-[8px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll to discover</span>
           <div className="w-[1px] h-16 bg-gradient-to-b from-white/40 to-transparent"></div>
         </div>
