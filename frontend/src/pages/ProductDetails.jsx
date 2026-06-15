@@ -172,9 +172,9 @@ const ProductDetails = () => {
       if (navigator.share) {
         let files = [];
         try {
-          const response = await fetch('/favicon.svg');
+          const response = await fetch('/logo.png');
           const blob = await response.blob();
-          const file = new File([blob], 'logo.svg', { type: 'image/svg+xml' });
+          const file = new File([blob], 'logo.png', { type: 'image/png' });
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             files = [file];
           }
