@@ -187,10 +187,10 @@ const Shop = () => {
           </div>
           
           {/* COMPACT CONTROLS - Moved next to title area */}
-          <div className="flex items-center gap-4 border-t md:border-t-0 pt-6 md:pt-0">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 border-t md:border-t-0 pt-6 md:pt-0">
             <button 
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className={`flex items-center gap-3 px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] transition-all
+              className={`flex items-center gap-3 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] transition-all
                 ${isFilterOpen ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-gray-50 border border-gray-100 text-primary hover:border-primary/20'}`}
             >
               <Filter size={14} />
@@ -200,7 +200,7 @@ const Shop = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-gray-50 border border-gray-100 text-primary hover:border-primary/20 px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] outline-none cursor-pointer transition-all"
+              className="bg-gray-50 border border-gray-100 text-primary hover:border-primary/20 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] outline-none cursor-pointer transition-all"
             >
               <option value="latest">Latest Treasures</option>
               <option value="lowToHigh">Price: Low to High</option>
@@ -214,7 +214,7 @@ const Shop = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate('/shop'); }}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
+                  className="flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
                 >
                   <X size={14} /> Clear Selection
                 </motion.button>

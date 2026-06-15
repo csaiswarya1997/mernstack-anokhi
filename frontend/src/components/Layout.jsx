@@ -22,7 +22,7 @@ import API_URL from '../config';
 const Logo = ({ className = "h-8", textColor = "text-primary" }) => (
   <div className={`flex flex-col items-center gap-1 -mt-5 ${className}`}>
     <div className="relative flex items-center justify-center">
-      <span className={`text-3xl md:text-4xl font-serif font-bold tracking-tighter ${textColor} flex items-center`}>
+      <span className={`text-[1.35rem] md:text-4xl font-serif font-bold tracking-tighter ${textColor} flex items-center`}>
         Z
         <span className="relative">
           A
@@ -40,7 +40,7 @@ const Logo = ({ className = "h-8", textColor = "text-primary" }) => (
         URA
       </span>
     </div>
-    <span className={`text-[7px] md:text-[8px] font-sans font-normal tracking-[0.8em] ${textColor} opacity-80 mt-[-0.4rem]`}>
+    <span className={`text-[6px] md:text-[8px] font-sans font-normal tracking-[0.4em] md:tracking-[0.8em] ${textColor} opacity-80 mt-[-0.4rem]`}>
       OWN THE ELEGANCE
     </span>
   </div>
@@ -115,22 +115,22 @@ const Layout = () => {
         style={{ scaleX }}
       />
       {/* Top Info Bar */}
-      <div className="hidden lg:block bg-secondary py-2.5 border-b border-white/5">
-        <div className="max-w-[1280px] mx-auto px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
-          <div className="flex items-center gap-8">
-            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors">
-              <Phone size={10} className="text-accent" /> {settings?.phone || '+91 98765 43210'}
+      <div className="bg-secondary py-2 border-b border-white/5">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
+          <div className="flex items-center gap-6 md:gap-8">
+            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.phone || '+91 98765 43210'}>
+              <Phone size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.phone || '+91 98765 43210'}</span>
             </a>
-            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors">
-              <Mail size={10} className="text-accent" /> {settings?.email || 'concierge@zaloura.com'}
+            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.email || 'concierge@zaloura.com'}>
+              <Mail size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.email || 'concierge@zaloura.com'}</span>
             </a>
           </div>
-          <div className="flex items-center gap-8">
-            <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-green-400 transition-colors">
-              <MessageCircle size={10} /> WhatsApp
+          <div className="flex items-center gap-6 md:gap-8">
+            <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-green-400 transition-colors" title="WhatsApp">
+              <MessageCircle size={12} /> <span className="hidden lg:inline">WhatsApp</span>
             </a>
-            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-accent transition-colors">
-              <Instagram size={10} /> Instagram
+            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-accent transition-colors" title="Instagram">
+              <Instagram size={12} /> <span className="hidden lg:inline">Instagram</span>
             </a>
           </div>
         </div>
@@ -138,16 +138,25 @@ const Layout = () => {
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-[1280px] mx-auto px-2 md:px-16 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-accent/10 rounded-full transition-colors text-primary"
+              className="md:hidden p-1.5 hover:bg-accent/10 rounded-full transition-colors text-primary focus:outline-none"
+              aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              <motion.div
+                key={isMobileMenuOpen ? "open" : "closed"}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.div>
             </button>
             <Link to="/">
-              <Logo />
+              <Logo className="h-6 md:h-8" />
             </Link>
           </div>
 
@@ -160,14 +169,14 @@ const Layout = () => {
             <NavLink to="/contact" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Search">
+          <div className="flex items-center gap-1 md:gap-4">
+            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Search">
               <Search size={20} />
             </button>
-            <button onClick={handleShareWebsite} className="p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Share Website">
+            <button onClick={handleShareWebsite} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Share Website">
               <Share2 size={20} />
             </button>
-            <Link to={userInfo ? "/profile" : "/login"} className="p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group">
+            <Link to={userInfo ? "/profile" : "/login"} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group" title="Account">
               <User size={20} className="text-primary" />
               {userInfo && (
                 <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
@@ -180,7 +189,7 @@ const Layout = () => {
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary">
+            <Link to="/cart" className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary" title="Cart">
               <ShoppingCart size={20} />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
@@ -199,16 +208,18 @@ const Layout = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-full left-0 w-full bg-white border-b border-gray-100 p-6 shadow-xl z-50"
+              className="absolute top-full left-0 w-full bg-white border-b border-gray-100 p-3 md:p-6 shadow-xl z-50"
             >
-              <form onSubmit={handleSearch} className="max-w-[1280px] mx-auto flex items-center gap-6">
+              <form onSubmit={handleSearch} className="max-w-[1280px] mx-auto flex items-center gap-3 md:gap-6">
                 <div className="flex-1 relative group">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={18} />
+                  <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                    <Search size={18} />
+                  </button>
                   <input
                     type="text"
-                    placeholder="Search the atelier for kurtis, salwars, or product codes..."
+                    placeholder="Search kurtis, salwars, products..."
                     autoFocus
-                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-4 py-4 outline-none focus:border-primary/20 focus:bg-white transition-all font-serif italic text-lg"
+                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-11 md:pl-12 pr-4 py-3 md:py-4 outline-none focus:border-primary/20 focus:bg-white transition-all font-serif italic text-sm md:text-lg"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -217,16 +228,16 @@ const Layout = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="bg-primary text-white px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-primary/10"
+                  className="bg-primary text-white px-4 md:px-8 py-2.5 md:py-4 rounded-2xl font-bold uppercase tracking-widest text-[9px] md:text-[10px] shadow-lg shadow-primary/10"
                 >
                   Search
                 </motion.button>
                 <button
                   type="button"
                   onClick={() => setIsSearchOpen(false)}
-                  className="p-2 hover:bg-gray-50 rounded-full transition-colors text-gray-400 hover:text-primary"
+                  className="p-1.5 hover:bg-gray-50 rounded-full transition-colors text-gray-400 hover:text-primary"
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </button>
               </form>
             </motion.div>
@@ -235,18 +246,75 @@ const Layout = () => {
       </header>
 
       {/* Mobile Nav */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-white pt-20 px-4">
-          <nav className="flex flex-col gap-6">
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/shop" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Shop All</NavLink>
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/category/Kurti" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Kurtis</NavLink>
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/category/Salwar" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Salwars</NavLink>
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/bespoke" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Bespoke Customization</NavLink>
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/sustainability" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Sustainability</NavLink>
-            <NavLink onClick={() => setIsMobileMenuOpen(false)} to="/contact" className={({ isActive }) => `text-2xl font-serif ${isActive ? 'text-primaryContainer font-bold underline underline-offset-8' : 'text-primary'}`}>Contact Us</NavLink>
-          </nav>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '-100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-md pt-28 px-8 flex flex-col justify-between pb-12"
+          >
+            <motion.nav 
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.08
+                  }
+                }
+              }}
+              className="flex flex-col gap-6"
+            >
+              {[
+                { to: "/shop", label: "Shop All" },
+                { to: "/category/Kurti", label: "Kurtis" },
+                { to: "/category/Salwar", label: "Salwars" },
+                { to: "/bespoke", label: "Bespoke Customization" },
+                { to: "/sustainability", label: "Sustainability" },
+                { to: "/contact", label: "Contact Us" },
+                { to: userInfo ? "/profile" : "/login", label: userInfo ? "My Account" : "Login / Register" }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={{
+                    hidden: { x: -20, opacity: 0 },
+                    visible: { x: 0, opacity: 1 }
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <NavLink
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    to={item.to}
+                    className={({ isActive }) => 
+                      `text-3xl font-serif block transition-all duration-300 ${
+                        isActive 
+                          ? 'text-primary font-bold translate-x-2' 
+                          : 'text-secondary hover:text-primary'
+                      }`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </motion.nav>
+
+            {/* Bottom contact info in mobile menu */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="border-t border-gray-100 pt-8 space-y-4"
+            >
+              <p className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Atelier Concierge</p>
+              <p className="text-sm font-serif italic text-primary">{settings?.email || 'concierge@zaloura.com'}</p>
+              <p className="text-xs font-sans text-secondary">{settings?.phone || '+91 98765 43210'}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <main className="flex-grow">
