@@ -89,11 +89,28 @@ const ProductCard = ({ product }) => {
     const productUrl = `${window.location.origin}/product/${productId}`;
     try {
       if (navigator.share) {
-        await navigator.share({
+        let files = [];
+        try {
+          const response = await fetch('/favicon.svg');
+          const blob = await response.blob();
+          const file = new File([blob], 'logo.svg', { type: 'image/svg+xml' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            files = [file];
+          }
+        } catch (fileErr) {
+          console.warn('Could not attach logo file for sharing', fileErr);
+        }
+
+        const shareData = {
           title: product.name,
           text: `Check out ${product.name} at Zaloura Boutique!`,
           url: productUrl
-        });
+        };
+        if (files.length > 0) {
+          shareData.files = files;
+        }
+
+        await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(productUrl);
         showAlert('Link Copied', 'Product link copied to clipboard.');

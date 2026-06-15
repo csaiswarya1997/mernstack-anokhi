@@ -93,11 +93,28 @@ const Layout = () => {
     const siteUrl = window.location.origin;
     try {
       if (navigator.share) {
-        await navigator.share({
+        let files = [];
+        try {
+          const response = await fetch('/favicon.svg');
+          const blob = await response.blob();
+          const file = new File([blob], 'logo.svg', { type: 'image/svg+xml' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            files = [file];
+          }
+        } catch (fileErr) {
+          console.warn('Could not attach logo file for sharing', fileErr);
+        }
+
+        const shareData = {
           title: 'Zaloura Boutique & Atelier',
           text: 'Explore handcrafted luxury and elegant heritage textiles at Zaloura Boutique & Atelier.',
           url: siteUrl
-        });
+        };
+        if (files.length > 0) {
+          shareData.files = files;
+        }
+
+        await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(siteUrl);
         showAlert('Link Copied', 'Website link copied to clipboard.');
@@ -169,7 +186,7 @@ const Layout = () => {
             <NavLink to="/contact" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
           </nav>
 
-          <div className="flex items-center gap-1 md:gap-4">
+          <div className="flex items-center gap-2.5 md:gap-4">
             <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Search">
               <Search size={20} />
             </button>

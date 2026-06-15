@@ -170,7 +170,27 @@ const ProductDetails = () => {
   const handleShare = async () => {
     try {
       if (navigator.share) {
-        await navigator.share({ title: product.name, url: window.location.href });
+        let files = [];
+        try {
+          const response = await fetch('/favicon.svg');
+          const blob = await response.blob();
+          const file = new File([blob], 'logo.svg', { type: 'image/svg+xml' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            files = [file];
+          }
+        } catch (fileErr) {
+          console.warn('Could not attach logo file for sharing', fileErr);
+        }
+
+        const shareData = {
+          title: product.name,
+          url: window.location.href
+        };
+        if (files.length > 0) {
+          shareData.files = files;
+        }
+
+        await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(window.location.href);
         showAlert('Link Copied', 'Product link copied to clipboard.');
