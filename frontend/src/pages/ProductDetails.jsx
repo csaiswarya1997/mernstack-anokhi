@@ -273,7 +273,7 @@ const ProductDetails = () => {
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
-      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-8 pb-12"
+      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-8 pb-8 md:pb-12"
     >
       {/* LIGHTBOX OVERLAY */}
       <AnimatePresence>
@@ -397,15 +397,15 @@ const ProductDetails = () => {
         )}
       </AnimatePresence>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-16 relative items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-24 mb-8 lg:mb-16 relative items-start">
         {/* GALLERY SYSTEM */}
         <motion.div
           variants={fadeInUp}
-          className="lg:sticky lg:top-32 lg:h-fit space-y-8 flex flex-col items-center lg:items-start"
+          className="lg:sticky lg:top-32 lg:h-fit space-y-4 lg:space-y-8 flex flex-col items-center lg:items-start"
         >
           <div
             onClick={() => setIsLightboxOpen(true)}
-            className="w-full max-w-[500px] border-4 border-black aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group"
+            className="w-full max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group shadow-lg"
           >
             <AnimatePresence mode="wait">
               <motion.img
@@ -428,7 +428,7 @@ const ProductDetails = () => {
           {uniqueImages.length > 1 && (
             <motion.div
               variants={staggerContainer}
-              className="flex flex-wrap gap-4 w-full max-w-[500px]"
+              className="flex flex-wrap gap-3 lg:gap-4 w-full max-w-[500px]"
             >
               {uniqueImages.map((img, index) => (
                 <motion.button
@@ -437,8 +437,8 @@ const ProductDetails = () => {
                   whileHover={{ y: -4 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setMainImage(img)}
-                  className={`w-20 sm:w-24 aspect-[3/4] overflow-hidden border-4 transition-all duration-300
-                    ${mainImage === img ? 'border-black' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  className={`w-20 sm:w-24 aspect-[3/4] overflow-hidden border-4 rounded-xl transition-all duration-300
+                    ${mainImage === img ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 >
                   <img src={img?.startsWith('http') ? img : `${API_URL}${img}`} className="w-full h-full object-cover" />
                 </motion.button>
@@ -448,7 +448,7 @@ const ProductDetails = () => {
         </motion.div>
 
         {/* Product Info */}
-        <motion.div variants={fadeInUp} className="space-y-10 lg:pt-4">
+        <motion.div variants={fadeInUp} className="space-y-6 lg:space-y-10 lg:pt-4">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primaryContainer bg-primaryContainer/5 px-3 py-1 rounded-full border border-primaryContainer/10">
@@ -473,17 +473,17 @@ const ProductDetails = () => {
                 </motion.button>
               </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">{product.name}</h1>
-            <div className="flex items-center gap-4 pt-2">
-              <p className="text-4xl font-sans font-bold text-primary tracking-tighter">₹{(product.price || 0).toLocaleString('en-IN')}</p>
+            <h1 className="text-2xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">{product.name}</h1>
+            <div className="flex items-center gap-3 pt-1">
+              <p className="text-2xl md:text-4xl font-sans font-bold text-primary tracking-tighter">₹{(product.price || 0).toLocaleString('en-IN')}</p>
               {product.originalPrice && product.originalPrice > product.price && (
-                <p className="text-gray-400 line-through text-xl">₹{(product.originalPrice || 0).toLocaleString('en-IN')}</p>
+                <p className="text-gray-400 line-through text-lg md:text-xl">₹{(product.originalPrice || 0).toLocaleString('en-IN')}</p>
               )}
             </div>
           </div>
 
           {/* Sizing & Actions */}
-          <div className="space-y-6 pt-4 border-t border-gray-100">
+          <div className="space-y-4 lg:space-y-6 pt-4 border-t border-gray-100">
             <div className="flex justify-between items-center">
               <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400">Select Size</h3>
               <button
@@ -493,7 +493,7 @@ const ProductDetails = () => {
                 Size Guide
               </button>
             </div>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-6 gap-2 md:gap-3">
               {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
                 const stock = product.stockBySize?.[size] || 0;
                 const stockNum = Number(stock || 0);
@@ -524,13 +524,13 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="space-y-4 pt-2">
+          <div className="space-y-3 lg:space-y-4 pt-1 lg:pt-2">
             {selectedSize && selectedSizeDisplayedStock === 0 ? (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsRestockModalOpen(true)}
-                className="w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl bg-secondary text-white hover:bg-secondary/90 flex items-center justify-center gap-2"
+                className="w-full py-4 lg:py-5 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl bg-secondary text-white hover:bg-secondary/90 flex items-center justify-center gap-2"
               >
                 <Bell size={12} className="animate-pulse" /> Notify Me When Restocked
               </motion.button>
@@ -540,7 +540,7 @@ const ProductDetails = () => {
                 whileTap={selectedSize && selectedSizeDisplayedStock > 0 ? { scale: 0.98 } : {}}
                 disabled={!selectedSize}
                 onClick={() => selectedSize && addToCart({ ...product, size: selectedSize })}
-                className={`w-full py-6 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl
+                className={`w-full py-4 lg:py-5 rounded-2xl font-sans uppercase tracking-[0.3em] text-[10px] font-bold transition-all shadow-2xl
                   ${!selectedSize ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-primaryContainer text-white shadow-primaryContainer/20'}`}
               >
                 {!selectedSize 
@@ -551,11 +551,11 @@ const ProductDetails = () => {
           </div>
 
           {/* Description */}
-          <div className="space-y-6 pt-10 border-t border-gray-100">
+          <div className="space-y-4 lg:space-y-6 pt-6 lg:pt-10 border-t border-gray-100">
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">
               <AlignLeft size={14} /> The Piece
             </div>
-            <div className="bg-gray-50/50 p-8 border border-gray-100 relative overflow-hidden group">
+            <div className="bg-gray-50/50 p-5 md:p-8 border border-gray-100 relative overflow-hidden group">
               <motion.div
                 initial={{ height: 0 }}
                 whileInView={{ height: "100%" }}
@@ -568,7 +568,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Trust Info */}
-          <div className="space-y-6 pt-10 border-t border-gray-100">
+          <div className="space-y-4 lg:space-y-6 pt-6 lg:pt-10 border-t border-gray-100">
             <motion.div
               whileHover={{ x: 10 }}
               className="bg-primary/5 p-5 rounded-2xl flex items-center gap-5 border border-primaryContainer/5 transition-colors hover:bg-primary/10"
@@ -591,11 +591,11 @@ const ProductDetails = () => {
         whileInView="visible"
         initial="hidden"
         viewport={{ once: true }}
-        className="pt-16 border-t border-gray-100 mb-16"
+        className="pt-8 lg:pt-16 border-t border-gray-100 mb-8 lg:mb-16"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-24">
           <div>
-            <h2 className="text-4xl font-serif text-primary mb-8 italic">Client Experience</h2>
+            <h2 className="text-2xl md:text-4xl font-serif text-primary mb-4 lg:mb-8 italic">Client Experience</h2>
             {!showReviewForm ? (
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -664,14 +664,14 @@ const ProductDetails = () => {
           whileInView="visible"
           initial="hidden"
           viewport={{ once: true }}
-          className="pt-12 border-t border-gray-100"
+          className="pt-8 lg:pt-12 border-t border-gray-100"
         >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6 lg:mb-12">
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-bold text-primaryContainer">
                 <Sparkles size={14} /> Curated Suggestions
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif text-primary tracking-tighter leading-tight italic">You May Also Like</h2>
+              <h2 className="text-2xl md:text-5xl font-serif text-primary tracking-tighter leading-tight italic">You May Also Like</h2>
             </div>
             <button onClick={() => navigate('/shop')} className="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-primary transition-colors border-b border-gray-200 pb-1">
               View All Masterpieces
