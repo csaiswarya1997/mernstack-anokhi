@@ -9,6 +9,7 @@ const productSchema = mongoose.Schema(
     category: { type: String, required: true },
     price: { type: Number, required: true },
     originalPrice: { type: Number, required: true, default: 0 },
+    discount: { type: Number, default: 0 },
     productCode: { type: String, unique: true },
     restockedAt: { type: Date },
     countInStock: { type: Number, required: true, default: 0 },

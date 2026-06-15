@@ -477,7 +477,12 @@ const ProductDetails = () => {
             <div className="flex items-center gap-3 pt-1">
               <p className="text-2xl md:text-4xl font-sans font-bold text-primary tracking-tighter">₹{(product.price || 0).toLocaleString('en-IN')}</p>
               {product.originalPrice && product.originalPrice > product.price && (
-                <p className="text-gray-400 line-through text-lg md:text-xl">₹{(product.originalPrice || 0).toLocaleString('en-IN')}</p>
+                <>
+                  <p className="text-gray-400 line-through text-lg md:text-xl">₹{(product.originalPrice || 0).toLocaleString('en-IN')}</p>
+                  <span className="bg-red-50 text-red-600 text-xs font-bold px-2 py-1 rounded border border-red-100/50">
+                    {product.discount > 0 ? `${product.discount}% OFF` : `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`}
+                  </span>
+                </>
               )}
             </div>
           </div>

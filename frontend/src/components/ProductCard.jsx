@@ -166,7 +166,7 @@ const ProductCard = ({ product }) => {
         
         {product.originalPrice > product.price && (
           <div className="absolute top-4 left-4 bg-red-500 text-white px-2.5 py-1 text-[9px] uppercase font-bold tracking-widest rounded-full shadow-lg z-10">
-            Sale
+            {product.discount > 0 ? `${product.discount}% OFF` : `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`}
           </div>
         )}
 

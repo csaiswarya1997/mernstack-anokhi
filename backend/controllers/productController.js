@@ -143,21 +143,32 @@ const getProductById = async (req, res) => {
 // @access  Public (Admin)
 const createProduct = async (req, res) => {
   try {
-    const { name, price, originalPrice, description, image, images, category, stockBySize, productCode } = req.body;
+    const { name, price, originalPrice, description, image, images, category, stockBySize, productCode, discount } = req.body;
 
     const totalStock = stockBySize
       ? Object.values(stockBySize).reduce((acc, curr) => acc + Number(curr || 0), 0)
       : 0;
 
+    let finalDiscount = discount !== undefined ? Number(discount) : 0;
+    let finalPrice = price ? Number(price) : Number(originalPrice || 0);
+    let finalOriginalPrice = originalPrice ? Number(originalPrice) : finalPrice;
+
+    if (finalDiscount > 0) {
+      finalPrice = Math.round(finalOriginalPrice - (finalOriginalPrice * finalDiscount / 100));
+    } else if (finalOriginalPrice > finalPrice && finalOriginalPrice > 0) {
+      finalDiscount = Math.round(((finalOriginalPrice - finalPrice) / finalOriginalPrice) * 100);
+    }
+
     const product = new Product({
       name: name || 'Sample name',
-      price: price || 0,
+      price: finalPrice,
       productCode: productCode || generateProductCode(),
       description: description || 'Sample description',
       image: image || '/images/sample.jpg',
       images: images || [],
       category: category || 'Sample category',
-      originalPrice: originalPrice || price || 0,
+      originalPrice: finalOriginalPrice,
+      discount: finalDiscount,
       countInStock: totalStock,
       stockBySize: stockBySize || { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 }
     });
@@ -174,13 +185,27 @@ const createProduct = async (req, res) => {
 // @access  Public (Admin)
 const updateProduct = async (req, res) => {
   try {
-    const { name, price, originalPrice, description, image, images, category, stockBySize, productCode } = req.body;
+    const { name, price, originalPrice, description, image, images, category, stockBySize, productCode, discount } = req.body;
     const product = await Product.findById(req.params.id);
 
     if (product) {
       product.name = name || product.name;
-      product.price = price || product.price;
-      product.originalPrice = originalPrice || product.originalPrice || product.price;
+
+      const nextOriginalPrice = originalPrice !== undefined ? Number(originalPrice) : product.originalPrice;
+      let nextDiscount = discount !== undefined ? Number(discount) : (product.discount || 0);
+      let nextPrice = price !== undefined ? Number(price) : product.price;
+
+      if (discount !== undefined && Number(discount) > 0) {
+        nextPrice = Math.round(nextOriginalPrice - (nextOriginalPrice * nextDiscount / 100));
+      } else if (price !== undefined && nextOriginalPrice > nextPrice && nextOriginalPrice > 0) {
+        nextDiscount = Math.round(((nextOriginalPrice - nextPrice) / nextOriginalPrice) * 100);
+      } else if (discount !== undefined && Number(discount) === 0) {
+        nextPrice = nextOriginalPrice;
+      }
+
+      product.price = nextPrice;
+      product.originalPrice = nextOriginalPrice;
+      product.discount = nextDiscount;
       product.productCode = productCode || product.productCode || generateProductCode();
       product.description = description || product.description;
       if (image) product.image = image;

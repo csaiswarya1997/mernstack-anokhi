@@ -53,11 +53,60 @@ const AdminProducts = () => {
     name: '',
     price: '', // This will be used as Offer Price in the form
     originalPrice: '', // This will be used as MRP in the form
+    discount: '', // This will be used as Discount Percentage in the form
     category: 'Kurti',
     productCode: '',
     description: '',
     stockBySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 }
   });
+
+  const handleOriginalPriceChange = (value) => {
+    const mrp = value ? Number(value) : '';
+    setFormData(prev => {
+      const discountVal = prev.discount ? Number(prev.discount) : 0;
+      let calculatedPrice = prev.price;
+      if (mrp && discountVal > 0) {
+        calculatedPrice = Math.round(mrp - (mrp * discountVal / 100));
+      } else if (mrp && prev.price && Number(prev.price) < mrp) {
+        const priceVal = Number(prev.price);
+        const calcDiscount = Math.round(((mrp - priceVal) / mrp) * 100);
+        return { ...prev, originalPrice: value, discount: calcDiscount };
+      }
+      return { ...prev, originalPrice: value, price: calculatedPrice };
+    });
+  };
+
+  const handleDiscountChange = (value) => {
+    const discountVal = value ? Number(value) : '';
+    setFormData(prev => {
+      let calculatedPrice = prev.price;
+      if (prev.originalPrice && discountVal !== '') {
+        const mrp = Number(prev.originalPrice);
+        calculatedPrice = Math.round(mrp - (mrp * discountVal / 100));
+      } else if (discountVal === '') {
+        calculatedPrice = prev.originalPrice;
+      }
+      return { ...prev, discount: value, price: calculatedPrice };
+    });
+  };
+
+  const handleOfferPriceChange = (value) => {
+    const priceVal = value ? Number(value) : '';
+    setFormData(prev => {
+      let calculatedDiscount = prev.discount;
+      if (prev.originalPrice && priceVal !== '') {
+        const mrp = Number(prev.originalPrice);
+        if (mrp > priceVal) {
+          calculatedDiscount = Math.round(((mrp - priceVal) / mrp) * 100);
+        } else {
+          calculatedDiscount = 0;
+        }
+      } else if (priceVal === '') {
+        calculatedDiscount = '';
+      }
+      return { ...prev, price: value, discount: calculatedDiscount };
+    });
+  };
   const [images, setImages] = useState([]); // Array of File objects
 
   const handleImageSelect = (e) => {
@@ -78,6 +127,7 @@ const AdminProducts = () => {
       name: product.name,
       price: product.price,
       originalPrice: product.originalPrice || '',
+      discount: product.discount !== undefined ? product.discount : '',
       category: product.category,
       productCode: product.productCode || '',
       description: product.description,
@@ -112,7 +162,7 @@ const AdminProducts = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', price: '', originalPrice: '', category: 'Kurti', productCode: '', description: '', stockBySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 } });
+    setFormData({ name: '', price: '', originalPrice: '', discount: '', category: 'Kurti', productCode: '', description: '', stockBySize: { XS: 0, S: 0, M: 0, L: 0, XL: 0, XXL: 0 } });
     setImages([]);
     setEditingProductId(null);
     setShowForm(false);
@@ -206,6 +256,7 @@ const AdminProducts = () => {
         ...formData,
         originalPrice: Number(formData.originalPrice),
         price: formData.price ? Number(formData.price) : Number(formData.originalPrice),
+        discount: formData.discount ? Number(formData.discount) : 0,
         stockBySize: {
           XS: Number(formData.stockBySize.XS || 0),
           S: Number(formData.stockBySize.S || 0),
@@ -297,12 +348,17 @@ const AdminProducts = () => {
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-sans font-semibold text-primary mb-2">Original Price (MRP) (₹) *</label>
-                <input required type="number" value={formData.originalPrice} onChange={e => setFormData({...formData, originalPrice: e.target.value})} className="w-full border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-transparent" />
+                <input required type="number" value={formData.originalPrice} onChange={e => handleOriginalPriceChange(e.target.value)} className="w-full border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-transparent" />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-sans font-semibold text-primary mb-2">Discount (%)</label>
+                <input type="number" min="0" max="100" value={formData.discount} onChange={e => handleDiscountChange(e.target.value)} className="w-full border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-transparent" />
+                <p className="text-[10px] text-secondary/60 mt-1 italic">Enter percentage (e.g. 15 for 15% OFF).</p>
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-sans font-semibold text-primary mb-2">Offer Price (Optional) (₹)</label>
-                <input type="number" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-transparent" />
-                <p className="text-[10px] text-secondary/60 mt-1 italic">Leave empty to show only the MRP.</p>
+                <input type="number" value={formData.price} onChange={e => handleOfferPriceChange(e.target.value)} className="w-full border border-champagne rounded-md px-4 py-2 outline-none focus:border-primary transition-colors font-sans bg-transparent" />
+                <p className="text-[10px] text-secondary/60 mt-1 italic">Will be auto-calculated if discount is entered.</p>
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest font-sans font-semibold text-primary mb-2">Category</label>
@@ -459,7 +515,14 @@ const AdminProducts = () => {
                       </td>
                       <td className="px-6 py-4 font-serif text-primary text-base">{product.name}</td>
                       <td className="px-6 py-4 text-secondary">{product.category}</td>
-                      <td className="px-6 py-4 font-semibold text-primary">₹{product.price.toLocaleString('en-IN')}</td>
+                      <td className="px-6 py-4 font-semibold text-primary">
+                        <div>₹{product.price.toLocaleString('en-IN')}</div>
+                        {product.discount > 0 && (
+                          <span className="text-[10px] bg-red-50 text-red-600 font-bold px-1.5 py-0.5 rounded border border-red-100/50">
+                            {product.discount}% OFF
+                          </span>
+                        )}
+                      </td>
                       <td className="px-6 py-4 text-secondary/50 line-through">₹{(product.originalPrice || product.price).toLocaleString('en-IN')}</td>
                       <td className="px-6 py-4">
                         <div>
@@ -524,9 +587,16 @@ const AdminProducts = () => {
                       </div>
                       <h3 className="font-serif text-lg text-primary truncate leading-tight">{product.name}</h3>
                       <p className="text-[10px] uppercase tracking-widest text-secondary font-bold">{product.category}</p>
-                      <div className="flex items-center gap-3 pt-1">
+                      <div className="flex items-center gap-3 pt-1 flex-wrap">
                         <span className="font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</span>
-                        <span className="text-secondary/40 line-through text-xs">₹{(product.originalPrice || product.price).toLocaleString('en-IN')}</span>
+                        {product.originalPrice && product.originalPrice > product.price && (
+                          <span className="text-secondary/40 line-through text-xs">₹{(product.originalPrice || product.price).toLocaleString('en-IN')}</span>
+                        )}
+                        {product.discount > 0 && (
+                          <span className="text-[9px] bg-red-50 text-red-600 font-bold px-1.5 py-0.5 rounded border border-red-100/50">
+                            {product.discount}% OFF
+                          </span>
+                        )}
                       </div>
                       <p className="text-[11px] text-secondary">Stock: <span className="font-bold text-primary">{product.countInStock}</span></p>
                       <div className="text-[10px] text-secondary/60 mt-2 font-mono flex flex-wrap gap-1">
