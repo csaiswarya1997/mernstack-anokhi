@@ -97,7 +97,7 @@ const Home = () => {
 
     // Small delay so React has painted the new nodes
     const timer = setTimeout(() => {
-      const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
+      const revealElements = document.querySelectorAll('[class*="reveal-"]');
       revealElements.forEach(el => observer.observe(el));
     }, 100);
 
@@ -145,13 +145,13 @@ const Home = () => {
             <div className="flex flex-wrap gap-6">
               <Link
                 to={slides[currentSlide].ctaLink}
-                className="bg-white text-primary px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-champagne hover:-translate-y-1 transition-all shadow-2xl flex items-center gap-3"
+                className="bg-white text-primary px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-champagne hover:-translate-y-1 transition-all shadow-2xl flex items-center gap-3 reveal-scale"
               >
                 {slides[currentSlide].ctaText} <ArrowRight size={14} />
               </Link>
               <Link
                 to="/bespoke"
-                className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all backdrop-blur-sm"
+                className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all backdrop-blur-sm reveal-scale"
               >
                 Bespoke Atelier
               </Link>
@@ -180,16 +180,16 @@ const Home = () => {
       </section>
 
       {/* Brand Introduction Banner for Google SEO */}
-      <section className="py-20 bg-accent/5 border-b border-primary/5 text-center reveal-up">
+      <section className="py-20 bg-accent/5 border-b border-primary/5 text-center">
         <div className="max-w-4xl mx-auto px-6 font-sans">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary/60 block mb-4">Welcome to Zaloura</span>
-          <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6 italic">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary/60 block mb-4 reveal-left-top">Welcome to Zaloura</span>
+          <h2 className="text-3xl md:text-4xl font-serif text-primary mb-6 italic reveal-left-top">
             Ethnic Fashion, Kurtis, Salwars & Bespoke Atelier
           </h2>
-          <p className="text-secondary/70 leading-relaxed text-sm md:text-base max-w-2xl mx-auto mb-4">
+          <p className="text-secondary/70 leading-relaxed text-sm md:text-base max-w-2xl mx-auto mb-4 reveal-right">
             Zaloura is a Kerala-based ethnic fashion brand offering kurtis, salwars, bespoke outfits, and sustainable atelier collections.
           </p>
-          <p className="text-secondary/60 leading-relaxed text-xs md:text-sm max-w-2xl mx-auto">
+          <p className="text-secondary/60 leading-relaxed text-xs md:text-sm max-w-2xl mx-auto reveal-right">
             Shop elegant women’s wear from Zaloura, including handcrafted ethnic wear, custom tailoring, and occasion-ready styles.
           </p>
         </div>
@@ -198,9 +198,9 @@ const Home = () => {
       {/* Featured Collections / Categories */}
       <section className="py-12 bg-accent/20">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="text-center mb-12 reveal-up">
-            <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6 italic">Les Catégories</h2>
-            <div className="w-24 h-[1px] bg-primary/20 mx-auto"></div>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6 italic reveal-left-top">Les Catégories</h2>
+            <div className="w-24 h-[1px] bg-primary/20 mx-auto reveal-left-top"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -236,12 +236,12 @@ const Home = () => {
       {/* New Arrivals with Slider feel */}
       <section className="py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 reveal-up">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
             <div className="text-center md:text-left">
-              <h2 className="text-4xl font-serif text-primary mb-4 italic">Nouvelles Arrivées</h2>
-              <p className="text-secondary/60 font-sans italic">The latest treasures from our India atelier.</p>
+              <h2 className="text-4xl font-serif text-primary mb-4 italic reveal-left-top">Nouvelles Arrivées</h2>
+              <p className="text-secondary/60 font-sans italic reveal-right">The latest treasures from our India atelier.</p>
             </div>
-            <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primary transition-colors">
+            <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primary transition-colors reveal-scale">
               Discover All <div className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><ArrowRight size={14} /></div>
             </Link>
           </div>
@@ -252,15 +252,18 @@ const Home = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {latestProducts.map((product, idx) => (
-                <div
-                  key={product._id || product.id}
-                  className="reveal-up"
-                  style={{ transitionDelay: `${idx * 150}ms` }}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
+              {latestProducts.map((product, idx) => {
+                const isEven = idx % 2 === 0;
+                return (
+                  <div
+                    key={product._id || product.id}
+                    className={isEven ? "reveal-left" : "reveal-right"}
+                    style={{ transitionDelay: `${idx * 150}ms` }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -273,15 +276,15 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="max-w-3xl mx-auto text-center reveal-scale">
-            <Quote className="text-accent/40 w-16 h-16 mx-auto mb-12" />
-            <h2 className="text-4xl md:text-6xl font-serif text-white mb-12 leading-tight italic">
+          <div className="max-w-3xl mx-auto text-center">
+            <Quote className="text-accent/40 w-16 h-16 mx-auto mb-12 reveal-scale" />
+            <h2 className="text-4xl md:text-6xl font-serif text-white mb-12 leading-tight italic reveal-left-top">
               "Every thread tells a story of <span className="text-accent">dedication</span>, every pattern a piece of <span className="text-accent">history</span>."
             </h2>
-            <p className="text-white/80 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic">
+            <p className="text-white/80 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic reveal-right">
               We bridge the gap between ancient textile arts and the modern woman's lifestyle. Our pieces are not just garments; they are wearable art.
             </p>
-            <Link to="/sustainability" className="inline-block border-b border-accent text-accent px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all">
+            <Link to="/sustainability" className="inline-block border-b border-accent text-accent px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all reveal-scale">
               Discover Our Philosophy
             </Link>
           </div>
@@ -292,21 +295,21 @@ const Home = () => {
       <section className="py-12 bg-accent/20 border-b border-primary/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            <div className="text-center reveal-up">
+            <div className="text-center reveal-left">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                 <Star className="text-primary" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Artisanal Quality</h4>
               <p className="text-xs text-secondary/50 font-sans leading-relaxed">Each piece is handcrafted by master artisans in India using traditional techniques.</p>
             </div>
-            <div className="text-center reveal-up transition-delay-200">
+            <div className="text-center reveal-top delay-200">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                 <Star className="text-primary" size={24} />
               </div>
               <h4 className="font-serif text-xl text-primary mb-4 italic">Ethical Sourcing</h4>
               <p className="text-xs text-secondary/50 font-sans leading-relaxed">We ensure fair wages and sustainable working conditions for all our partners.</p>
             </div>
-            <div className="text-center reveal-up transition-delay-400">
+            <div className="text-center reveal-right delay-500">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                 <Star className="text-primary" size={24} />
               </div>
@@ -319,10 +322,10 @@ const Home = () => {
 
       {/* Newsletter Section */}
       <section className="py-12 bg-secondary border-t border-white/5">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center reveal-scale">
-          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-accent/60 block mb-8">Le Journal de Zaloura</span>
-          <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 italic">Join the Inner Circle</h2>
-          <p className="text-white/60 font-serif italic text-lg mb-12 max-w-xl mx-auto">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center">
+          <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-accent/60 block mb-8 reveal-left-top">Le Journal de Zaloura</span>
+          <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 italic reveal-left-top">Join the Inner Circle</h2>
+          <p className="text-white/60 font-serif italic text-lg mb-12 max-w-xl mx-auto reveal-right">
             Receive exclusive updates on new collections, private sales, and the stories behind our craft.
           </p>
           <form className="max-w-md mx-auto flex gap-4">
@@ -331,7 +334,7 @@ const Home = () => {
               placeholder="Your email address"
               className="flex-1 bg-white/5 border border-white/20 rounded-full px-8 py-4 text-white outline-none focus:border-accent transition-colors font-sans text-sm"
             />
-            <button className="bg-primary text-white px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-accent hover:text-secondary transition-all shadow-xl">
+            <button className="bg-primary text-white px-8 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-accent hover:text-secondary transition-all shadow-xl reveal-scale">
               Subscribe
             </button>
           </form>
