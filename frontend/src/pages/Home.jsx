@@ -22,9 +22,9 @@ const Home = () => {
   const slides = [
     {
       image: heroImg,
-      subtitle: "ZALOURA ATELIER — Est. 2024",
-      titlePart1: "Wear",
-      titlePart2: "Elegance",
+      subtitle: "EST. 2024",
+      titlePart1: "Zaloura",
+      titlePart2: "Wear Elegance",
       description: "Discover a curated collection where heritage craftsmanship meets contemporary elegance.",
       ctaText: "Explore Collection",
       ctaLink: "/shop",

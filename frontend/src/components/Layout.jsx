@@ -289,6 +289,7 @@ const Layout = () => {
                 { to: "/category/Kurti", label: "Kurtis" },
                 { to: "/category/Salwar", label: "Salwars" },
                 { to: "/bespoke", label: "Bespoke Customization" },
+                { to: "/about", label: "About Zaloura" },
                 { to: "/sustainability", label: "Sustainability" },
                 { to: "/contact", label: "Contact Us" },
                 { to: userInfo ? "/profile" : "/login", label: userInfo ? "My Account" : "Login / Register" }
@@ -381,6 +382,7 @@ const Layout = () => {
             <div>
               <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Maison</h4>
               <nav className="flex flex-col gap-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+                <Link to="/about" className="hover:text-white transition-colors w-fit">About Zaloura</Link>
                 <Link to="/sustainability" className="hover:text-white transition-colors w-fit">Sustainability</Link>
                 <Link to="/contact" className="hover:text-white transition-colors w-fit">Contact Us</Link>
                 <Link to="/shipping" className="hover:text-white transition-colors w-fit">Shipping & Returns</Link>

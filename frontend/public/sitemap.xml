@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://zaloura.in/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/kurtis</loc>
+    <loc>https://zaloura.in/shop</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/salwars</loc>
+    <loc>https://zaloura.in/category/Kurti</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/category/Salwar</loc>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://zaloura.in/bespoke</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/about</loc>
     <priority>0.8</priority>
   </url>
   <url>
@@ -22,6 +30,14 @@
   </url>
   <url>
     <loc>https://zaloura.in/contact</loc>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/shipping</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://zaloura.in/faq</loc>
+    <priority>0.6</priority>
   </url>
 </urlset>

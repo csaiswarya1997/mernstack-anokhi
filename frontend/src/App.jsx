@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import Sustainability from './pages/Sustainability';
+import About from './pages/About';
 import Bespoke from './pages/Bespoke';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -66,6 +67,7 @@ function App() {
                 </ProtectedRoute>
               } />
               <Route path="sustainability" element={<Sustainability />} />
+              <Route path="about" element={<About />} />
               <Route path="bespoke" element={<Bespoke />} />
               <Route path="bespoke/edit/:id" element={
                 <ProtectedRoute>
