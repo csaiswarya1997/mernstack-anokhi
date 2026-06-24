@@ -4,9 +4,13 @@ import ProductCard from '../components/ProductCard';
 import { Search, X, SlidersHorizontal, ChevronDown, LayoutGrid, List, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import API_URL from '../config';
+import kurtiImg from '../assets/category-kurti.png';
+import salwarImg from '../assets/category-salwar.png';
+import artisanImg from '../assets/artisan-story.png';
 
-const Shop = () => {
+const Shop = ({ categoryOverride }) => {
   const { category } = useParams();
+  const currentCategory = categoryOverride || category;
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const searchQuery = searchParams.get('q') || '';
@@ -16,10 +20,18 @@ const Shop = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Filter & Sort states
-  const [selectedCategories, setSelectedCategories] = useState(category ? [category] : []);
+  const [selectedCategories, setSelectedCategories] = useState(currentCategory ? [currentCategory] : []);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState('latest');
+  const [seoData, setSeoData] = useState({
+    title: 'Zaloura Ethnic Wear | Premium Designer Women\'s Fashion',
+    description: 'Discover the full Zaloura Ethnic Wear range. Handcrafted kurtis, designer salwar suits, and bespoke collections from Zaloura Studio in Thrissur, Kerala.',
+    h1: 'Zaloura Ethnic Wear',
+    firstParagraph: 'Discover the complete Zaloura Ethnic Wear range. Zaloura is a premium boutique based in Kerala featuring exquisite kurtis, salwars, and custom bespoke clothing.',
+    image: artisanImg,
+    alt: 'Zaloura Ethnic Wear collection banner'
+  });
 
   // Animation Variants
   const containerVariants = {
@@ -62,12 +74,48 @@ const Shop = () => {
 
   // React to URL category changes
   useEffect(() => {
-    if (category) {
-      setSelectedCategories([category]);
+    if (currentCategory) {
+      setSelectedCategories([currentCategory]);
     } else {
       setSelectedCategories([]);
     }
-  }, [category]);
+  }, [currentCategory]);
+
+  useEffect(() => {
+    let title = 'Zaloura Ethnic Wear | Premium Designer Women\'s Fashion';
+    let description = 'Discover the full Zaloura Ethnic Wear range. Handcrafted kurtis, designer salwar suits, and bespoke collections from Zaloura Studio in Thrissur, Kerala.';
+    let h1 = 'Zaloura Ethnic Wear';
+    let firstParagraph = 'Discover the complete Zaloura Ethnic Wear range. Zaloura is a premium boutique based in Kerala featuring exquisite kurtis, salwars, and custom bespoke clothing.';
+    let image = artisanImg;
+    let alt = 'Zaloura Ethnic Wear collection banner';
+
+    if (currentCategory?.toLowerCase() === 'kurti') {
+      title = 'Zaloura Kurtis | Premium Handcrafted Indian Kurtis';
+      description = 'Explore the exclusive collection of Zaloura Kurtis. Handcrafted from organic cotton and silk, tailored to perfection at Zaloura Studio in Kerala.';
+      h1 = 'Zaloura Kurtis';
+      firstParagraph = 'Welcome to the Zaloura Kurtis collection. Zaloura offers handcrafted kurtis made from premium cottons and silk, tailored to perfection in Kerala.';
+      image = kurtiImg;
+      alt = 'Zaloura Kurtis collection showcase';
+    } else if (currentCategory?.toLowerCase() === 'salwar') {
+      title = 'Zaloura Salwars | Elegant Traditional Salwar Suits';
+      description = 'Explore premium Zaloura Salwars and designer salwar suit sets. Meticulously handcrafted by master artisans for the signature Zaloura elegance.';
+      h1 = 'Zaloura Salwars';
+      firstParagraph = 'Explore the exquisite Zaloura Salwars collection. Zaloura brings you traditional salwar suits and custom bespoke designs created by local master artisans.';
+      image = salwarImg;
+      alt = 'Zaloura Salwars collection display';
+    }
+
+    setSeoData({ title, description, h1, firstParagraph, image, alt });
+    document.title = title;
+
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = description;
+  }, [currentCategory]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -140,7 +188,7 @@ const Shop = () => {
       prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
     );
     if (category) {
-      navigate('/shop' + (searchQuery ? `?q=${searchQuery}` : ''));
+      navigate('/zaloura-ethnic-wear' + (searchQuery ? `?q=${searchQuery}` : ''));
     }
   };
 
@@ -163,31 +211,41 @@ const Shop = () => {
         initial="hidden"
         animate="visible"
         variants={headerVariants}
-        className="mb-12"
+        className="mb-16 bg-accent/5 p-8 md:p-12 rounded-[2.5rem] border border-primary/5"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-          <div className="max-w-2xl space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+          <div className="md:col-span-8 space-y-6">
             <motion.span 
               initial={{ opacity: 0, letterSpacing: "0.2em" }}
               animate={{ opacity: 1, letterSpacing: "0.4em" }}
               transition={{ duration: 1 }}
-              className="text-[10px] uppercase font-bold text-gray-400 block"
+              className="text-[10px] uppercase font-bold text-primary/60 block"
             >
-              {category || 'Curated Collections'}
+              Maison Zaloura
             </motion.span>
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">
-              {searchQuery ? `Exploring "${searchQuery}"` : category ? `${category}s` : 'The Collection'}
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">
+              {seoData.h1}
             </motion.h1>
             <motion.p 
               variants={fadeInUp}
-              className="text-lg font-serif italic text-secondary/60 leading-relaxed max-w-xl mt-6"
+              className="text-sm md:text-base text-secondary/70 font-sans leading-relaxed max-w-xl"
             >
-              Discover artisanal pieces that blend traditional heritage with modern silhouettes, each crafted with conscious intent.
+              {seoData.firstParagraph}
             </motion.p>
           </div>
+          <div className="md:col-span-4">
+            <motion.img 
+              variants={fadeInUp}
+              src={seoData.image} 
+              alt={seoData.alt} 
+              className="w-full aspect-[4/3] object-cover rounded-2xl shadow-lg border border-primary/5"
+            />
+          </div>
+        </div>
+      </motion.div>
           
           {/* COMPACT CONTROLS - Moved next to title area */}
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 border-t md:border-t-0 pt-6 md:pt-0">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 border-t md:border-t-0 pt-6 md:pt-0 mb-8">
             <button 
               onClick={() => setIsFilterOpen(!isFilterOpen)}
               className={`flex items-center gap-3 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] transition-all
@@ -213,7 +271,7 @@ const Shop = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate('/shop'); }}
+                  onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
                   className="flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
                 >
                   <X size={14} /> Clear Selection
@@ -221,8 +279,6 @@ const Shop = () => {
               )}
             </AnimatePresence>
           </div>
-        </div>
-      </motion.div>
 
       <div className="flex flex-col lg:flex-row gap-16">
         {/* Advanced Filters Sidebar (Toggled) */}
@@ -248,8 +304,9 @@ const Shop = () => {
                           </div>
                           <input
                             type="checkbox"
+                            disabled={!!categoryOverride}
                             checked={selectedCategories.includes(cat)}
-                            onChange={() => handleCategoryChange(cat)}
+                            onChange={() => !categoryOverride && handleCategoryChange(cat)}
                             className="hidden"
                           />
                           <span className={`text-[13px] tracking-wide transition-all ${selectedCategories.includes(cat) ? 'text-primary font-bold' : 'text-secondary/60 font-medium group-hover:text-primary'}`}>
@@ -352,7 +409,7 @@ const Shop = () => {
                   <h3 className="text-2xl font-serif text-primary mb-3 tracking-tighter italic">No matching pieces found</h3>
                   <p className="text-secondary/50 text-sm mb-10 max-w-xs mx-auto font-sans">Try refining your selection or resetting your search to explore the atelier.</p>
                   <button
-                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate('/shop'); }}
+                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
                     className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-2xl hover:bg-primaryContainer transition-all"
                   >
                     Reset Selection

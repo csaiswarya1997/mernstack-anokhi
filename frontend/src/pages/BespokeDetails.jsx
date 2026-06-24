@@ -86,7 +86,7 @@ const BespokeDetails = () => {
         <h2 className="font-serif text-2xl text-primary mb-2">Project Not Found</h2>
         <p className="text-gray-500 mb-8">The request you are looking for does not exist or you don't have access.</p>
         <button
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/zaloura-profile')}
           className="px-8 py-3 bg-primary text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary/90 transition-all"
         >
           Back to Profile
@@ -118,7 +118,7 @@ const BespokeDetails = () => {
         >
           <div>
             <button
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate('/zaloura-profile')}
               className="flex items-center gap-2 text-gray-400 hover:text-primary transition-colors mb-6 group"
             >
               <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />

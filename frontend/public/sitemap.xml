@@ -5,39 +5,39 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/shop</loc>
+    <loc>https://zaloura.in/zaloura-ethnic-wear</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/category/Kurti</loc>
+    <loc>https://zaloura.in/zaloura-kurtis</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/category/Salwar</loc>
+    <loc>https://zaloura.in/zaloura-salwars</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/bespoke</loc>
+    <loc>https://zaloura.in/zaloura-bespoke</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/about</loc>
+    <loc>https://zaloura.in/about-zaloura</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/sustainability</loc>
+    <loc>https://zaloura.in/zaloura-sustainability</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/contact</loc>
+    <loc>https://zaloura.in/contact-zaloura</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/shipping</loc>
+    <loc>https://zaloura.in/zaloura-shipping</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://zaloura.in/faq</loc>
+    <loc>https://zaloura.in/zaloura-faq</loc>
     <priority>0.6</priority>
   </url>
 </urlset>

@@ -45,38 +45,39 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="shop" element={<Shop />} />
-              <Route path="category/:category" element={<Shop />} />
-              <Route path="product/:id" element={<ProductDetails />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="checkout" element={
+              <Route path="zaloura-ethnic-wear" element={<Shop />} />
+              <Route path="zaloura-kurtis" element={<Shop categoryOverride="Kurti" />} />
+              <Route path="zaloura-salwars" element={<Shop categoryOverride="Salwar" />} />
+              <Route path="zaloura-product/:id" element={<ProductDetails />} />
+              <Route path="zaloura-cart" element={<Cart />} />
+              <Route path="zaloura-login" element={<Login />} />
+              <Route path="zaloura-register" element={<Register />} />
+              <Route path="zaloura-checkout" element={
                 <ProtectedRoute>
                   <Checkout />
                 </ProtectedRoute>
               } />
-              <Route path="profile" element={
+              <Route path="zaloura-profile" element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
               } />
-              <Route path="profile/bespoke/:id" element={
+              <Route path="zaloura-profile/bespoke/:id" element={
                 <ProtectedRoute>
                   <BespokeDetails />
                 </ProtectedRoute>
               } />
-              <Route path="sustainability" element={<Sustainability />} />
-              <Route path="about" element={<About />} />
-              <Route path="bespoke" element={<Bespoke />} />
-              <Route path="bespoke/edit/:id" element={
+              <Route path="zaloura-sustainability" element={<Sustainability />} />
+              <Route path="about-zaloura" element={<About />} />
+              <Route path="zaloura-bespoke" element={<Bespoke />} />
+              <Route path="zaloura-bespoke/edit/:id" element={
                 <ProtectedRoute>
                   <Bespoke />
                 </ProtectedRoute>
               } />
-              <Route path="contact" element={<Contact />} />
-              <Route path="shipping" element={<Shipping />} />
-              <Route path="faq" element={<Faq />} />
+              <Route path="contact-zaloura" element={<Contact />} />
+              <Route path="zaloura-shipping" element={<Shipping />} />
+              <Route path="zaloura-faq" element={<Faq />} />
             </Route>
 
             {/* Admin Routes */}

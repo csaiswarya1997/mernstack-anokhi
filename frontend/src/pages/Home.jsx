@@ -27,7 +27,7 @@ const Home = () => {
       titlePart2: "Wear Elegance",
       description: "Discover a curated collection where heritage craftsmanship meets contemporary elegance.",
       ctaText: "Explore Collection",
-      ctaLink: "/shop",
+      ctaLink: "/zaloura-ethnic-wear",
       position: "object-top"
     },
     {
@@ -37,7 +37,7 @@ const Home = () => {
       titlePart2: "Kurtis & Salwars",
       description: "Indulge in handpicked, premium kurtis and gorgeous traditional salwar ensembles.",
       ctaText: "Shop Collection",
-      ctaLink: "/shop",
+      ctaLink: "/zaloura-ethnic-wear",
       position: "object-top"
     },
     {
@@ -47,7 +47,7 @@ const Home = () => {
       titlePart2: "Co-ord Sets",
       description: "Redefine comfort and style with our contemporary silk co-ord sets.",
       ctaText: "Explore Co-ords",
-      ctaLink: "/bespoke",
+      ctaLink: "/zaloura-bespoke",
       position: "object-top"
     },
     {
@@ -57,7 +57,7 @@ const Home = () => {
       titlePart2: "Togetherness",
       description: "Designed for life's beautiful moments. Share the joy of handcrafted premium ethnic and fusion wear.",
       ctaText: "Explore Festive",
-      ctaLink: "/shop",
+      ctaLink: "/zaloura-ethnic-wear",
       position: "object-[center_75%]"
     }
   ];
@@ -150,7 +150,7 @@ const Home = () => {
                 {slides[currentSlide].ctaText} <ArrowRight size={14} />
               </Link>
               <Link
-                to="/bespoke"
+                to="/zaloura-bespoke"
                 className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all backdrop-blur-sm reveal-scale"
               >
                 Bespoke Atelier
@@ -204,8 +204,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Kurtis */}
-            <Link to="/category/Kurti" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-left shadow-2xl">
+            <Link to="/zaloura-kurtis" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-left shadow-2xl">
               <img src={kurtiImg} alt="Kurtis" className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
               <div className="absolute bottom-12 left-12 right-12">
@@ -216,9 +215,9 @@ const Home = () => {
                 </div>
               </div>
             </Link>
-
+ 
             {/* Salwars */}
-            <Link to="/category/Salwar" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-right shadow-2xl">
+            <Link to="/zaloura-salwars" className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] reveal-right shadow-2xl">
               <img src={salwarImg} alt="Salwars" className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
               <div className="absolute bottom-12 left-12 right-12">
@@ -241,7 +240,7 @@ const Home = () => {
               <h2 className="text-4xl font-serif text-primary mb-4 italic reveal-left-top">Nouvelles Arrivées</h2>
               <p className="text-secondary/60 font-sans italic reveal-right">The latest treasures from our India atelier.</p>
             </div>
-            <Link to="/shop" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primary transition-colors reveal-scale">
+            <Link to="/zaloura-ethnic-wear" className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary hover:text-primary transition-colors reveal-scale">
               Discover All <div className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all"><ArrowRight size={14} /></div>
             </Link>
           </div>
@@ -284,7 +283,7 @@ const Home = () => {
             <p className="text-white/80 font-sans text-lg mb-12 leading-relaxed max-w-2xl mx-auto italic reveal-right">
               We bridge the gap between ancient textile arts and the modern woman's lifestyle. Our pieces are not just garments; they are wearable art.
             </p>
-            <Link to="/sustainability" className="inline-block border-b border-accent text-accent px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all reveal-scale">
+            <Link to="/zaloura-sustainability" className="inline-block border-b border-accent text-accent px-2 py-4 font-sans uppercase tracking-[0.4em] text-[10px] font-bold hover:text-white hover:border-white transition-all reveal-scale">
               Discover Our Philosophy
             </Link>
           </div>

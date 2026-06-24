@@ -353,7 +353,7 @@ const Profile = () => {
                   <div className="bg-gray-50/30 p-12 lg:p-24 text-center rounded-[2rem] lg:rounded-[3rem] border border-dashed border-gray-200">
                     <ShoppingBag size={40} className="text-gray-100 mx-auto mb-6" />
                     <p className="text-secondary/40 font-serif italic text-xl mb-8">No pieces in your collection yet.</p>
-                    <button onClick={() => navigate('/shop')} className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px]">Explore Shop</button>
+                    <button onClick={() => navigate('/zaloura-ethnic-wear')} className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px]">Explore Shop</button>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -539,7 +539,7 @@ const Profile = () => {
                         variants={itemVariants}
                         className="bg-white border border-gray-100 rounded-[1.25rem] lg:rounded-[2rem] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-700"
                       >
-                        <div className="relative aspect-[3/4] overflow-hidden cursor-pointer" onClick={() => navigate(`/product/${p._id}`)}>
+                        <div className="relative aspect-[3/4] overflow-hidden cursor-pointer" onClick={() => navigate(`/zaloura-product/${p._id}`)}>
                           <motion.img
                             whileHover={{ scale: 1.1 }}
                             transition={{ duration: 0.8 }}
@@ -550,10 +550,10 @@ const Profile = () => {
                           <button onClick={(e) => { e.stopPropagation(); removeFromWishlist(p._id); }} className="absolute top-3 right-3 lg:top-6 lg:right-6 w-8 h-8 lg:w-10 lg:h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-red-500 shadow-xl lg:opacity-0 lg:group-hover:opacity-100 transition-all"><Trash2 size={14} /></button>
                         </div>
                         <div className="p-4 lg:p-8 space-y-2 lg:space-y-4">
-                          <h4 className="font-serif text-sm lg:text-xl text-primary truncate italic cursor-pointer" onClick={() => navigate(`/product/${p._id}`)}>{p.name}</h4>
+                          <h4 className="font-serif text-sm lg:text-xl text-primary truncate italic cursor-pointer" onClick={() => navigate(`/zaloura-product/${p._id}`)}>{p.name}</h4>
                           <div className="flex justify-between items-center">
                             <p className="font-sans font-bold text-primary text-xs lg:text-lg">₹{p.price.toLocaleString('en-IN')}</p>
-                            <button onClick={() => navigate(`/product/${p._id}`)} className="text-[7px] lg:text-[9px] uppercase tracking-widest font-bold text-primaryContainer border-b border-primaryContainer/20">View</button>
+                            <button onClick={() => navigate(`/zaloura-product/${p._id}`)} className="text-[7px] lg:text-[9px] uppercase tracking-widest font-bold text-primaryContainer border-b border-primaryContainer/20">View</button>
                           </div>
                         </div>
                       </motion.div>
@@ -582,7 +582,7 @@ const Profile = () => {
                   <div className="bg-gray-50/30 p-12 lg:p-24 text-center rounded-[2rem] border border-dashed border-gray-200">
                     <MessageSquare size={40} className="text-gray-100 mx-auto mb-6" />
                     <p className="text-secondary/40 font-serif italic text-xl">No custom design inquiries yet.</p>
-                    <button onClick={() => navigate('/bespoke')} className="mt-6 bg-primary text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-[9px]">Start Bespoke Project</button>
+                    <button onClick={() => navigate('/zaloura-bespoke')} className="mt-6 bg-primary text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-[9px]">Start Bespoke Project</button>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -632,7 +632,7 @@ const Profile = () => {
                               </div>
                             </div>
                             <button
-                              onClick={() => navigate(`/profile/bespoke/${req._id}`)}
+                              onClick={() => navigate(`/zaloura-profile/bespoke/${req._id}`)}
                               className="w-full bg-primary text-white py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] hover:bg-secondary transition-colors"
                             >
                               View Project Details

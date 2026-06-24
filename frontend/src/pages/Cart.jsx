@@ -72,7 +72,7 @@ const Cart = () => {
               <ShoppingBag className="text-gray-200" size={32} />
             </motion.div>
             <p className="text-secondary/40 font-serif italic text-2xl mb-8">Your bag is currently empty.</p>
-            <Link to="/shop" className="inline-block bg-primary text-white px-12 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl hover:bg-primaryContainer hover:-translate-y-1 transition-all">
+            <Link to="/zaloura-ethnic-wear" className="inline-block bg-primary text-white px-12 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl hover:bg-primaryContainer hover:-translate-y-1 transition-all">
               Explore Collections
             </Link>
           </motion.div>
@@ -111,7 +111,7 @@ const Cart = () => {
                               </span>
                             )}
                           </div>
-                          <Link to={`/product/${item._id || item.id}`}>
+                          <Link to={`/zaloura-product/${item._id || item.id}`}>
                             <h3 className="font-serif text-2xl text-primary hover:text-primaryContainer transition-colors truncate">{item.name}</h3>
                           </Link>
                           <p className="text-xs font-sans font-bold text-secondary/60 mt-2 uppercase tracking-widest">
@@ -183,7 +183,7 @@ const Cart = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => navigate('/checkout')}
+                  onClick={() => navigate('/zaloura-checkout')}
                   className="w-full bg-primaryContainer text-white py-6 rounded-2xl font-bold uppercase tracking-[0.3em] text-xs shadow-2xl hover:bg-primary active:translate-y-0 transition-all"
                 >
                   Proceed to Checkout

@@ -86,7 +86,7 @@ const ProductCard = ({ product }) => {
   const handleShare = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const productUrl = `${window.location.origin}/product/${productId}`;
+    const productUrl = `${window.location.origin}/zaloura-product/${productId}`;
     try {
       if (navigator.share) {
         let files = [];
@@ -129,7 +129,7 @@ const ProductCard = ({ product }) => {
       whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
       className="group bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-shadow duration-500"
     >
-      <Link to={`/product/${productId}`} className="block relative aspect-[3/4] bg-gray-50 overflow-hidden">
+      <Link to={`/zaloura-product/${productId}`} className="block relative aspect-[3/4] bg-gray-50 overflow-hidden">
         {product.image ? (
           <motion.img 
             whileHover={{ scale: 1.08 }}
@@ -198,7 +198,7 @@ const ProductCard = ({ product }) => {
             <span className="text-[9px] font-mono text-gray-300">#{product.productCode}</span>
           )}
         </div>
-        <Link to={`/product/${productId}`}>
+        <Link to={`/zaloura-product/${productId}`}>
           <h3 className="font-serif text-lg text-primary truncate hover:text-primaryContainer transition-colors leading-tight">
             {product.name}
           </h3>

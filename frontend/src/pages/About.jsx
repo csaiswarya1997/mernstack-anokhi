@@ -5,6 +5,17 @@ import { Link } from 'react-router-dom';
 import artisanImg from '../assets/artisan-story.png';
 
 const About = () => {
+  React.useEffect(() => {
+    document.title = "About Zaloura | Women’s Fashion Boutique in Kerala";
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = "Learn more about Zaloura, a premium women's fashion boutique in Thrissur, Kerala specializing in handcrafted kurtis, traditional salwars, and custom bespoke couture.";
+  }, []);
+
   // Animation Variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -45,7 +56,7 @@ const About = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl font-serif text-primary mb-8 italic"
           >
-            Our Story &amp; Philosophy
+            About Zaloura
           </motion.h1>
           <motion.div
             initial={{ width: 0 }}
@@ -194,13 +205,13 @@ const About = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-6">
             <Link
-              to="/bespoke"
+              to="/zaloura-bespoke"
               className="bg-primary text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-accent hover:text-secondary transition-all shadow-2xl flex items-center gap-3"
             >
               Start Bespoke Request <ArrowRight size={14} />
             </Link>
             <Link
-              to="/shop"
+              to="/zaloura-ethnic-wear"
               className="bg-transparent border border-white/20 text-white px-10 py-4 rounded-full font-sans uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary transition-all"
             >
               Explore Shop

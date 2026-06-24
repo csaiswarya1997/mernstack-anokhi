@@ -77,7 +77,7 @@ const Bespoke = () => {
             // Check if status is not 'New'
             if (data.status !== 'New') {
               showAlert('Cannot Edit', 'This request has already been processed and cannot be modified.');
-              navigate('/profile');
+              navigate('/zaloura-profile');
             }
           }
         } catch (error) {
@@ -131,7 +131,7 @@ const Bespoke = () => {
       if (res.ok) {
         if (isEditMode) {
           showAlert('Updated', 'Your project inquiry has been updated successfully.');
-          navigate(`/profile/bespoke/${id}`);
+          navigate(`/zaloura-profile/bespoke/${id}`);
         } else {
           setIsSubmitted(true);
         }
@@ -201,7 +201,7 @@ const Bespoke = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/zaloura-profile')}
           className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all"
         >
           Go to Dashboard

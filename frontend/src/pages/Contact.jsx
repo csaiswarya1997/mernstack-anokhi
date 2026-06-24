@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import artisanImg from '../assets/artisan-story.png';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +45,17 @@ const Contact = () => {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
+
+  React.useEffect(() => {
+    document.title = "Contact Zaloura | Premium Boutique Support in Thrissur, Kerala";
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = "Get in touch with the team at Zaloura for custom bridal wear, bespoke couture orders, and help with kurtis and salwars. Contact Zaloura today.";
+  }, []);
 
   React.useEffect(() => {
     const fetchSettings = async () => {
@@ -135,9 +147,9 @@ const Contact = () => {
           >
             Connect With Us
           </motion.span>
-          <h1 className="text-5xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">L'Invitation</h1>
+          <h1 className="text-5xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">Contact Zaloura</h1>
           <p className="mt-8 text-secondary/60 font-serif italic text-xl max-w-2xl mx-auto leading-relaxed">
-            Reach out to us for bespoke inquiries, support, or simply to say hello.
+            Reach out to the Zaloura team for bespoke custom tailoring inquiries, order support, or general brand questions. We are here to help you own the elegance.
           </p>
         </div>
       </motion.div>
@@ -184,6 +196,7 @@ const Contact = () => {
               variants={itemSlideIn}
               className="p-10 bg-primary rounded-[2.5rem] text-white shadow-xl shadow-primary/20"
             >
+              <img src={artisanImg} alt="Contact Zaloura Boutique" className="w-full h-48 object-cover rounded-2xl mb-6 shadow-md" />
               <h3 className="font-serif text-2xl mb-4 italic">Bespoke Consultations</h3>
               <p className="text-white/60 text-sm leading-relaxed mb-8">
                 Private appointments are available for custom bridal and couture inquiries. Please reach out to schedule your session.

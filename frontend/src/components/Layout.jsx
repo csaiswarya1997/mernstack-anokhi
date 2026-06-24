@@ -178,12 +178,12 @@ const Layout = () => {
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
-            <NavLink to="/shop" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Atelier</NavLink>
-            <NavLink to="/category/Kurti" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Kurtis</NavLink>
-            <NavLink to="/category/Salwar" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Salwars</NavLink>
-            <NavLink to="/bespoke" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Bespoke</NavLink>
-            <NavLink to="/sustainability" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Sustainability</NavLink>
-            <NavLink to="/contact" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
+            <NavLink to="/zaloura-ethnic-wear" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Atelier</NavLink>
+            <NavLink to="/zaloura-kurtis" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Kurtis</NavLink>
+            <NavLink to="/zaloura-salwars" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Salwars</NavLink>
+            <NavLink to="/zaloura-bespoke" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Bespoke</NavLink>
+            <NavLink to="/zaloura-sustainability" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Sustainability</NavLink>
+            <NavLink to="/contact-zaloura" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
           </nav>
 
           <div className="flex items-center gap-2.5 md:gap-4">
@@ -193,7 +193,7 @@ const Layout = () => {
             <button onClick={handleShareWebsite} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Share Website">
               <Share2 size={20} />
             </button>
-            <Link to={userInfo ? "/profile" : "/login"} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group" title="Account">
+            <Link to={userInfo ? "/zaloura-profile" : "/zaloura-login"} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group" title="Account">
               <User size={20} className="text-primary" />
               {userInfo && (
                 <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
@@ -206,7 +206,7 @@ const Layout = () => {
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary" title="Cart">
+            <Link to="/zaloura-cart" className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary" title="Cart">
               <ShoppingCart size={20} />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
@@ -285,14 +285,14 @@ const Layout = () => {
               className="flex flex-col gap-6"
             >
               {[
-                { to: "/shop", label: "Shop All" },
-                { to: "/category/Kurti", label: "Kurtis" },
-                { to: "/category/Salwar", label: "Salwars" },
-                { to: "/bespoke", label: "Bespoke Customization" },
-                { to: "/about", label: "About Zaloura" },
-                { to: "/sustainability", label: "Sustainability" },
-                { to: "/contact", label: "Contact Us" },
-                { to: userInfo ? "/profile" : "/login", label: userInfo ? "My Account" : "Login / Register" }
+                { to: "/zaloura-ethnic-wear", label: "Shop All" },
+                { to: "/zaloura-kurtis", label: "Kurtis" },
+                { to: "/zaloura-salwars", label: "Salwars" },
+                { to: "/zaloura-bespoke", label: "Bespoke Customization" },
+                { to: "/about-zaloura", label: "About Zaloura" },
+                { to: "/zaloura-sustainability", label: "Sustainability" },
+                { to: "/contact-zaloura", label: "Contact Us" },
+                { to: userInfo ? "/zaloura-profile" : "/zaloura-login", label: userInfo ? "My Account" : "Login / Register" }
               ].map((item, idx) => (
                 <motion.div
                   key={idx}
@@ -370,21 +370,21 @@ const Layout = () => {
             <div>
               <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Atelier</h4>
               <nav className="flex flex-col gap-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
-                <Link to="/shop" className="hover:text-white transition-colors w-fit">The Collection</Link>
-                <Link to="/category/Kurti" className="hover:text-white transition-colors w-fit">Kurtis</Link>
-                <Link to="/category/Salwar" className="hover:text-white transition-colors w-fit">Salwars</Link>
-                <Link to="/bespoke" className="hover:text-white transition-colors w-fit">Bespoke</Link>
+                <Link to="/zaloura-ethnic-wear" className="hover:text-white transition-colors w-fit">The Collection</Link>
+                <Link to="/zaloura-kurtis" className="hover:text-white transition-colors w-fit">Kurtis</Link>
+                <Link to="/zaloura-salwars" className="hover:text-white transition-colors w-fit">Salwars</Link>
+                <Link to="/zaloura-bespoke" className="hover:text-white transition-colors w-fit">Bespoke</Link>
               </nav>
             </div>
-
+ 
             {/* Support Links */}
             <div>
               <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary mb-6">Maison</h4>
               <nav className="flex flex-col gap-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
-                <Link to="/about" className="hover:text-white transition-colors w-fit">About Zaloura</Link>
-                <Link to="/sustainability" className="hover:text-white transition-colors w-fit">Sustainability</Link>
-                <Link to="/contact" className="hover:text-white transition-colors w-fit">Contact Us</Link>
-                <Link to="/shipping" className="hover:text-white transition-colors w-fit">Shipping & Returns</Link>
+                <Link to="/about-zaloura" className="hover:text-white transition-colors w-fit">About Zaloura</Link>
+                <Link to="/zaloura-sustainability" className="hover:text-white transition-colors w-fit">Sustainability</Link>
+                <Link to="/contact-zaloura" className="hover:text-white transition-colors w-fit">Contact Us</Link>
+                <Link to="/zaloura-shipping" className="hover:text-white transition-colors w-fit">Shipping & Returns</Link>
                 {/* <Link to="/faq" className="hover:text-white transition-colors w-fit">FAQ</Link> */}
               </nav>
             </div>

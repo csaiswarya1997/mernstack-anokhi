@@ -15,7 +15,7 @@ const Login = () => {
   const location = useLocation();
   const { userInfo, login } = useAuth();
 
-  const redirect = location.state?.from?.pathname || '/profile';
+  const redirect = location.state?.from?.pathname || '/zaloura-profile';
 
   useEffect(() => {
     if (userInfo) {
@@ -79,7 +79,7 @@ const Login = () => {
           <div className="mb-10 pb-8 border-b border-gray-100 text-center">
             <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-4">Don't have an account?</p>
             <Link
-              to="/register"
+              to="/zaloura-register"
               className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-primary/5 text-primary border border-primary/10 hover:bg-primary hover:text-white transition-all text-sm font-sans font-bold uppercase tracking-wider w-full justify-center"
             >
               Register
