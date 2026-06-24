@@ -12,7 +12,8 @@ import {
   Instagram,
   MapPin,
   MessageCircle,
-  Share2
+  Share2,
+  ChevronUp
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -59,7 +60,20 @@ const Layout = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [settings, setSettings] = useState(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -423,8 +437,53 @@ const Layout = () => {
           </div>
         </div>
       </footer>
+
+      {/* Floating Sticky WhatsApp Button */}
+      <motion.a
+        href={`https://wa.me/${(settings?.whatsapp || '+918921273858').replace(/\D/g, '')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-[999] flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20ba5a] transition-all duration-300 group hover:scale-110 active:scale-95"
+        aria-label="Chat on WhatsApp"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
+      >
+        {/* Pulsing Ring Effect */}
+        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping group-hover:animate-none -z-10" />
+
+        {/* Hover Tooltip */}
+        <span className="absolute right-16 bg-secondary text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-md whitespace-nowrap">
+          Chat With Us
+        </span>
+        <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.458L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.449 5.487 0 9.951-4.462 9.954-9.953.002-2.661-1.034-5.159-2.922-7.048C16.399 1.709 13.9 1.672 12.24 1.672c-5.461 0-9.92 4.459-9.923 9.95-.001 1.92.5 3.79 1.446 5.385L2.73 21.07l4.317-1.13c-.156.09-.328.188-.4.214zM17.15 14.54c-.28-.14-1.657-.82-1.913-.91-.256-.09-.443-.14-.63.14-.186.28-.72.91-.88 1.095-.16.185-.32.21-.6.07-1.36-.68-2.316-1.196-3.236-2.783-.232-.39-.232-.7-.07-1 .18-.32.39-.46.56-.63.18-.17.24-.28.35-.49.11-.21.05-.39-.02-.53-.08-.14-.63-1.52-.86-2.08-.23-.55-.47-.48-.64-.49-.16-.01-.35-.01-.54-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.4s1 2.79 1.14 2.97c.14.18 1.97 3.01 4.77 4.22.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.1.53-.08 1.657-.68 1.89-1.33.23-.65.23-1.21.16-1.33-.07-.12-.26-.19-.54-.33z"/>
+        </svg>
+      </motion.a>
+
+      {/* Floating Sticky Scroll to Top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-24 right-6 z-[999] flex items-center justify-center w-12 h-12 bg-secondary hover:bg-primary text-accent rounded-full shadow-2xl transition-all duration-300 group hover:scale-110 active:scale-95 border border-accent/20 hover:border-accent/40"
+            aria-label="Scroll to top"
+            initial={{ scale: 0, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0, opacity: 0, y: 20 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          >
+            {/* Hover Tooltip */}
+            <span className="absolute right-14 bg-secondary text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-md whitespace-nowrap">
+              Back to Top
+            </span>
+            <ChevronUp size={22} className="stroke-[2.5]" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 export default Layout;
+

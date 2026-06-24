@@ -293,7 +293,7 @@ const ProductDetails = () => {
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
-      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-8 pb-8 md:pb-12"
+      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-2 md:pt-4 pb-8 md:pb-12"
     >
       {/* LIGHTBOX OVERLAY */}
       <AnimatePresence>
@@ -421,11 +421,12 @@ const ProductDetails = () => {
         {/* GALLERY SYSTEM */}
         <motion.div
           variants={fadeInUp}
-          className="lg:sticky lg:top-32 lg:h-fit space-y-4 lg:space-y-8 flex flex-col items-center lg:items-start"
+          className="lg:sticky lg:top-32 lg:h-fit flex flex-col lg:flex-row-reverse gap-4 lg:gap-6 items-start w-full"
         >
+          {/* Main Image Container */}
           <div
             onClick={() => setIsLightboxOpen(true)}
-            className="w-full max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group shadow-lg"
+            className="w-full lg:flex-1 max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group shadow-lg"
           >
             <AnimatePresence mode="wait">
               <motion.img
@@ -445,19 +446,20 @@ const ProductDetails = () => {
             </div>
           </div>
 
+          {/* Thumbnails Container */}
           {uniqueImages.length > 1 && (
             <motion.div
               variants={staggerContainer}
-              className="flex flex-wrap gap-3 lg:gap-4 w-full max-w-[500px]"
+              className="flex flex-row lg:flex-col gap-3 lg:gap-4 overflow-x-auto lg:overflow-y-auto w-full lg:w-20 max-h-[120px] lg:max-h-[666px] no-scrollbar py-1"
             >
               {uniqueImages.map((img, index) => (
                 <motion.button
                   variants={fadeInUp}
                   key={index}
-                  whileHover={{ y: -4 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setMainImage(img)}
-                  className={`w-20 sm:w-24 aspect-[3/4] overflow-hidden border-4 rounded-xl transition-all duration-300
+                  className={`w-20 lg:w-full aspect-[3/4] flex-shrink-0 overflow-hidden border-4 rounded-xl transition-all duration-300
                     ${mainImage === img ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 >
                   <img src={img?.startsWith('http') ? img : `${API_URL}${img}`} className="w-full h-full object-cover" />

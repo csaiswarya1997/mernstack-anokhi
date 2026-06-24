@@ -205,13 +205,13 @@ const Shop = ({ categoryOverride }) => {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24 min-h-[70vh]">
+    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-6 pb-24 min-h-[70vh]">
       {/* Editorial Header */}
       <motion.div 
         initial="hidden"
         animate="visible"
         variants={headerVariants}
-        className="mb-16 bg-accent/5 p-8 md:p-12 rounded-[2.5rem] border border-primary/5"
+        className="mb-6 md:mb-8 bg-accent/5 p-8 md:p-12 rounded-[2.5rem] border border-primary/5"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
           <div className="md:col-span-8 space-y-6">

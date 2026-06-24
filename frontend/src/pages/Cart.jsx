@@ -41,7 +41,7 @@ const Cart = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24 min-h-[70vh]"
+      className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-6 pb-24 min-h-[70vh]"
     >
       <motion.div variants={fadeInUp} className="mb-8">
         <motion.span 

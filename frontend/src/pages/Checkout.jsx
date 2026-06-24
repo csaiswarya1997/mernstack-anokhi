@@ -220,7 +220,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-8 md:pt-12 pb-24">
+    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-6 pb-24">
       {/* Checkout Progress */}
       <div className="flex items-center justify-center mb-16 gap-4">
         <div className={`flex items-center gap-2 ${step === 1 ? 'text-primary' : 'text-gray-300'}`}>

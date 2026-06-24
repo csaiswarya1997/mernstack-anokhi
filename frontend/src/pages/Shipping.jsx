@@ -143,7 +143,7 @@ const Shipping = () => {
       {/* Hero Section */}
       <motion.div
         variants={fadeInUp}
-        className="pt-8 md:pt-12 pb-12 bg-gray-50/50 border-b border-gray-100"
+        className="pt-4 md:pt-6 pb-12 bg-gray-50/50 border-b border-gray-100"
       >
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center">
           <motion.span

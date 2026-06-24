@@ -34,7 +34,7 @@ const Faq = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="pt-8 md:pt-12 pb-16 bg-gray-50/50 border-b border-gray-100">
+      <div className="pt-4 md:pt-6 pb-16 bg-gray-50/50 border-b border-gray-100">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center">
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 block mb-4">Support Center</span>
           <h1 className="text-5xl md:text-7xl font-serif text-primary tracking-tighter leading-tight italic">Questions & Réponses</h1>
