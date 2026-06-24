@@ -219,24 +219,11 @@ const ProductDetails = () => {
     } catch (err) { console.error(err); }
   };
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-[70vh]">
-      <div className="w-12 h-12 border-4 border-primaryContainer border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  );
-
-  if (!product) return (
-    <div className="text-center py-16">
-      <h2 className="text-3xl font-serif text-primary mb-6">Masterpiece not found</h2>
-      <button onClick={() => navigate('/shop')} className="text-primaryContainer font-bold hover:underline">Return to Collection</button>
-    </div>
-  );
-
-  const allImages = [
+  const allImages = product ? [
     product.image,
     ...(Array.isArray(product.images) ? product.images : []),
     ...(Array.isArray(product.gallery) ? product.gallery : [])
-  ].filter(Boolean);
+  ].filter(Boolean) : [];
 
   const uniqueImages = [...new Set(allImages)];
 
@@ -268,6 +255,19 @@ const ProductDetails = () => {
       }
     }
   };
+
+  if (loading) return (
+    <div className="flex justify-center items-center h-[70vh]">
+      <div className="w-12 h-12 border-4 border-primaryContainer border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+
+  if (!product) return (
+    <div className="text-center py-16">
+      <h2 className="text-3xl font-serif text-primary mb-6">Masterpiece not found</h2>
+      <button onClick={() => navigate('/shop')} className="text-primaryContainer font-bold hover:underline">Return to Collection</button>
+    </div>
+  );
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
