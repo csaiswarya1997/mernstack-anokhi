@@ -107,7 +107,7 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Cinematic Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32 pb-12">
         {/* Background Slider Stack */}
         <div className="absolute inset-0 z-0">
           {slides.map((slide, idx) => (
@@ -132,9 +132,7 @@ const Home = () => {
         {/* Slide Content */}
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16 w-full">
           <div className="max-w-2xl reveal-left active">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/60 block mb-6 italic transition-all duration-1000 ease-in-out">
-              {slides[currentSlide].subtitle}
-            </span>
+
             <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.1] italic transition-all duration-1000 ease-in-out">
               {slides[currentSlide].titlePart1} <br />
               <span className="text-primary not-italic">{slides[currentSlide].titlePart2}</span>

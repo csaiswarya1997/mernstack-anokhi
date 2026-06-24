@@ -21,7 +21,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import API_URL from '../config';
 
 const Logo = ({ className = "h-8", textColor = "text-primary" }) => (
-  <div className={`flex flex-col items-center gap-1 -mt-5 ${className}`}>
+  <div className={`flex flex-col items-center gap-1 ${className}`}>
     <div className="relative flex items-center justify-center">
       <span className={`text-[1.35rem] md:text-4xl font-serif font-bold tracking-tighter ${textColor} flex items-center`}>
         Z
@@ -63,6 +63,11 @@ const Layout = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+  const [isScrolled, setIsScrolled] = useState(false);
+  const showSolidHeader = isScrolled || !isHomePage || isMobileMenuOpen;
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300) {
@@ -70,10 +75,21 @@ const Layout = () => {
       } else {
         setShowScrollTop(false);
       }
+
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    setIsScrolled(window.scrollY > 50);
+  }, [location.pathname]);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -138,6 +154,18 @@ const Layout = () => {
     }
   };
 
+  const wrapperClass = isHomePage
+    ? "fixed top-0 left-0 w-full z-50 transition-all duration-300"
+    : "sticky top-0 w-full z-50 transition-all duration-300";
+
+  const navLinkClass = ({ isActive }) => {
+    const base = "text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ";
+    if (isActive) {
+      return base + (showSolidHeader ? 'text-primary border-primary' : 'text-white border-white');
+    }
+    return base + (showSolidHeader ? 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30' : 'text-white/70 border-transparent hover:text-white hover:border-white/30');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans text-secondary">
       {/* Global Scroll Progress Bar */}
@@ -145,136 +173,152 @@ const Layout = () => {
         className="fixed top-0 left-0 right-0 h-1 bg-primary origin-left z-[100]"
         style={{ scaleX }}
       />
-      {/* Top Info Bar */}
-      <div className="bg-secondary py-2 border-b border-white/5">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
-          <div className="flex items-center gap-6 md:gap-8">
-            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.phone || '+91 8921273858'}>
-              <Phone size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.phone || '+91 8921273858'}</span>
-            </a>
-            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.email || 'zaloura.in@gmail.com'}>
-              <Mail size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.email || 'zaloura.in@gmail.com'}</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-6 md:gap-8">
-            <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-green-400 transition-colors" title="WhatsApp">
-              <MessageCircle size={12} /> <span className="hidden lg:inline">WhatsApp</span>
-            </a>
-            <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/60 hover:text-accent transition-colors" title="Instagram">
-              <Instagram size={12} /> <span className="hidden lg:inline">Instagram</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-[1280px] mx-auto px-2 md:px-16 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-1 md:gap-4">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-1.5 hover:bg-accent/10 rounded-full transition-colors text-primary focus:outline-none"
-              aria-label="Toggle Menu"
-            >
-              <motion.div
-                key={isMobileMenuOpen ? "open" : "closed"}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </motion.div>
-            </button>
-            <Link to="/">
-              <Logo className="h-6 md:h-8" />
-            </Link>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <NavLink to="/zaloura-ethnic-wear" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Atelier</NavLink>
-            <NavLink to="/zaloura-kurtis" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Kurtis</NavLink>
-            <NavLink to="/zaloura-salwars" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Salwars</NavLink>
-            <NavLink to="/zaloura-bespoke" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Bespoke</NavLink>
-            <NavLink to="/zaloura-sustainability" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Sustainability</NavLink>
-            <NavLink to="/contact-zaloura" className={({ isActive }) => `text-[11px] uppercase tracking-widest font-bold transition-colors border-b-2 pb-1 ${isActive ? 'text-primary border-primary' : 'text-primary/60 border-transparent hover:text-primary hover:border-primary/30'}`}>Contact</NavLink>
-          </nav>
-
-          <div className="flex items-center gap-2.5 md:gap-4">
-            <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Search">
-              <Search size={20} />
-            </button>
-            <button onClick={handleShareWebsite} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors text-primary" title="Share Website">
-              <Share2 size={20} />
-            </button>
-            <Link to={userInfo ? "/zaloura-profile" : "/zaloura-login"} className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors flex items-center gap-2 group" title="Account">
-              <User size={20} className="text-primary" />
-              {userInfo && (
-                <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
-                  {userInfo.name?.split(' ')[0] || 'Profile'}
-                </span>
-              )}
-              {!userInfo && (
-                <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-primary">
-                  Account
-                </span>
-              )}
-            </Link>
-            <Link to="/zaloura-cart" className="p-1.5 md:p-2 hover:bg-accent/20 rounded-full transition-colors relative text-primary" title="Cart">
-              <ShoppingCart size={20} />
-              {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-          </div>
-        </div>
-
-        {/* Search Overlay */}
+      
+      {/* Navigation Wrapper */}
+      <div className={wrapperClass}>
+        {/* Top Info Bar */}
         <AnimatePresence>
-          {isSearchOpen && (
+          {!isScrolled && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-full left-0 w-full bg-white border-b border-gray-100 p-3 md:p-6 shadow-xl z-50"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
             >
-              <form onSubmit={handleSearch} className="max-w-[1280px] mx-auto flex items-center gap-3 md:gap-6">
-                <div className="flex-1 relative group">
-                  <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
-                    <Search size={18} />
-                  </button>
-                  <input
-                    type="text"
-                    placeholder="Search kurtis, salwars, products..."
-                    autoFocus
-                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-11 md:pl-12 pr-4 py-3 md:py-4 outline-none focus:border-primary/20 focus:bg-white transition-all font-serif italic text-sm md:text-lg"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+              <div className={`transition-colors duration-300 ${isHomePage ? 'bg-transparent border-b border-white/10 text-white/90' : 'bg-secondary text-white/90'} py-2`}>
+                <div className="max-w-[1280px] mx-auto px-4 md:px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
+                  <div className="flex items-center gap-6 md:gap-8">
+                    <a href={`tel:${settings?.phone}`} className={`flex items-center gap-2 hover:text-accent transition-colors ${isHomePage ? 'text-white' : 'text-white/90'}`} title={settings?.phone || '+91 8921273858'}>
+                      <Phone size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.phone || '+91 8921273858'}</span>
+                    </a>
+                    <a href={`mailto:${settings?.email}`} className={`flex items-center gap-2 hover:text-accent transition-colors ${isHomePage ? 'text-white' : 'text-white/90'}`} title={settings?.email || 'zaloura.in@gmail.com'}>
+                      <Mail size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.email || 'zaloura.in@gmail.com'}</span>
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-6 md:gap-8">
+                    <a href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 hover:text-green-400 transition-colors ${isHomePage ? 'text-white/80' : 'text-white/60'}`} title="WhatsApp">
+                      <MessageCircle size={12} /> <span className="hidden lg:inline">WhatsApp</span>
+                    </a>
+                    <a href={`https://instagram.com/${settings?.instagram?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 hover:text-accent transition-colors ${isHomePage ? 'text-white/80' : 'text-white/60'}`} title="Instagram">
+                      <Instagram size={12} /> <span className="hidden lg:inline">Instagram</span>
+                    </a>
+                  </div>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="submit"
-                  className="bg-primary text-white px-4 md:px-8 py-2.5 md:py-4 rounded-2xl font-bold uppercase tracking-widest text-[9px] md:text-[10px] shadow-lg shadow-primary/10"
-                >
-                  Search
-                </motion.button>
-                <button
-                  type="button"
-                  onClick={() => setIsSearchOpen(false)}
-                  className="p-1.5 hover:bg-gray-50 rounded-full transition-colors text-gray-400 hover:text-primary"
-                >
-                  <X size={20} />
-                </button>
-              </form>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </header>
+
+        {/* Header */}
+        <header className={`transition-all duration-300 ${showSolidHeader ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm text-secondary' : 'bg-gradient-to-b from-black/20 to-transparent border-b border-transparent text-white'}`}>
+          <div className="max-w-[1280px] mx-auto px-2 md:px-16 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-1 md:gap-4">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className={`md:hidden p-1.5 rounded-full transition-colors focus:outline-none ${showSolidHeader ? 'text-primary hover:bg-accent/10' : 'text-white hover:bg-white/15'}`}
+                aria-label="Toggle Menu"
+              >
+                <motion.div
+                  key={isMobileMenuOpen ? "open" : "closed"}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </motion.div>
+              </button>
+              <Link to="/">
+                <Logo className="h-6 md:h-8" textColor={showSolidHeader ? "text-primary" : "text-white"} />
+              </Link>
+            </div>
+
+            <nav className="hidden md:flex items-center gap-8">
+              <NavLink to="/zaloura-ethnic-wear" className={navLinkClass}>Atelier</NavLink>
+              <NavLink to="/zaloura-kurtis" className={navLinkClass}>Kurtis</NavLink>
+              <NavLink to="/zaloura-salwars" className={navLinkClass}>Salwars</NavLink>
+              <NavLink to="/zaloura-bespoke" className={navLinkClass}>Bespoke</NavLink>
+              <NavLink to="/zaloura-sustainability" className={navLinkClass}>Sustainability</NavLink>
+              <NavLink to="/contact-zaloura" className={navLinkClass}>Contact</NavLink>
+            </nav>
+
+            <div className="flex items-center gap-2.5 md:gap-4">
+              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className={`p-1.5 md:p-2 rounded-full transition-colors ${showSolidHeader ? 'text-primary hover:bg-accent/20' : 'text-white hover:bg-white/10'}`} title="Search">
+                <Search size={20} />
+              </button>
+              <button onClick={handleShareWebsite} className={`p-1.5 md:p-2 rounded-full transition-colors ${showSolidHeader ? 'text-primary hover:bg-accent/20' : 'text-white hover:bg-white/10'}`} title="Share Website">
+                <Share2 size={20} />
+              </button>
+              <Link to={userInfo ? "/zaloura-profile" : "/zaloura-login"} className={`p-1.5 md:p-2 rounded-full transition-colors flex items-center gap-2 group ${showSolidHeader ? 'text-primary hover:bg-accent/20' : 'text-white hover:bg-white/10'}`} title="Account">
+                <User size={20} className={showSolidHeader ? "text-primary" : "text-white"} />
+                {userInfo && (
+                  <span className={`hidden lg:block text-[10px] font-bold uppercase tracking-widest ${showSolidHeader ? 'text-primary' : 'text-white'}`}>
+                    {userInfo.name?.split(' ')[0] || 'Profile'}
+                  </span>
+                )}
+                {!userInfo && (
+                  <span className={`hidden lg:block text-[10px] font-bold uppercase tracking-widest ${showSolidHeader ? 'text-primary' : 'text-white'}`}>
+                    Account
+                  </span>
+                )}
+              </Link>
+              <Link to="/zaloura-cart" className={`p-1.5 md:p-2 rounded-full transition-colors relative ${showSolidHeader ? 'text-primary hover:bg-accent/20' : 'text-white hover:bg-white/10'}`} title="Cart">
+                <ShoppingCart size={20} />
+                {cartCount > 0 && (
+                  <span className={`absolute top-0 right-0 text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold ${showSolidHeader ? 'bg-primary text-white' : 'bg-white text-primary'}`}>
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+          </div>
+
+          {/* Search Overlay */}
+          <AnimatePresence>
+            {isSearchOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute top-full left-0 w-full bg-white border-b border-gray-100 p-3 md:p-6 shadow-xl z-50 text-secondary"
+              >
+                <form onSubmit={handleSearch} className="max-w-[1280px] mx-auto flex items-center gap-3 md:gap-6">
+                  <div className="flex-1 relative group">
+                    <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                      <Search size={18} />
+                    </button>
+                    <input
+                      type="text"
+                      placeholder="Search kurtis, salwars, products..."
+                      autoFocus
+                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-11 md:pl-12 pr-4 py-3 md:py-4 outline-none focus:border-primary/20 focus:bg-white transition-all font-serif italic text-sm md:text-lg"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="submit"
+                    className="bg-primary text-white px-4 md:px-8 py-2.5 md:py-4 rounded-2xl font-bold uppercase tracking-widest text-[9px] md:text-[10px] shadow-lg shadow-primary/10"
+                  >
+                    Search
+                  </motion.button>
+                  <button
+                    type="button"
+                    onClick={() => setIsSearchOpen(false)}
+                    className="p-1.5 hover:bg-gray-50 rounded-full transition-colors text-gray-400 hover:text-primary"
+                  >
+                    <X size={20} />
+                  </button>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </header>
+      </div>
 
       {/* Mobile Nav */}
       <AnimatePresence>
