@@ -1,4 +1,17 @@
 {
+    "redirects": [
+        {
+            "source": "/:path*",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "zaloura.in"
+                }
+            ],
+            "destination": "https://www.zaloura.in/:path*",
+            "statusCode": 301
+        }
+    ],
     "rewrites": [
         {
             "source": "/(.*)",

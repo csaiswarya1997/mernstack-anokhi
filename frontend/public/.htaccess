@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Redirect HTTP to HTTPS and non-WWW to WWW with a 301 Permanent Redirect
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^zaloura\.in$ [NC]
+  RewriteRule ^(.*)$ https://www.zaloura.in/$1 [R=301,L]
+
+  # 2. Support React Router SPA routes by rewriting non-file/non-directory requests to index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
