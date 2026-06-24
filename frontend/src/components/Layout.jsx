@@ -135,11 +135,11 @@ const Layout = () => {
       <div className="bg-secondary py-2 border-b border-white/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.25em]">
           <div className="flex items-center gap-6 md:gap-8">
-            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.phone || '+91 98765 43210'}>
-              <Phone size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.phone || '+91 98765 43210'}</span>
+            <a href={`tel:${settings?.phone}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.phone || '+91 8921273858'}>
+              <Phone size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.phone || '+91 8921273858'}</span>
             </a>
-            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.email || 'concierge@zaloura.com'}>
-              <Mail size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.email || 'concierge@zaloura.com'}</span>
+            <a href={`mailto:${settings?.email}`} className="flex items-center gap-2 text-white/90 hover:text-accent transition-colors" title={settings?.email || 'zaloura.in@gmail.com'}>
+              <Mail size={12} className="text-accent" /> <span className="hidden lg:inline">{settings?.email || 'zaloura.in@gmail.com'}</span>
             </a>
           </div>
           <div className="flex items-center gap-6 md:gap-8">
@@ -272,7 +272,7 @@ const Layout = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-md pt-28 px-8 flex flex-col justify-between pb-12"
           >
-            <motion.nav 
+            <motion.nav
               initial="hidden"
               animate="visible"
               variants={{
@@ -305,11 +305,10 @@ const Layout = () => {
                   <NavLink
                     onClick={() => setIsMobileMenuOpen(false)}
                     to={item.to}
-                    className={({ isActive }) => 
-                      `text-3xl font-serif block transition-all duration-300 ${
-                        isActive 
-                          ? 'text-primary font-bold translate-x-2' 
-                          : 'text-secondary hover:text-primary'
+                    className={({ isActive }) =>
+                      `text-3xl font-serif block transition-all duration-300 ${isActive
+                        ? 'text-primary font-bold translate-x-2'
+                        : 'text-secondary hover:text-primary'
                       }`
                     }
                   >
@@ -327,8 +326,8 @@ const Layout = () => {
               className="border-t border-gray-100 pt-8 space-y-4"
             >
               <p className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Atelier Concierge</p>
-              <p className="text-sm font-serif italic text-primary">{settings?.email || 'concierge@zaloura.com'}</p>
-              <p className="text-xs font-sans text-secondary">{settings?.phone || '+91 98765 43210'}</p>
+              <p className="text-sm font-serif italic text-primary">{settings?.email || 'zaloura.in@gmail.com'}</p>
+              <p className="text-xs font-sans text-secondary">{settings?.phone || '+91 8921273858'}</p>
             </motion.div>
           </motion.div>
         )}
@@ -396,11 +395,11 @@ const Layout = () => {
               <div className="space-y-4 text-[11px] font-bold tracking-widest text-white/40">
                 <div className="group">
                   <p className="text-[8px] text-white/20 mb-1">PHONE</p>
-                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.phone || '+91 98765 43210'}</p>
+                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.phone || '+91 8921273858'}</p>
                 </div>
                 <div className="group">
                   <p className="text-[8px] text-white/20 mb-1">EMAIL</p>
-                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.email || 'concierge@zaloura.com'}</p>
+                  <p className="text-white/60 group-hover:text-primary transition-colors">{settings?.email || 'zaloura.in@gmail.com'}</p>
                 </div>
               </div>
             </div>
