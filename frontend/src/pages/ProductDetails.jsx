@@ -46,6 +46,13 @@ const ProductDetails = () => {
     }
   }, [isRestockModalOpen, userInfo]);
 
+  // Prefill review name when user info is available
+  useEffect(() => {
+    if (userInfo && !reviewName) {
+      setReviewName(userInfo.name || '');
+    }
+  }, [userInfo, reviewName]);
+
   const handleRestockSubmit = async (e) => {
     e.preventDefault();
     setIsSubmittingRestock(true);
@@ -128,7 +135,7 @@ const ProductDetails = () => {
       showConfirm(
         'Account Required',
         'Please sign in to your account to save pieces to your collection.',
-        () => navigate('/login', { state: { from: { pathname: window.location.pathname } } }),
+        () => navigate('/zaloura-login', { state: { from: { pathname: window.location.pathname } } }),
         'Login',
         'Not Now'
       );
@@ -199,6 +206,20 @@ const ProductDetails = () => {
     } catch (err) { console.error(err); }
   };
 
+  const handleWriteReviewClick = () => {
+    if (!userInfo) {
+      showConfirm(
+        'Account Required',
+        'Please sign in to your account to write a review.',
+        () => navigate('/zaloura-login', { state: { from: { pathname: window.location.pathname } } }),
+        'Login',
+        'Not Now'
+      );
+      return;
+    }
+    setShowReviewForm(true);
+  };
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -265,7 +286,7 @@ const ProductDetails = () => {
   if (!product) return (
     <div className="text-center py-16">
       <h2 className="text-3xl font-serif text-primary mb-6">Masterpiece not found</h2>
-      <button onClick={() => navigate('/shop')} className="text-primaryContainer font-bold hover:underline">Return to Collection</button>
+      <button onClick={() => navigate('/zaloura-ethnic-wear')} className="text-primaryContainer font-bold hover:underline">Return to Collection</button>
     </div>
   );
 
@@ -691,62 +712,105 @@ const ProductDetails = () => {
         viewport={{ once: true }}
         className="pt-8 lg:pt-16 border-t border-gray-100 mb-8 lg:mb-16"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-24">
-          <div>
-            <h2 className="text-2xl md:text-4xl font-serif text-primary mb-4 lg:mb-8 italic">Client Experience</h2>
-            {!showReviewForm ? (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowReviewForm(true)}
-                className="w-full py-5 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3"
-              >
-                <MessageSquare size={16} /> Write a Review
-              </motion.button>
-            ) : (
+        {/* Full-width Section Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b border-gray-100">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-4xl font-serif text-primary italic">Client Experience</h2>
+            {uniqueImages && product.reviews && product.reviews.length > 0 && (
+              <div className="flex items-center gap-3">
+                <div className="flex text-amber-400">
+                  {[...Array(5)].map((_, star) => {
+                    const isFilled = star < Math.round(product.rating || 0);
+                    return (
+                      <Star
+                        key={star}
+                        size={14}
+                        fill={isFilled ? "currentColor" : "none"}
+                        className={isFilled ? 'text-amber-400' : 'text-gray-200'}
+                      />
+                    );
+                  })}
+                </div>
+                <span className="text-xs text-secondary/60 font-sans">
+                  {(product.rating || 0).toFixed(1)} out of 5 ({product.reviews.length} {product.reviews.length === 1 ? 'review' : 'reviews'})
+                </span>
+              </div>
+            )}
+          </div>
+
+          {!showReviewForm && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleWriteReviewClick}
+              className="px-6 py-3.5 bg-primary text-white rounded-xl font-bold uppercase tracking-widest text-[9px] flex items-center gap-2 shadow-md hover:bg-secondary transition-all"
+            >
+              <MessageSquare size={14} /> Write a Review
+            </motion.button>
+          )}
+        </div>
+
+        {/* Section Body */}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start w-full">
+          {/* Left Column: Form (only show when showReviewForm is true) */}
+          {showReviewForm && (
+            <div className="w-full lg:w-[350px] flex-shrink-0">
+              {/* Compact Review Form */}
               <motion.form
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
                 onSubmit={handleReviewSubmit}
-                className="space-y-5 bg-white p-8 rounded-3xl border border-gray-100 shadow-2xl"
+                className="space-y-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-xl"
               >
-                <div className="flex gap-3">
+                <div className="text-center pb-2 border-b border-gray-50">
+                  <h3 className="font-serif text-lg text-primary italic">Write a Review</h3>
+                </div>
+                <div className="flex gap-2 justify-center py-2">
                   {[1, 2, 3, 4, 5].map(star => (
-                    <button key={star} type="button" onClick={() => setReviewRating(star)} className={reviewRating >= star ? 'text-amber-400' : 'text-gray-200'}>
-                      <Star size={24} fill={reviewRating >= star ? "currentColor" : "none"} />
+                    <button key={star} type="button" onClick={() => setReviewRating(star)} className="focus:outline-none">
+                      <Star size={24} fill={reviewRating >= star ? "currentColor" : "none"} className={reviewRating >= star ? 'text-amber-400' : 'text-gray-200'} />
                     </button>
                   ))}
                 </div>
-                <input type="text" value={reviewName} onChange={(e) => setReviewName(e.target.value)} className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-xl" placeholder="Your Name" required />
-                <textarea rows="4" value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-xl" placeholder="Review details..." required />
-                <div className="flex gap-4">
-                  <button type="button" onClick={() => setShowReviewForm(false)} className="flex-1 py-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">Cancel</button>
-                  <button type="submit" className="flex-1 py-4 bg-primaryContainer text-white rounded-xl shadow-lg shadow-primaryContainer/20">Submit</button>
+                <input type="text" value={reviewName} readOnly className="w-full px-4 py-3 bg-gray-100/50 border border-gray-100 text-gray-500 rounded-xl text-xs cursor-not-allowed" placeholder="Your Name" required />
+                <textarea rows="3" value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs outline-none focus:border-primary/20 focus:bg-white transition-all font-sans" placeholder="Tell us about your experience..." required />
+                <div className="flex gap-3 pt-2">
+                  <button type="button" onClick={() => setShowReviewForm(false)} className="flex-1 py-3 border border-gray-100 rounded-xl text-xs hover:bg-gray-50 transition-colors">Cancel</button>
+                  <button type="submit" className="flex-1 py-3 bg-primaryContainer text-white rounded-xl text-xs font-bold shadow-md hover:bg-primary transition-all">Submit</button>
                 </div>
               </motion.form>
-            )}
-          </div>
-          <div className="lg:col-span-2">
+            </div>
+          )}
+
+          {/* Right Column: Reviews List */}
+          <div className="flex-1 w-full">
             {!product.reviews || product.reviews.length === 0 ? (
-              <div className="h-full flex items-center justify-center p-12 bg-gray-50/50 rounded-[2.5rem] border border-dashed border-gray-200">
-                <p className="text-secondary/30 font-serif italic text-2xl">Awaiting its first appraisal.</p>
+              <div className="h-[250px] flex items-center justify-center p-12 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200 w-full">
+                <p className="text-secondary/30 font-serif italic text-xl">Awaiting its first appraisal.</p>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-4 w-full">
                 {product.reviews.map((review, i) => (
                   <motion.div
                     key={i}
                     variants={fadeInUp}
-                    whileHover={{ y: -5 }}
-                    className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all"
+                    whileHover={{ y: -2 }}
+                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all space-y-3"
                   >
-                    <div className="flex justify-between items-start mb-4">
-                      <h4 className="font-serif text-lg text-primary">{review.name}</h4>
-                      <div className="flex text-amber-400">
-                        {[...Array(5)].map((_, star) => <Star key={star} size={14} fill={star < review.rating ? "currentColor" : "none"} />)}
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-serif font-medium text-primary text-base leading-none">{review.name}</h4>
+                        <span className="text-[9px] text-gray-400 font-sans mt-1 block uppercase tracking-wider">Verified Purchase</span>
+                      </div>
+                      <div className="flex gap-0.5 text-amber-400">
+                        {[...Array(5)].map((_, star) => (
+                          <Star key={star} size={11} fill={star < review.rating ? "currentColor" : "none"} className={star < review.rating ? 'text-amber-400' : 'text-gray-200'} />
+                        ))}
                       </div>
                     </div>
-                    <p className="text-secondary/80 font-sans italic">"{review.comment}"</p>
+                    <p className="text-secondary/70 font-sans text-sm leading-relaxed italic">
+                      "{review.comment}"
+                    </p>
                   </motion.div>
                 ))}
               </div>
@@ -771,7 +835,7 @@ const ProductDetails = () => {
               </div>
               <h2 className="text-2xl md:text-5xl font-serif text-primary tracking-tighter leading-tight italic">You May Also Like</h2>
             </div>
-            <button onClick={() => navigate('/shop')} className="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-primary transition-colors border-b border-gray-200 pb-1">
+            <button onClick={() => navigate('/zaloura-ethnic-wear')} className="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-primary transition-colors border-b border-gray-200 pb-1">
               View All Masterpieces
             </button>
           </div>

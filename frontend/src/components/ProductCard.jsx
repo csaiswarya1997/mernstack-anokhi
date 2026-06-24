@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
       showConfirm(
         'Account Required', 
         'Please sign in to your account to save pieces to your collection.', 
-        () => navigate('/login', { state: { from: { pathname: window.location.pathname } } }),
+        () => navigate('/zaloura-login', { state: { from: { pathname: window.location.pathname } } }),
         'Login',
         'Not Now'
       );
