@@ -212,11 +212,11 @@ const Layout = () => {
 
         {/* Header */}
         <header className={`transition-all duration-300 ${showSolidHeader ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm text-secondary' : 'bg-gradient-to-b from-black/20 to-transparent border-b border-transparent text-white'}`}>
-          <div className="max-w-[1280px] mx-auto px-2 md:px-16 h-20 flex items-center justify-between">
-            <div className="flex items-center gap-1 md:gap-4">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-16 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-3 md:gap-4">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`md:hidden p-1.5 rounded-full transition-colors focus:outline-none ${showSolidHeader ? 'text-primary hover:bg-accent/10' : 'text-white hover:bg-white/15'}`}
+                className={`md:hidden p-1.5 rounded-full transition-colors focus:outline-none flex items-center justify-center ${showSolidHeader ? 'text-primary hover:bg-accent/10' : 'text-white hover:bg-white/15'}`}
                 aria-label="Toggle Menu"
               >
                 <motion.div
@@ -225,11 +225,12 @@ const Layout = () => {
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
+                  className="flex items-center justify-center"
                 >
                   {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </motion.div>
               </button>
-              <Link to="/">
+              <Link to="/" className="flex items-center transform -translate-y-[3px] md:-translate-y-[5px]">
                 <Logo className="h-6 md:h-8" textColor={showSolidHeader ? "text-primary" : "text-white"} />
               </Link>
             </div>
