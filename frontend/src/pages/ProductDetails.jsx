@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState(null);
   const [mainImage, setMainImage] = useState('');
+  const mobileScrollRef = useRef(null);
 
   // Interactive States
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -238,6 +239,36 @@ const ProductDetails = () => {
   ].filter(Boolean);
 
   const uniqueImages = [...new Set(allImages)];
+
+  // Sync mobile scroll position when mainImage changes (e.g. via thumbnail click)
+  useEffect(() => {
+    if (mobileScrollRef.current) {
+      const index = uniqueImages.indexOf(mainImage);
+      if (index !== -1) {
+        const container = mobileScrollRef.current;
+        const slideWidth = container.clientWidth;
+        if (slideWidth > 0 && Math.abs(container.scrollLeft - index * slideWidth) > 5) {
+          container.scrollTo({
+            left: index * slideWidth,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  }, [mainImage, uniqueImages]);
+
+  const handleMobileScroll = (e) => {
+    const container = e.currentTarget;
+    const scrollPosition = container.scrollLeft;
+    const slideWidth = container.clientWidth;
+    if (slideWidth > 0) {
+      const index = Math.round(scrollPosition / slideWidth);
+      if (uniqueImages[index] && uniqueImages[index] !== mainImage) {
+        setMainImage(uniqueImages[index]);
+      }
+    }
+  };
+
   const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   const nextImage = () => {
@@ -423,10 +454,50 @@ const ProductDetails = () => {
           variants={fadeInUp}
           className="lg:sticky lg:top-32 lg:h-fit flex flex-col lg:flex-row-reverse gap-4 lg:gap-6 items-start w-full"
         >
-          {/* Main Image Container */}
+          {/* Mobile Swipeable Gallery */}
+          <div className="block lg:hidden w-full max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative shadow-lg">
+            <div
+              ref={mobileScrollRef}
+              onScroll={handleMobileScroll}
+              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth h-full no-scrollbar"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {uniqueImages.map((img, index) => (
+                <div key={index} className="w-full h-full flex-shrink-0 snap-start snap-always">
+                  <img
+                    src={img?.startsWith('http') ? img : `${API_URL}${img}`}
+                    alt={`${product.name} - View ${index + 1}`}
+                    className="w-full h-full object-cover cursor-pointer"
+                    onClick={() => setIsLightboxOpen(true)}
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Mobile Image Dots Indicator */}
+            {uniqueImages.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm z-10">
+                {uniqueImages.map((_, index) => {
+                  const isActive = uniqueImages.indexOf(mainImage) === index;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setMainImage(uniqueImages[index])}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                        isActive ? 'bg-white w-3' : 'bg-white/50'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Zoomable Gallery */}
           <div
             onClick={() => setIsLightboxOpen(true)}
-            className="w-full lg:flex-1 max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group shadow-lg"
+            className="hidden lg:block w-full lg:flex-1 max-w-[500px] border-4 border-primary rounded-2xl aspect-[3/4] overflow-hidden bg-white relative cursor-zoom-in group shadow-lg"
           >
             <AnimatePresence mode="wait">
               <motion.img
