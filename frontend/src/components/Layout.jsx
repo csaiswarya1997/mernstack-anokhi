@@ -93,7 +93,7 @@ const Layout = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/shop?q=${encodeURIComponent(searchQuery)}`);
+      navigate(`/zaloura-ethnic-wear?q=${encodeURIComponent(searchQuery)}`);
       setIsSearchOpen(false);
       setSearchQuery('');
     }
