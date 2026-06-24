@@ -90,15 +90,31 @@ const ProductCard = ({ product }) => {
     try {
       if (navigator.share) {
         let files = [];
+        const imageUrl = product.image?.startsWith('http') ? product.image : `${API_URL}${product.image}`;
+        
         try {
-          const response = await fetch('/logo.png');
+          const response = await fetch(imageUrl);
           const blob = await response.blob();
-          const file = new File([blob], 'logo.png', { type: 'image/png' });
+          const contentType = blob.type || 'image/jpeg';
+          const extension = contentType.split('/')[1] || 'jpg';
+          const filename = `product-image.${extension}`;
+          const file = new File([blob], filename, { type: contentType });
+          
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             files = [file];
           }
-        } catch (fileErr) {
-          console.warn('Could not attach logo file for sharing', fileErr);
+        } catch (imgErr) {
+          console.warn('Could not attach product image for sharing, trying fallback logo', imgErr);
+          try {
+            const response = await fetch('/logo.png');
+            const blob = await response.blob();
+            const file = new File([blob], 'logo.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              files = [file];
+            }
+          } catch (logoErr) {
+            console.warn('Could not attach logo file for sharing', logoErr);
+          }
         }
 
         const shareData = {
@@ -116,7 +132,7 @@ const ProductCard = ({ product }) => {
         showAlert('Link Copied', 'Product link copied to clipboard.');
       }
     } catch (err) {
-      console.error(err);
+      console.error('Error sharing product from card', err);
     }
   };
 
