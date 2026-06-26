@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import API_URL from '../config';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, viewMode = 'grid' }) => {
   const { cartItems, showAlert, showConfirm } = useCart();
   const navigate = useNavigate();
   const { userInfo } = useAuth();
@@ -139,6 +139,91 @@ const ProductCard = ({ product }) => {
   const productCartItems = cartItems ? cartItems.filter(item => (item.id === productId || item._id === productId)) : [];
   const productCartQty = productCartItems.reduce((sum, item) => sum + item.quantity, 0);
   const isSoldOut = product.countInStock - productCartQty <= 0;
+
+  if (viewMode === 'list') {
+    return (
+      <motion.div 
+        whileHover={{ y: -4, transition: { duration: 0.4, ease: "easeOut" } }}
+        className="group bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-shadow duration-500 flex flex-row h-44 sm:h-52 w-full"
+      >
+        <Link to={`/zaloura-product/${productId}`} className="relative w-1/3 sm:w-1/4 h-full bg-gray-50 overflow-hidden flex-shrink-0">
+          {product.image ? (
+            <motion.img 
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
+              src={product.image.startsWith('http') ? product.image : `${API_URL}${product.image}`} 
+              alt={product.name} 
+              className="w-full h-full object-cover" 
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">No Image</div>
+          )}
+
+          {/* Wishlist Heart Icon */}
+          <motion.button 
+            whileTap={{ scale: 0.8 }}
+            onClick={toggleWishlist}
+            className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md shadow-xl transition-all duration-300 z-10
+              ${isWishlisted ? 'bg-primary text-white scale-110' : 'bg-white/80 text-gray-400 hover:text-primary'}`}
+          >
+            <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
+          </motion.button>
+
+          {isSoldOut && (
+            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
+              <span className="bg-white text-primary px-3 py-1 text-[8px] uppercase font-bold tracking-[0.2em] rounded shadow-xl">
+                Sold Out
+              </span>
+            </div>
+          )}
+          
+          {product.originalPrice > product.price && (
+            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-0.5 text-[8px] uppercase font-bold tracking-widest rounded-full shadow-lg z-10">
+              {product.discount > 0 ? `${product.discount}% OFF` : `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`}
+            </div>
+          )}
+        </Link>
+        
+        <div className="p-4 sm:p-5 flex flex-col justify-between flex-grow">
+          <div>
+            <div className="flex justify-between items-start mb-1 sm:mb-2">
+              <p className="text-[9px] text-gray-400 uppercase tracking-[0.2em] font-bold">{product.category}</p>
+              {product.productCode && (
+                <span className="text-[8px] font-mono text-gray-300">#{product.productCode}</span>
+              )}
+            </div>
+            <Link to={`/zaloura-product/${productId}`}>
+              <h3 className="font-serif text-base sm:text-xl text-primary hover:text-primaryContainer transition-colors leading-tight">
+                {product.name}
+              </h3>
+            </Link>
+            {product.description && (
+              <p className="text-[11px] sm:text-xs text-secondary/60 line-clamp-2 mt-2 font-sans">
+                {product.description}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-primary text-base sm:text-lg">₹{(product.price || 0).toLocaleString('en-IN')}</span>
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-gray-300 line-through text-xs font-medium">₹{(product.originalPrice || 0).toLocaleString('en-IN')}</span>
+              )}
+            </div>
+            {/* Share button */}
+            <motion.button 
+              whileTap={{ scale: 0.8 }}
+              onClick={handleShare}
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 text-gray-400 hover:text-primary hover:bg-gray-100 transition-all duration-300"
+              title="Share Product"
+            >
+              <Share2 size={12} />
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div 

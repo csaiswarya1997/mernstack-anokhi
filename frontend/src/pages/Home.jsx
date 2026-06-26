@@ -9,8 +9,8 @@ import heroImg from '../assets/hero-main-hd.png';
 import kurtiImgHero from '../assets/hero-kurti-hd.png';
 import coordImgHero from '../assets/hero-coord-hd.png';
 import girlsImgHero from '../assets/hero-girls-hd.png';
-import kurtiImg from '../assets/category-kurti.png';
-import salwarImg from '../assets/category-salwar.png';
+import kurtiImg from '../assets/pinterest-kurti.png';
+import salwarImg from '../assets/pinterest-salwar.png';
 import artisanImg from '../assets/artisan-story.png';
 
 const Home = () => {

@@ -4,9 +4,9 @@ import ProductCard from '../components/ProductCard';
 import { Search, X, SlidersHorizontal, ChevronDown, LayoutGrid, List, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import API_URL from '../config';
-import kurtiImg from '../assets/category-kurti.png';
-import salwarImg from '../assets/category-salwar.png';
-import artisanImg from '../assets/artisan-story.png';
+import kurtiImg from '../assets/kurti-banner.png';
+import salwarImg from '../assets/salwar-banner.png';
+import artisanImg from '../assets/ethnic-banner.png';
 
 const Shop = ({ categoryOverride }) => {
   const { category } = useParams();
@@ -18,11 +18,13 @@ const Shop = ({ categoryOverride }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
 
   // Filter & Sort states
   const [selectedCategories, setSelectedCategories] = useState(currentCategory ? [currentCategory] : []);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedAvailability, setSelectedAvailability] = useState([]);
   const [sortBy, setSortBy] = useState('latest');
   const [seoData, setSeoData] = useState({
     title: 'Zaloura Ethnic Wear | Premium Designer Women\'s Fashion',
@@ -159,6 +161,18 @@ const Shop = ({ categoryOverride }) => {
           );
         }
 
+        // Availability (In Stock / Out of Stock)
+        if (selectedAvailability.length > 0) {
+          filtered = filtered.filter(p => {
+            const inStock = p.countInStock > 0;
+            return selectedAvailability.some(status => {
+              if (status === 'inStock') return inStock;
+              if (status === 'outOfStock') return !inStock;
+              return false;
+            });
+          });
+        }
+
         // Sorting (Price Low-High, Price High-Low, Latest)
         if (sortBy === 'lowToHigh') {
           filtered.sort((a, b) => a.price - b.price);
@@ -181,7 +195,7 @@ const Shop = ({ categoryOverride }) => {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [selectedCategories, selectedPrices, selectedSizes, searchQuery, sortBy]);
+  }, [selectedCategories, selectedPrices, selectedSizes, selectedAvailability, searchQuery, sortBy]);
 
   const handleCategoryChange = (cat) => {
     setSelectedCategories(prev =>
@@ -204,80 +218,100 @@ const Shop = ({ categoryOverride }) => {
     );
   };
 
+  const handleAvailabilityChange = (status) => {
+    setSelectedAvailability(prev =>
+      prev.includes(status) ? prev.filter(s => s !== status) : [...prev, status]
+    );
+  };
+
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-4 md:pt-6 pb-24 min-h-[70vh]">
+    <div className="max-w-[1440px] mx-auto px-4 md:px-16 pt-2 md:pt-3 pb-24 min-h-[70vh]">
       {/* Editorial Header */}
       <motion.div 
         initial="hidden"
         animate="visible"
         variants={headerVariants}
-        className="mb-6 md:mb-8 bg-accent/5 p-8 md:p-12 rounded-[2.5rem] border border-primary/5"
+        className="mb-4 md:mb-5 bg-accent/5 py-5 px-6 md:py-6 md:px-10 rounded-[1.5rem] md:rounded-[2rem] border border-primary/5"
       >
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
-          <div className="md:col-span-8 space-y-6">
-            <motion.span 
-              initial={{ opacity: 0, letterSpacing: "0.2em" }}
-              animate={{ opacity: 1, letterSpacing: "0.4em" }}
-              transition={{ duration: 1 }}
-              className="text-[10px] uppercase font-bold text-primary/60 block"
-            >
-              Maison Zaloura
-            </motion.span>
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-serif text-primary tracking-tighter leading-tight italic">
-              {seoData.h1}
-            </motion.h1>
-            <motion.p 
-              variants={fadeInUp}
-              className="text-sm md:text-base text-secondary/70 font-sans leading-relaxed max-w-xl"
-            >
-              {seoData.firstParagraph}
-            </motion.p>
-          </div>
-          <div className="md:col-span-4">
-            <motion.img 
-              variants={fadeInUp}
-              src={seoData.image} 
-              alt={seoData.alt} 
-              className="w-full aspect-[4/3] object-cover rounded-2xl shadow-lg border border-primary/5"
-            />
-          </div>
+        <div className="max-w-3xl space-y-2 md:space-y-3">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.2em" }}
+            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ duration: 1 }}
+            className="text-[9px] uppercase font-bold text-primary/60 block"
+          >
+            Maison Zaloura
+          </motion.span>
+          <motion.h1 variants={fadeInUp} className="text-2xl md:text-4xl font-serif text-primary tracking-tighter leading-tight italic">
+            {seoData.h1}
+          </motion.h1>
+          <motion.p 
+            variants={fadeInUp}
+            className="text-xs md:text-sm text-secondary/70 font-sans leading-relaxed max-w-2xl"
+          >
+            {seoData.firstParagraph}
+          </motion.p>
         </div>
       </motion.div>
           
           {/* COMPACT CONTROLS - Moved next to title area */}
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 border-t md:border-t-0 pt-6 md:pt-0 mb-8">
-            <button 
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className={`flex items-center gap-3 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] transition-all
-                ${isFilterOpen ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-gray-50 border border-gray-100 text-primary hover:border-primary/20'}`}
-            >
-              <Filter size={14} />
-              {isFilterOpen ? 'Hide Filters' : 'Refine Selection'}
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t md:border-t-0 pt-4 md:pt-0 mb-5">
+            <div className="flex flex-wrap items-center gap-2 md:gap-4">
+              <button 
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className={`flex items-center gap-3 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] transition-all
+                  ${isFilterOpen ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-gray-50 border border-gray-100 text-primary hover:border-primary/20'}`}
+              >
+                <Filter size={14} />
+                {isFilterOpen ? 'Hide Filters' : 'Refine Selection'}
+              </button>
 
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-gray-50 border border-gray-100 text-primary hover:border-primary/20 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] outline-none cursor-pointer transition-all"
-            >
-              <option value="latest">Latest Treasures</option>
-              <option value="lowToHigh">Price: Low to High</option>
-              <option value="highToLow">Price: High to Low</option>
-            </select>
-            
-            <AnimatePresence>
-              {(selectedCategories.length > 0 || selectedPrices.length > 0 || selectedSizes.length > 0 || searchQuery) && (
-                <motion.button 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
-                  className="flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-gray-50 border border-gray-100 text-primary hover:border-primary/20 px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-bold uppercase tracking-widest text-[9px] outline-none cursor-pointer transition-all"
+              >
+                <option value="latest">Latest Treasures</option>
+                <option value="lowToHigh">Price: Low to High</option>
+                <option value="highToLow">Price: High to Low</option>
+              </select>
+              
+              <AnimatePresence>
+                {(selectedCategories.length > 0 || selectedPrices.length > 0 || selectedSizes.length > 0 || selectedAvailability.length > 0 || searchQuery) && (
+                  <motion.button 
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); setSelectedAvailability([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
+                    className="flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-xl border border-gray-100 text-gray-400 font-bold uppercase tracking-widest text-[9px] hover:text-red-400 hover:border-red-100 transition-all"
+                  >
+                    <X size={14} /> Clear Selection
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Layout Toggler (Grid/List) */}
+            <div className="flex items-center gap-3 self-end sm:self-auto">
+              <span className="text-[10px] uppercase font-bold text-gray-400 tracking-[0.15em]">View:</span>
+              <div className="flex items-center bg-gray-50 border border-gray-100 rounded-xl p-1">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-primary'}`}
+                  title="Grid View"
                 >
-                  <X size={14} /> Clear Selection
-                </motion.button>
-              )}
-            </AnimatePresence>
+                  <LayoutGrid size={15} />
+                </button>
+                <div className="w-[1px] h-4 bg-gray-200 mx-1"></div>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-primary'}`}
+                  title="List View"
+                >
+                  <List size={15} />
+                </button>
+              </div>
+            </div>
           </div>
 
       <div className="flex flex-col lg:flex-row gap-16">
@@ -348,6 +382,34 @@ const Shop = ({ categoryOverride }) => {
                 </div>
 
                 <div>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 mb-6 border-b border-gray-50 pb-3">Availability</h4>
+                  <ul className="space-y-4">
+                    {[
+                      { id: 'inStock', label: 'In Stock' },
+                      { id: 'outOfStock', label: 'Out of Stock' }
+                    ].map(status => (
+                      <li key={status.id}>
+                        <label className="flex items-center gap-4 cursor-pointer group">
+                          <div className={`w-5 h-5 rounded-md border transition-all flex items-center justify-center
+                            ${selectedAvailability.includes(status.id) ? 'bg-primary border-primary' : 'bg-white border-gray-200 group-hover:border-primary/40'}`}>
+                            {selectedAvailability.includes(status.id) && <div className="w-1.5 h-1.5 bg-white rounded-sm"></div>}
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={selectedAvailability.includes(status.id)}
+                            onChange={() => handleAvailabilityChange(status.id)}
+                            className="hidden"
+                          />
+                          <span className={`text-[13px] tracking-wide transition-all ${selectedAvailability.includes(status.id) ? 'text-primary font-bold' : 'text-secondary/60 font-medium group-hover:text-primary'}`}>
+                            {status.label}
+                          </span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
                   <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 mb-6 border-b border-gray-50 pb-3">Sizes In Stock</h4>
                   <div className="grid grid-cols-3 gap-3">
                     {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => {
@@ -373,15 +435,30 @@ const Shop = ({ categoryOverride }) => {
         {/* Product Grid Area */}
         <div className="flex-grow">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-14 animate-pulse">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="space-y-5">
-                  <div className="aspect-[3/4] bg-gray-50 rounded-2xl"></div>
-                  <div className="h-3 bg-gray-50 rounded w-2/3"></div>
-                  <div className="h-3 bg-gray-50 rounded w-1/3"></div>
-                </div>
-              ))}
-            </div>
+            viewMode === 'list' ? (
+              <div className="flex flex-col gap-6 animate-pulse w-full">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="flex gap-5 border border-gray-100 rounded-lg p-5">
+                    <div className="w-1/3 sm:w-1/4 aspect-[4/3] bg-gray-50 rounded-xl"></div>
+                    <div className="flex-grow space-y-4 py-2">
+                      <div className="h-3 bg-gray-50 rounded w-1/4"></div>
+                      <div className="h-4 bg-gray-50 rounded w-2/3"></div>
+                      <div className="h-3 bg-gray-50 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-14 animate-pulse">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="space-y-5">
+                    <div className="aspect-[3/4] bg-gray-50 rounded-2xl"></div>
+                    <div className="h-3 bg-gray-50 rounded w-2/3"></div>
+                    <div className="h-3 bg-gray-50 rounded w-1/3"></div>
+                  </div>
+                ))}
+              </div>
+            )
           ) : (
             <AnimatePresence mode="wait">
               {products.length > 0 ? (
@@ -391,11 +468,13 @@ const Shop = ({ categoryOverride }) => {
                   animate="visible"
                   exit="hidden"
                   variants={containerVariants}
-                  className={`grid grid-cols-2 sm:grid-cols-2 ${isFilterOpen ? 'lg:grid-cols-2 xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'} gap-x-4 sm:gap-x-10 gap-y-8 sm:gap-y-14 transition-all duration-700`}
+                  className={viewMode === 'list' 
+                    ? 'flex flex-col gap-6 w-full' 
+                    : `grid grid-cols-2 sm:grid-cols-2 ${isFilterOpen ? 'lg:grid-cols-2 xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'} gap-x-4 sm:gap-x-10 gap-y-8 sm:gap-y-14 transition-all duration-700`}
                 >
                   {products.map(product => (
-                    <motion.div key={product._id || product.id} variants={itemVariants} layout>
-                      <ProductCard product={product} />
+                    <motion.div key={product._id || product.id} variants={itemVariants} layout className={viewMode === 'list' ? 'w-full' : ''}>
+                      <ProductCard product={product} viewMode={viewMode} />
                     </motion.div>
                   ))}
                 </motion.div>
@@ -409,7 +488,7 @@ const Shop = ({ categoryOverride }) => {
                   <h3 className="text-2xl font-serif text-primary mb-3 tracking-tighter italic">No matching pieces found</h3>
                   <p className="text-secondary/50 text-sm mb-10 max-w-xs mx-auto font-sans">Try refining your selection or resetting your search to explore the atelier.</p>
                   <button
-                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
+                    onClick={() => { setSelectedCategories([]); setSelectedPrices([]); setSelectedSizes([]); setSelectedAvailability([]); navigate(categoryOverride ? `/zaloura-${categoryOverride.toLowerCase()}s` : '/zaloura-ethnic-wear'); }}
                     className="bg-primary text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-2xl hover:bg-primaryContainer transition-all"
                   >
                     Reset Selection
